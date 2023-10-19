@@ -4,6 +4,9 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.teamcode.driving.GridDrive;
+import org.firstinspires.ftc.teamcode.driving.IDriving;
+
 public class Robot {
 
     //wheels
@@ -16,8 +19,8 @@ public class Robot {
     public IDriving driving;
 
 
-    public Robot(LinearOpMode opmode) {
-        HardwareMap map = opmode.hardwareMap;
+    public Robot(LinearOpMode opMode) {
+        HardwareMap map = opMode.hardwareMap;
 
         //wheels
         rf = map.tryGet(DcMotor.class, "rf");
@@ -26,7 +29,6 @@ public class Robot {
         lb = map.tryGet(DcMotor.class, "lb");
 
         driving = new GridDrive(rf, rb, lf, lb);
-
     }
 
 }

@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.driving;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 
@@ -45,7 +45,7 @@ public class GridDrive implements IDriving {
     }
 
     public void turn (float t) {
-        setEachPower(t, t, t, t);
+        setEachPower(t, t, -t, -t);
     }
 
     public void horizontal (float power) { //right positive
@@ -65,7 +65,7 @@ public class GridDrive implements IDriving {
 
     private void setEachPower (float rfp, float rbp, float lfp, float lbp) {
         rf.setPower(rfp);
-        lf.setPower(rfp);
+        lf.setPower(rbp);
         lf.setPower(lfp);
         lb.setPower(lbp);
     }
