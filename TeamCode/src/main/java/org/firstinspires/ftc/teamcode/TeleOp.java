@@ -10,10 +10,9 @@ public class TeleOp extends LinearOpMode {
 
     Robot robot;
     IDriving driving;
-    LinearOpMode opMode;
 
     public void runOpMode() throws InterruptedException {
-        robot = new Robot(opMode);
+        robot = new Robot(this);
         driving = robot.driving;
 
         waitForStart();
