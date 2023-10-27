@@ -11,19 +11,27 @@ public class StrafeDrive implements IDriving {
     private DcMotor lf;
     private DcMotor lb;
 
+    private float speed = 0.5f;
+
     public StrafeDrive(DcMotor rf, DcMotor rb, DcMotor lf, DcMotor lb) {
         rf = rf;
         rb = rb;
         lf = lf;
         lb =lb;
-
     }
 
-    public void joystickDrive (float x, float y, float t){
-        rf.setPower(y - x - t);
-        rb.setPower(y + x - t);
-        lf.setPower(y + x + t);
-        lb.setPower(y - x + t);
+    public void joystickDrive (float X, float Y, float T) {
+        //threshold for values (bc our controllers are old and bad)
+        //these are condensed if statements
+        float x = (X < 0.2f) ? 0 : X;
+        float y = (Y < 0.2f) ? 0 : Y;
+        float t = (T < 0.2f) ? 0 : T;
+
+        //explanation in drive and slack
+        rf.setPower((y - x - t) * speed);
+        rb.setPower((y + x - t) * speed);
+        lf.setPower((y + x + t) * speed);
+        lb.setPower((y - x + t) * speed);
     }
 
     public void turn (float t) {
