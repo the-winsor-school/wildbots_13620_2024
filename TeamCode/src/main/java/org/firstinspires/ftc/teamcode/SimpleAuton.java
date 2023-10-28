@@ -15,11 +15,11 @@ public class SimpleAuton extends LinearOpMode {
 
     public void runOpMode() throws InterruptedException {
         robot = new Robot(opMode);
-        driving = robot.driving;
 
         while (opModeIsActive()) {
 
-            driving.horizontal(1);
+            robot.driving.horizontal(1);
+
 
         }
 

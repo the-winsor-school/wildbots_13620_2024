@@ -9,12 +9,9 @@ import org.firstinspires.ftc.teamcode.driving.StrafeDrive;
 public class TeleOp extends LinearOpMode {
 
     Robot robot;
-    IDriving driving;
-    LinearOpMode opMode;
 
     public void runOpMode() throws InterruptedException {
-        robot = new Robot(opMode);
-        driving = robot.driving;
+        robot = new Robot(this);
 
         waitForStart();
 
@@ -24,9 +21,15 @@ public class TeleOp extends LinearOpMode {
             float y = -gamepad1.right_stick_y; //inputs from joystick are opposite
             float t = gamepad1.left_stick_x;
 
-            driving.joystickDrive(x, y, t);
+            robot.driving.joystickDrive(x, y, t);
+
+            telemetry.addData("x: ", x);
+            telemetry.addData("y: ", y);
+            telemetry.addData("t: ", t);
 
             telemetry.update();
+
+
         }
     }
 }

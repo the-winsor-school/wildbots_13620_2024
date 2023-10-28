@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.driving.GridDrive;
 import org.firstinspires.ftc.teamcode.driving.IDriving;
+import org.firstinspires.ftc.teamcode.driving.StrafeDrive;
 
 public class Robot {
 
@@ -28,7 +29,7 @@ public class Robot {
         lf = map.tryGet(DcMotor.class, "lf");
         lb = map.tryGet(DcMotor.class, "lb");
 
-        driving = new GridDrive(rf, rb, lf, lb);
+        driving = new StrafeDrive(rf, rb, lf, lb);
     }
 
 }

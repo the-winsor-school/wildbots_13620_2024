@@ -10,10 +10,10 @@ public class GridDrive implements IDriving {
     private DcMotor lb;
 
     public GridDrive (DcMotor rf, DcMotor rb, DcMotor lf, DcMotor lb) {
-        rf = rf;
-        rb = rb;
-        lf = lf;
-        lb =lb;
+        this.rf = rf;
+        this.rb = rb;
+        this.lf = lf;
+        this.lb =lb;
 
     }
 
