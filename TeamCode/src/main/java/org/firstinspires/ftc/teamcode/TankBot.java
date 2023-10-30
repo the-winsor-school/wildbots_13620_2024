@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.driving.IDriving;
@@ -19,20 +20,38 @@ public class TankBot
 
         DcMotor left = map.tryGet(DcMotor.class, "left");
         DcMotor right = map.tryGet(DcMotor.class, "right");
+        right.setDirection(DcMotorSimple.Direction.REVERSE);
         driveTrain = new TankDrive(left, right);
 
         DcMotor spinny = map.tryGet(DcMotor.class, "spinny");
         spinner = new SpinnySpinner(spinny);
     }
 
-    /**
-     * Drive the tank using the simple tank interface
-     * @param leftY
-     * @param rightY
-     */
-    public void TeleopDrive(float leftY, float rightY)
+    public void TeleopDrive(float x, float y)
     {
-        driveTrain.joystickDrive(leftY, rightY, 0);
+        if(Math.abs(x) < 0.05)
+        {
+            driveTrain.vertical(y);
+            return;
+        }
+
+        float sign = y == 0 ? 1 : y/Math.abs(y);
+        
+        float throttle = (float)(Math.sqrt(x*x + y*y)*sign);
+        float leftPower, rightPower;
+
+        if(x < 0)
+        {
+            leftPower = throttle * (-1-2*x);
+            rightPower = throttle;
+        }
+        else
+        {
+            leftPower = throttle;
+            rightPower = throttle * (1 - 2 * x);
+        }
+
+        driveTrain.joystickDrive(leftPower, rightPower,0);
     }
 
     public void analogSpin(float power)

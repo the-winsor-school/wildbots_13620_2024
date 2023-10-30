@@ -16,9 +16,7 @@ public class TankTeleop extends LinearOpMode
 
         while(opModeIsActive())
         {
-            float leftY = -gamepad1.left_stick_y;
-            float rightY = gamepad1.right_stick_y;
-            tank.TeleopDrive(leftY, rightY);
+            tank.TeleopDrive(gamepad1.left_stick_x, -gamepad1.left_stick_y);
 
             if(gamepad1.left_bumper)
                 tank.spinForward();
