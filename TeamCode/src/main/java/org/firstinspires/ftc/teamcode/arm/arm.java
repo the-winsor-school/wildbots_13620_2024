@@ -1,4 +1,3 @@
-/*
 package org.firstinspires.ftc.teamcode.arm;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -97,18 +96,18 @@ public class arm {
         public void clawControls(ClawPos pos) {
             switch (pos) {
                 case OPEN:
-                    right.setPower(-1);
-                    left.setPower(1);
+                    right.setPosition(-1);
+                    left.setPosition(1);
                     break;
 
                 case STOP:
-                    right.setPower(0);
-                    left.setPower(0);
+                    right.setPosition(0);
+                    left.setPosition(0);
                     break;
 
                 case CLOSE:
-                    right.setPower(1);
-                    left.setPower(-1);
+                    right.setPosition(1);
+                    left.setPosition(-1);
                     break;
             }
         }
@@ -121,4 +120,3 @@ public class arm {
     }
 
 }
-*/
