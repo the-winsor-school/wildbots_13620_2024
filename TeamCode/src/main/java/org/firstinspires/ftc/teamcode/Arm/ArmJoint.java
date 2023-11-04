@@ -7,13 +7,14 @@ public class ArmJoint {
     double powerUsed;
     DcMotor motor;
     int armTolerance;
-
+    MoveArm armThread;
 
     public ArmJoint(DcMotor motor, int gearRatio, double powerUsed, int armTolerance) {
         this.motor = motor;
         this.gearRatio = gearRatio;
         this.powerUsed = powerUsed;
         this.armTolerance = armTolerance;
+        Thread armThread = new MoveArm();
     }
 
     public void resetEncoders() {
@@ -22,8 +23,8 @@ public class ArmJoint {
     }
 
     public void moveArm(int targetPosition) { //targetPosition in rotation
-        Thread moveArm = new MoveArm(targetPosition);
-        moveArm.start();
+        armThread.setTargetPosition(targetPosition);
+        armThread.start();
     }
 
     public int getCurrentPosition() {
@@ -49,7 +50,7 @@ public class ArmJoint {
     public class MoveArm extends Thread {
         private int targetPosition;
 
-        public MoveArm(int targetPosition) {
+        public void setTargetPosition(int targetPosition) {
             this.targetPosition = targetPosition;
         }
 
