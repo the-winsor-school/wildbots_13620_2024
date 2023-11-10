@@ -28,8 +28,6 @@ public class TeleOp extends LinearOpMode {
             telemetry.addData("t: ", t);
 
             telemetry.update();
-
-
         }
     }
 }
