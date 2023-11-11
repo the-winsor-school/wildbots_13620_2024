@@ -12,23 +12,32 @@ public class AprilTagAutonTest extends LinearOpMode {
     LinearOpMode opMode;
     AprilTag aprilTag;
 
+    TagID tagID;
+
     @Override
     public void runOpMode() {
         aprilTag = new AprilTag(opMode);
-        aprilTag.seeTag();
-        if (tag = 1) {
-            robot.driving.horizontal(1);
-            // auton stuff for 1
-        } else {
-            robot.driving.horizontal(1);
-            //auton stuff
-            // e.g.
-            if (aprilTag.tagOfInterest.pose.x <= 20) {
-                // do something
-            } else if (aprilTag.tagOfInterest.pose.x >= 20 && aprilTag.tagOfInterest.pose.x <= 50) {
-                // do something else
-            } else if (aprilTag.tagOfInterest.pose.x >= 50) {
-                // do something else
+        tagID = new TagID();
+        aprilTag.tagID = null;
+        telemetry.addData("Status", "Initialized");
+        telemetry.update();
+        waitForStart();
+
+        if (opModeIsActive()) {
+            int TagID = tagID.findTag();
+            if (TagID == 1) {
+                robot.driving.horizontal(1);
+                // auton stuff for 1
+            } else if (TagID == 2) {
+                robot.driving.horizontal(1);
+            } else if (TagID == 3) {
+                robot.driving.horizontal(1);
+            } else if (TagID == 4) {
+                robot.driving.horizontal(1);
+            } else if (TagID == 5) {
+                robot.driving.horizontal(1);
+            } else if (TagID == 6) {
+                robot.driving.horizontal(1);
             }
         }
     }

@@ -34,7 +34,7 @@ public class AprilTag {
     // UNITS ARE METERS
     double tagsize = 0.166;
     //private static final int ID_TAG_OF_INTEREST = 1; // tag ID - from 36h11 family
-    AprilTagDetection tagOfInterest = null;
+    AprilTagDetection tagID = null;
 
     boolean tagFound = false;
 
@@ -60,6 +60,7 @@ public class AprilTag {
             }
         });
 
+        camera.resumeViewport();
         opMode.telemetry.setMsTransmissionInterval(50);
     }
 
@@ -74,53 +75,6 @@ public class AprilTag {
         opMode.telemetry.addLine(String.format("Rotation Roll: %.2f degrees", rotation.thirdAngle));
     }
 
-    public void seeTag() {
-        ArrayList<AprilTagDetection> currentDetections = aprilTagDetectionPipeline.getLatestDetections();
-        if (currentDetections.size() != 0) {
-            findTag();
-            if (tagFound) {
-                opMode.telemetry.addLine("tag in sight!\n\nLocation:");
-                tagToTelemetry(tagOfInterest);
-            } else {
-                opMode.telemetry.addLine("can't find tag :(");
-                if (tagOfInterest == null) {
-                    opMode.telemetry.addLine("we never knew where the tag was :(");
-                } else {
-                    opMode.telemetry.addLine("\ntag last seen at:");
-                    tagToTelemetry(tagOfInterest);
-                }
-            }
-
-        } else //if something is not detected
-        {
-            opMode.telemetry.addLine("can't find tag :(");
-            if (tagOfInterest == null) {
-                opMode.telemetry.addLine("we never knew where the tag was :(");
-            } else {
-                opMode.telemetry.addLine("\ntag last seen at:");
-                tagToTelemetry(tagOfInterest);
-            }
-        }
-        opMode.telemetry.update();
-        opMode.sleep(20);
-        if (tagOfInterest != null) {
-            opMode.telemetry.addLine("Tag snapshot:\n");
-            tagToTelemetry(tagOfInterest);
-            opMode.telemetry.update();
-        } else {
-            opMode.telemetry.addLine("No tag snapshot available, we never knew where the tag was :(");
-            opMode.telemetry.update();
-        }
-
-    }
-    public void findTag() {
-        ArrayList<AprilTagDetection> currentDetections = aprilTagDetectionPipeline.getLatestDetections();
-        for (AprilTagDetection tag : currentDetections) {
-            tagOfInterest = tag;
-            tagFound = true;
-            break;
-            }
-        }
     }
 
 
