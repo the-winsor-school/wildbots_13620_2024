@@ -3,10 +3,12 @@ package org.firstinspires.ftc.teamcode;
 import android.util.Size;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import org.firstinspires.ftc.teamcode.driving.IDriving;
 
 @Autonomous(name="april tag auton")
+@Disabled
 public class AprilTagAutonTest extends LinearOpMode {
     Robot robot;
     LinearOpMode opMode;
@@ -24,6 +26,7 @@ public class AprilTagAutonTest extends LinearOpMode {
         waitForStart();
 
         if (opModeIsActive()) {
+            tagID.seeTag();
             int TagID = tagID.findTag();
             if (TagID == 1) {
                 robot.driving.horizontal(1);

@@ -1,22 +1,7 @@
 package org.firstinspires.ftc.teamcode;
-
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.HardwareMap;
-
-import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
-import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
-import org.firstinspires.ftc.teamcode.driving.IDriving;
 import org.openftc.apriltag.AprilTagDetection;
 import org.openftc.easyopencv.OpenCvCamera;
-import org.openftc.easyopencv.OpenCvCameraFactory;
-import org.openftc.easyopencv.OpenCvCameraRotation;
-
 import java.util.ArrayList;
 
 public class TagID {
@@ -29,11 +14,13 @@ public class TagID {
 
     boolean tagFound = false;
 
+    AprilTagDetection tagID;
+
     public void seeTag() {
         aprilTag = new AprilTag(opMode);
         ArrayList<AprilTagDetection> currentDetections = aprilTagDetectionPipeline.getLatestDetections();
         if (currentDetections.size() != 0) {
-            findTag();
+            findTag(tagID);
             if (tagFound) {
                 opMode.telemetry.addLine("tag in sight!\n\nLocation:");
                 aprilTag.tagToTelemetry(tagID);
@@ -68,13 +55,12 @@ public class TagID {
             }
 
         }
-        public void findTag(int tagID) {
+        public void findTag(AprilTagDetection tag) {
             ArrayList<AprilTagDetection> currentDetections = aprilTagDetectionPipeline.getLatestDetections();
-            for (AprilTagDetection tag : currentDetections) {
-                tag = tagID;
+            for (AprilTagDetection detectedTag : currentDetections) {
+                tagID = tag;
                 tagFound = true;
                 break;
             }
         }
     }
-}
