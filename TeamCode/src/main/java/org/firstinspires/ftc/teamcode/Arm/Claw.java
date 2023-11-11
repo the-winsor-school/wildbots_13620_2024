@@ -11,7 +11,7 @@ public class Claw {
         left = leftServo;
     }
 
-    public void clawControls(ClawPos pos) {
+    public void controlClaw(ClawPos pos) {
         switch (pos) {
             case OPEN:
                 right.setPosition(-1);

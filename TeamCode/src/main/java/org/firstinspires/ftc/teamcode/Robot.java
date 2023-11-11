@@ -13,30 +13,26 @@ public class Robot {
 
     //wheels
     //rf, rb, lf, lb
-    public DcMotor rf;
-    public DcMotor rb;
-    public DcMotor lf;
-    public DcMotor lb;
+    private DcMotor rf;
+    private DcMotor rb;
+    private DcMotor lf;
+    private DcMotor lb;
 
     //arm
-    public DcMotor liftMotor;
-    public DcMotor clawMotor;
+    private DcMotor liftMotor;
+    private DcMotor clawMotor;
+    private Servo rightServo;
+    private Servo leftServo;
 
-    public Servo rightServo;
-    public Servo leftServo;
-
+    //libraries
     public IDriving driving;
-
     public FullArm arm;
 
     private LinearOpMode opMode;
 
-
     public Robot(LinearOpMode opMode) {
         HardwareMap map = opMode.hardwareMap;
-
         this.opMode = opMode;
-
 
         //wheels
         rf = map.tryGet(DcMotor.class, "rf");
@@ -52,20 +48,15 @@ public class Robot {
         leftServo = map.tryGet(Servo.class, "left servo");
 
         driving = new StrafeDrive(rf, rb, lf, lb);
-        arm = new FullArm(liftMotor, clawMotor, rightServo, leftServo, opMode);
+        arm = new FullArm(liftMotor, clawMotor, rightServo, leftServo);
     }
 
-    public void printWheels() {
+    public void printWheelPowers() {
         opMode.telemetry.addData("rf: ", rf.getPower());
         opMode.telemetry.addData("lf: ", lf.getPower());
         opMode.telemetry.addData("rb: ", rb.getPower());
         opMode.telemetry.addData("lb: ", lb.getPower());
 
-    }
-
-    public void printArm() {
-        opMode.telemetry.addData("lift motor", liftMotor.getCurrentPosition());
-        opMode.telemetry.addData("claw motor", clawMotor.getCurrentPosition());
     }
 
 }

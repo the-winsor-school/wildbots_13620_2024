@@ -17,46 +17,67 @@ public class TeleOp extends LinearOpMode {
 
         while (opModeIsActive()){
 
+            //_______________________________________________
+            //             MAIN CONTROLLER
+            //_______________________________________________
+
             float x = gamepad1.right_stick_x;
             float y = gamepad1.right_stick_y;
             float t = gamepad1.left_stick_x;
 
             robot.driving.joystickDrive(x, y, t);
 
+            //_______________________________________________
+            //             MECH CONTROLLER
+            //_______________________________________________
+
             //arm levels
             if (gamepad2.y)
-                robot.arm.moveToLevel(1);
+                robot.arm.moveToLevel(FullArm.ArmLevel.PICKINGUP);
             if(gamepad2.b)
                 robot.arm.moveToLevel(FullArm.ArmLevel.RESET);
             if(gamepad2.a)
                 robot.arm.moveToLevel(FullArm.ArmLevel.PLACE);
 
             //arm manual controls
-            if (gamepad2.dpad_up) {
-                robot.arm.liftJoint.setPower(1);
-                sleep(300);
-                robot.arm.liftJoint.setPower(0);
-            }
+            if (gamepad2.dpad_up)
+                robot.arm.liftJoint.changeTargetPosition(200);
             if(gamepad2.dpad_down)
-                robot.arm.liftJoint.changePosition(-200);
+                robot.arm.liftJoint.changeTargetPosition(-200);
             if (gamepad2.dpad_left)
-                robot.arm.clawJoint.changePosition(200);
+                robot.arm.clawJoint.changeTargetPosition(200);
             if(gamepad2.dpad_right)
-                robot.arm.clawJoint.changePosition(-200);
+                robot.arm.clawJoint.changeTargetPosition(-200);
 
             //claw controls
             if (gamepad2.left_stick_x > 0.75f)
-                robot.arm.claw.clawControls(Claw.ClawPos.OPEN);
+                robot.arm.claw.controlClaw(Claw.ClawPos.OPEN);
             if (gamepad2.left_stick_x < 0.75f)
-                robot.arm.claw.clawControls(Claw.ClawPos.CLOSE);
+                robot.arm.claw.controlClaw(Claw.ClawPos.CLOSE);
 
-            //telemetry
-            telemetry.addData("x: ", x);
-            telemetry.addData("y: ", y);
-            telemetry.addData("t: ", t);
+            //update arm positions
+            robot.arm.liftJoint.armLoop();
+            robot.arm.clawJoint.armLoop();
 
-            //robot.printWheels();
-            robot.printArm();
+            //_______________________________________________
+            //             PRINT STATEMENTS
+            //_______________________________________________
+
+            //joystick inputs
+            //telemetry.addData("x: ", x);
+            //telemetry.addData("y: ", y);
+            //telemetry.addData("t: ", t);
+
+            //wheels powers
+            //robot.printWheelPowers();
+
+            //arm current position
+            telemetry.addData("lift joint: ", robot.arm.liftJoint.getCurrentPosition());
+            telemetry.addData("claw joint: ", robot.arm.clawJoint.getCurrentPosition());
+
+            //arm directions
+            telemetry.addData("lift joint: ", robot.arm.liftJoint.getDirection());
+            telemetry.addData("claw joint: ", robot.arm.clawJoint.getDirection());
 
             telemetry.update();
         }
