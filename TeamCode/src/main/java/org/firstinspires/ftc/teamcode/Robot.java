@@ -21,6 +21,8 @@ public class Robot {
     //arm
     private DcMotor liftMotor;
     private DcMotor clawMotor;
+    private DcMotor liftMotorEncoder;
+    private DcMotor clawMotorEncoder;
     private Servo rightServo;
     private Servo leftServo;
 
@@ -44,9 +46,13 @@ public class Robot {
         liftMotor = map.tryGet(DcMotor.class, "bottom arm joint");
         clawMotor = map.tryGet(DcMotor.class, "top arm joint");
 
+        liftMotorEncoder = map.tryGet(DcMotor.class, "lift join encoder");
+        clawMotorEncoder = map.tryGet(DcMotor.class, "claw join encoder");
+
         rightServo = map.tryGet(Servo.class, "right servo");
         leftServo = map.tryGet(Servo.class, "left servo");
 
+        //libraries
         driving = new StrafeDrive(rf, rb, lf, lb);
         arm = new FullArm(liftMotor, clawMotor, rightServo, leftServo);
     }

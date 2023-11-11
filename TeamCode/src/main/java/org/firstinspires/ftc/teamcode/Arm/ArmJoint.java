@@ -5,25 +5,33 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 
 public class ArmJoint {
+
+    DcMotor motor;
+    DcMotor encoder;
+
     int gearRatio;
     double powerUsed;
-    DcMotor motor;
     int armTolerance;
 
     public int targetPosition;
 
-    public ArmJoint(DcMotor motor, int gearRatio, double powerUsed, int armTolerance) {
+    public ArmJoint(DcMotor motor, DcMotor encoder,
+                    int gearRatio, double powerUsed,
+                    int armTolerance) {
         this.motor = motor;
+        this.encoder = encoder;
         this.gearRatio = gearRatio;
         this.powerUsed = powerUsed;
         this.armTolerance = armTolerance;
     }
 
     public void armLoop() {
-        if (getCurrentPosition() - targetPosition > armTolerance
-                || getCurrentPosition() - targetPosition < -armTolerance) {
-            moveJointRotations();
-        }
+        if (getCurrentPosition() - targetPosition > armTolerance) //go down
+            motor.setPower(-powerUsed);
+        else if (getCurrentPosition() - targetPosition < -armTolerance) //go up
+            motor.setPower(powerUsed);
+        else //not moving
+            brake();
     }
 
     public void resetEncoders() {
@@ -35,12 +43,6 @@ public class ArmJoint {
         targetPosition = (getCurrentPosition() + rotations);
     }
 
-    public void moveJointRotations() {
-        motor.setTargetPosition(targetPosition);
-        motor.setPower(0.5f);
-        motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-    }
-
     public String getDirection() {
         if (getCurrentPosition() - targetPosition > armTolerance)
             return "going down";
@@ -50,7 +52,7 @@ public class ArmJoint {
             return "not moving";
     }
 
-    public int getCurrentPosition() { return motor.getCurrentPosition(); }
+    public int getCurrentPosition() { return encoder.getCurrentPosition(); }
 
     public int getTargetPosition() { return targetPosition; }
 
