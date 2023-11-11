@@ -19,8 +19,6 @@ public class SimpleAuton extends LinearOpMode {
         while (opModeIsActive()) {
 
             robot.driving.horizontal(1);
-
-
         }
 
     }

@@ -3,7 +3,9 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
@@ -16,9 +18,7 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 
 import java.util.ArrayList;
-
-@Autonomous(name="april tag auton")
-public class AprilTagAutonTest extends LinearOpMode
+public class AprilTag
 {
     Robot robot;
     LinearOpMode opMode;
@@ -38,17 +38,18 @@ public class AprilTagAutonTest extends LinearOpMode
     // UNITS ARE METERS
     double tagsize = 0.166;
 
-    private static final int ID_TAG_OF_INTEREST = 18; // Tag ID - from 36h11 family
+    private static final int ID_TAG_OF_INTEREST = 18; // tag ID - from 36h11 family
 
     AprilTagDetection tagOfInterest = null;
 
-    @Override
     public void runOpMode()
     {
         robot = new Robot(opMode);
+        HardwareMap map = opMode.hardwareMap;
+        Telemetry telemetry = opMode.telemetry;
         //setting pipeline
-        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
+        int cameraMonitorViewId = map.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", map.appContext.getPackageName());
+        camera = OpenCvCameraFactory.getInstance().createWebcam(map.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
         aprilTagDetectionPipeline = new AprilTagDetectionPipeline(tagsize, fx, fy, cx, cy);
 
         camera.setPipeline(aprilTagDetectionPipeline);
@@ -67,9 +68,9 @@ public class AprilTagAutonTest extends LinearOpMode
             }
         });
 
-        telemetry.setMsTransmissionInterval(50);
+        opMode.telemetry.setMsTransmissionInterval(50);
 
-        while (!isStarted() && !isStopRequested())
+        while (!opMode.isStarted() && !opMode.isStopRequested())
         {
             ArrayList<AprilTagDetection> currentDetections = aprilTagDetectionPipeline.getLatestDetections();
 
@@ -123,7 +124,7 @@ public class AprilTagAutonTest extends LinearOpMode
 
             }
             telemetry.update();
-            sleep(20);
+            opMode.sleep(20);
         }
 
         if(tagOfInterest != null)
@@ -162,17 +163,21 @@ public class AprilTagAutonTest extends LinearOpMode
                 // do something else
             }
         }
-    }
 
+    }
     void tagToTelemetry(AprilTagDetection detection)
     {
         Orientation rotation = Orientation.getOrientation(detection.pose.R, AxesReference.INTRINSIC, AxesOrder.YXZ, AngleUnit.DEGREES);
-        telemetry.addLine(String.format("\nDetected tag ID=%d", detection.id));
-        telemetry.addLine(String.format("Translation X: %.2f feet", detection.pose.x*FEET_PER_METER));
-        telemetry.addLine(String.format("Translation Y: %.2f feet", detection.pose.y*FEET_PER_METER));
-        telemetry.addLine(String.format("Translation Z: %.2f feet", detection.pose.z*FEET_PER_METER));
-        telemetry.addLine(String.format("Rotation Yaw: %.2f degrees", rotation.firstAngle));
-        telemetry.addLine(String.format("Rotation Pitch: %.2f degrees", rotation.secondAngle));
-        telemetry.addLine(String.format("Rotation Roll: %.2f degrees", rotation.thirdAngle));
+        opMode.telemetry.addLine(String.format("\nDetected tag ID=%d", detection.id));
+        opMode.telemetry.addLine(String.format("Translation X: %.2f feet", detection.pose.x*FEET_PER_METER));
+        opMode.telemetry.addLine(String.format("Translation Y: %.2f feet", detection.pose.y*FEET_PER_METER));
+        opMode.telemetry.addLine(String.format("Translation Z: %.2f feet", detection.pose.z*FEET_PER_METER));
+        opMode.telemetry.addLine(String.format("Rotation Yaw: %.2f degrees", rotation.firstAngle));
+        opMode.telemetry.addLine(String.format("Rotation Pitch: %.2f degrees", rotation.secondAngle));
+        opMode.telemetry.addLine(String.format("Rotation Roll: %.2f degrees", rotation.thirdAngle));
+    }
+
+    public AprilTag(LinearOpMode opMode) {
+        this.opMode = opMode;
     }
 }
