@@ -36,13 +36,13 @@ public class Robot {
     }
 
     public boolean checkRedTape() {
-        if (color.red() +40 > color.blue())
+        if (color.red()  > 200)
             return true;
         return false;
     }
 
     public boolean checkBlueTape() {
-        if (color.blue() > color.red())
+        if (color.blue() > 200)
             return true;
         return false;
     }
@@ -51,5 +51,11 @@ public class Robot {
         if (checkBlueTape() || checkRedTape())
             return true;
         return false;
+    }
+
+    public checkColorValues {
+        opMode.telemetry.addData("red",color.red());
+        opMode.telemetry.addData("blue", color.blue());
+        opMode.telemetry.update;
     }
 }
