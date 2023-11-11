@@ -28,9 +28,13 @@ public class StrafeDrive implements IDriving {
     public void joystickDrive (float X, float Y, float T) {
         //threshold for values (bc our controllers are old and bad)
         //these are condensed if statements
-        float x = (Math.abs(X) < 0.2f) ? 0 : X;
-        float y = (Math.abs(Y) < 0.2f) ? 0 : Y;
-        float t = (Math.abs(T) < 0.2f) ? 0 : T;
+        float x = (Math.abs(X) < 0.1f) ? 0 : X;
+        float y = (Math.abs(Y) < 0.1f) ? 0 : Y;
+        float t = (Math.abs(T) < 0.1f) ? 0 : T;
+
+        if ( x == 0 && y == 0 && t != 0) {
+            turn(t * speed * 2); //turning alone is too slow (*2 makes it faster)
+        }
 
         //explanation in drive and slack
         rf.setPower((y - x - t) * speed);
