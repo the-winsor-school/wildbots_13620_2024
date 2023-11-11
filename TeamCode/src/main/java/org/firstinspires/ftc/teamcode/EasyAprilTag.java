@@ -45,7 +45,7 @@ public class EasyAprilTag extends LinearOpMode
     @Override
     public void runOpMode()
     {
-        robot = new Robot(opMode);
+        robot = new Robot(this);
         //setting pipeline
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
