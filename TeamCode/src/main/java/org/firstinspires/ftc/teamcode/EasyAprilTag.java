@@ -17,7 +17,7 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 
 import java.util.ArrayList;
 
-@Autonomous(name="april tag auton")
+@Autonomous(name="easy april tag")
 public class EasyAprilTag extends LinearOpMode
 {
     Robot robot;
@@ -140,19 +140,26 @@ public class EasyAprilTag extends LinearOpMode
 
         if(tagOfInterest == null)
         {
-            robot.driving.horizontal(1);
+            telemetry.addLine("test");
+            telemetry.update();
+            //robot.driving.horizontal(1);
             // auton stuff
         }
         else
         {
+            telemetry.addLine("test, not null");
+            telemetry.update();
             robot.driving.horizontal(1);
             //auton stuff
-
             // e.g.
+            /*
             if(tagOfInterest.pose.x <= 20)
             {
                 // do something
             }
+
+             */
+            /*
             else if(tagOfInterest.pose.x >= 20 && tagOfInterest.pose.x <= 50)
             {
                 // do something else
@@ -161,6 +168,8 @@ public class EasyAprilTag extends LinearOpMode
             {
                 // do something else
             }
+
+             */
         }
     }
 
