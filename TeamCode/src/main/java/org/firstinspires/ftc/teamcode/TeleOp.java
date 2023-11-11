@@ -17,6 +17,7 @@ public class TeleOp extends LinearOpMode {
 
         while (opModeIsActive()){
 
+            robot.checkColorValues();
             float x = gamepad1.right_stick_x;
             float y = -gamepad1.right_stick_y; //inputs from joystick are opposite
             float t = gamepad1.left_stick_x;

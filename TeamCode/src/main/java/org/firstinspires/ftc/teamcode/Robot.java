@@ -13,18 +13,21 @@ public class Robot {
 
     //wheels
     //rf, rb, lf, lb
-    public DcMotor rf;
-    public DcMotor rb;
-    public DcMotor lf;
-    public DcMotor lb;
-    public ColorSensor color;
+    private DcMotor rf;
+    private DcMotor rb;
+    private DcMotor lf;
+    private DcMotor lb;
+    private ColorSensor color;
 
     public IDriving driving;
+
+    private LinearOpMode opMode;
+
 
 
     public Robot(LinearOpMode opMode) {
         HardwareMap map = opMode.hardwareMap;
-
+        this.opMode = opMode;
         //wheels
         rf = map.tryGet(DcMotor.class, "rf");
         rb = map.tryGet(DcMotor.class, "rb");
@@ -36,13 +39,13 @@ public class Robot {
     }
 
     public boolean checkRedTape() {
-        if (color.red()  > 200)
+        if (color.red()  > 500)
             return true;
         return false;
     }
 
     public boolean checkBlueTape() {
-        if (color.blue() > 200)
+        if (color.blue() > 500)
             return true;
         return false;
     }
@@ -53,9 +56,9 @@ public class Robot {
         return false;
     }
 
-    public checkColorValues {
+    public void checkColorValues() {
         opMode.telemetry.addData("red",color.red());
         opMode.telemetry.addData("blue", color.blue());
-        opMode.telemetry.update;
+        opMode.telemetry.update();
     }
 }
