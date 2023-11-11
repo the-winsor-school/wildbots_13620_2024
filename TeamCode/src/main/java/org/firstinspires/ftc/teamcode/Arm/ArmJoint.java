@@ -1,6 +1,9 @@
 package org.firstinspires.ftc.teamcode.Arm;
 
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class ArmJoint {
     int gearRatio;
@@ -14,7 +17,8 @@ public class ArmJoint {
         this.gearRatio = gearRatio;
         this.powerUsed = powerUsed;
         this.armTolerance = armTolerance;
-        Thread armThread = new MoveArm();
+        armThread = new MoveArm(motor.getCurrentPosition());
+        armThread.start();
     }
 
     public void resetEncoders() {
@@ -24,7 +28,6 @@ public class ArmJoint {
 
     public void moveArm(int targetPosition) { //targetPosition in rotation
         armThread.setTargetPosition(targetPosition);
-        armThread.start();
     }
 
     public int getCurrentPosition() {
@@ -44,11 +47,19 @@ public class ArmJoint {
     }
 
     public void changePosition(int rotations) {
-        moveArm(getCurrentPosition() + rotations);
+        armThread.setTargetPosition(getCurrentPosition() + rotations);
     }
 
+    public void setPower(double power) {
+        motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        motor.setPower(power);
+    }
     public class MoveArm extends Thread {
         private int targetPosition;
+
+        public MoveArm(int targetPosition) {
+            this.targetPosition = targetPosition;
+        }
 
         public void setTargetPosition(int targetPosition) {
             this.targetPosition = targetPosition;
