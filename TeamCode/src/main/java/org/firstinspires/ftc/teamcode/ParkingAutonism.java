@@ -4,26 +4,31 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 
-import org.firstinspires.ftc.teamcode.driving.IDriving;
-
 @Autonomous(name="parking")
-public class parkingauton extends LinearOpMode{
+public class ParkingAutonism extends LinearOpMode{
     Robot robot;
     public ColorSensor color;
-    color.red;
     public void runOpMode() throws InterruptedException {
         robot = new Robot(this);
 
     waitForStart();
 
         if (opModeIsActive()) {
-            while (!robot.checkTape() && opModeIsActive()) {
-                telemetry.addData("no","Tape");
-                telemetry.addData("red", color.red());
+
+            //robot.driving.vertical(0.5f);
+            //sleep(1000);
+
+            while (!robot.checkRedTape()) {
+                telemetry.addData("tape","not found");
                 telemetry.update();
-                robot.driving.vertical(0.5f);
+                robot.driving.vertical(0.25f);
+                sleep(1000);
             }
-                robot.driving.stop();
+
+            telemetry.addData("tape", "found");
+            telemetry.update();
+            sleep(1000);
+            robot.driving.stop();
         }
     }
 }

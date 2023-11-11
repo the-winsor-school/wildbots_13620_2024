@@ -36,13 +36,13 @@ public class Robot {
     }
 
     public boolean checkRedTape() {
-        if (color.red() > 1500)
+        if (color.red() +40 > color.blue())
             return true;
         return false;
     }
 
     public boolean checkBlueTape() {
-        if (color.blue() > 1500)
+        if (color.blue() > color.red())
             return true;
         return false;
     }
