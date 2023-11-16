@@ -2,9 +2,6 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.firstinspires.ftc.teamcode.driving.IDriving;
-import org.firstinspires.ftc.teamcode.driving.StrafeDrive;
-
 @com.qualcomm.robotcore.eventloop.opmode.TeleOp(name = "Simple")
 public class TeleOp extends LinearOpMode {
 
