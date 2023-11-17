@@ -29,24 +29,31 @@ public class FullArm {
     public void moveToLevel(ArmLevel level) {
         switch (level) {
             case RESET: //init position
-                liftJoint.setTargetPosition(100);
-                clawJoint.setTargetPosition(100);
+                liftJoint.setTargetPosition(0);
+                clawJoint.setTargetPosition(0);
                 break;
 
-            case PLACE: //placing on board
-                liftJoint.setTargetPosition(1300);
-                clawJoint.setTargetPosition(800);
+            case PLACINGLOW: //placing on board
+                liftJoint.setTargetPosition(1340);
+                clawJoint.setTargetPosition(-182);
                 break;
             case PICKINGUP: //picking up
-                liftJoint.setTargetPosition(1300);
-                clawJoint.setTargetPosition(100);
+                liftJoint.setTargetPosition(841);
+                clawJoint.setTargetPosition(-244);
                 claw.controlClaw(Claw.ClawPos.OPEN);
+                break;
+
+            case PLACINGHIGH:
+                liftJoint.setTargetPosition(1605);
+                clawJoint.setTargetPosition(-190);
                 break;
         }
     }
     public enum ArmLevel {
         RESET,
-        PLACE,
+        PLACINGLOW,
         PICKINGUP,
+
+        PLACINGHIGH,
     }
 }
