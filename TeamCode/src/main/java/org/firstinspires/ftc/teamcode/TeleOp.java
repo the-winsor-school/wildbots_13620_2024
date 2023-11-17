@@ -38,11 +38,13 @@ public class TeleOp extends LinearOpMode {
 
             //arm levels
             if (gamepad2.y)
-                robot.arm.moveToLevel(FullArm.ArmLevel.PICKINGUP);
+                robot.arm.moveToLevel(FullArm.ArmLevel.PLACINGHIGH);
             if(gamepad2.b)
                 robot.arm.moveToLevel(FullArm.ArmLevel.RESET);
             if(gamepad2.a)
-                robot.arm.moveToLevel(FullArm.ArmLevel.PLACE);
+                robot.arm.moveToLevel(FullArm.ArmLevel.PICKINGUP);
+            if(gamepad2.x)
+                robot.arm.moveToLevel(FullArm.ArmLevel.PLACINGLOW);
 
             //arm manual controls
             if (gamepad2.dpad_up)
