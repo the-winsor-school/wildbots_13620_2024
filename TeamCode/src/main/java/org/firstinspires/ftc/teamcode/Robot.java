@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
@@ -43,6 +44,9 @@ public class Robot {
         //arm
         liftMotor = map.tryGet(DcMotor.class, "bottom arm joint");
         clawMotor = map.tryGet(DcMotor.class, "top arm joint");
+
+        //just because o the orienttion o the motor
+        liftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
         rightServo = map.tryGet(Servo.class, "right servo");
         leftServo = map.tryGet(Servo.class, "left servo");

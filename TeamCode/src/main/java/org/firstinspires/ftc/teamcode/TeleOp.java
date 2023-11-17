@@ -15,6 +15,8 @@ public class TeleOp extends LinearOpMode {
 
         waitForStart();
 
+        robot.arm.resetEncoders();
+
         while (opModeIsActive()){
 
             //_______________________________________________
@@ -26,6 +28,9 @@ public class TeleOp extends LinearOpMode {
             float t = gamepad1.left_stick_x;
 
             robot.driving.joystickDrive(x, y, t);
+
+            if (gamepad1.a)
+                robot.arm.resetEncoders();
 
             //_______________________________________________
             //             MECH CONTROLLER
@@ -45,18 +50,19 @@ public class TeleOp extends LinearOpMode {
             if(gamepad2.dpad_down)
                 robot.arm.liftJoint.changeTargetPosition(-200);
             if (gamepad2.dpad_left)
-                robot.arm.clawJoint.changeTargetPosition(200);
+                robot.arm.clawJoint.changeTargetPosition(25);
             if(gamepad2.dpad_right)
-                robot.arm.clawJoint.changeTargetPosition(-200);
+                robot.arm.clawJoint.changeTargetPosition(-25);
 
             //claw controls
             if (gamepad2.left_stick_x > 0.75f)
                 robot.arm.claw.controlClaw(Claw.ClawPos.OPEN);
-            if (gamepad2.left_stick_x < 0.75f)
+            else if (gamepad2.left_stick_x < 0.75f)
                 robot.arm.claw.controlClaw(Claw.ClawPos.CLOSE);
+            else
+                robot.arm.claw.controlClaw(Claw.ClawPos.STOP);
 
             //update arm positions
-            robot.arm.liftJoint.armLoop();
             robot.arm.clawJoint.armLoop();
 
             //_______________________________________________
@@ -78,6 +84,12 @@ public class TeleOp extends LinearOpMode {
             //arm directions
             telemetry.addData("lift joint: ", robot.arm.liftJoint.getDirection());
             telemetry.addData("claw joint: ", robot.arm.clawJoint.getDirection());
+
+            telemetry.addData("target lift joint", robot.arm.liftJoint.targetPosition);
+            telemetry.addData("target claw joint", robot.arm.clawJoint.targetPosition);
+
+            robot.arm.liftJoint.armLoop();
+            robot.arm.clawJoint.armLoop();
 
             telemetry.update();
         }

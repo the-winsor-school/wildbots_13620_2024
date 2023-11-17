@@ -22,11 +22,15 @@ public class ArmJoint {
                 || getCurrentPosition() - targetPosition < -armTolerance) {
             moveJointRotations();
         }
+        else {
+            brake();
+        }
     }
 
     public void resetEncoders() {
         motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        targetPosition = getCurrentPosition();
     }
 
     public void changeTargetPosition(int rotations) {
@@ -35,7 +39,7 @@ public class ArmJoint {
 
     public void moveJointRotations() {
         motor.setTargetPosition(targetPosition);
-        motor.setPower(0.5f);
+        motor.setPower(powerUsed);
         motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
 
