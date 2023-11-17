@@ -10,15 +10,15 @@ public class FullArm {
 
     public ArmJoint liftJoint;
     public ArmJoint clawJoint;
-
+    
     public Claw claw;
 
     double armPower = 0.5;
     int tolerance = 100;
 
     public FullArm(DcMotor liftMotor, DcMotor clawMotor, Servo rightServo, Servo leftServo) {
-        liftJoint = new ArmJoint(liftMotor, 0, armPower, tolerance);
-        clawJoint = new ArmJoint(clawMotor, 0, armPower, tolerance);
+        liftJoint = new ArmJoint(liftMotor,  armPower, tolerance);
+        clawJoint = new ArmJoint(clawMotor, armPower, tolerance);
 
         claw = new Claw(rightServo, leftServo);
     }

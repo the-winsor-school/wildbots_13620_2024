@@ -5,16 +5,14 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 
 public class ArmJoint {
-    int gearRatio;
     double powerUsed;
     DcMotor motor;
     int armTolerance;
 
     public int targetPosition;
 
-    public ArmJoint(DcMotor motor, int gearRatio, double powerUsed, int armTolerance) {
+    public ArmJoint(DcMotor motor, double powerUsed, int armTolerance) {
         this.motor = motor;
-        this.gearRatio = gearRatio;
         this.powerUsed = powerUsed;
         this.armTolerance = armTolerance;
     }
