@@ -36,7 +36,7 @@ public class EasyAprilTag extends LinearOpMode
     // UNITS ARE METERS
     double tagsize = 0.166;
 
-    int ID_TAG_OF_INTEREST = 1; // Tag ID - from 36h11 family
+    int ID_TAG_OF_INTEREST = 8; // Tag ID - from 36h11 family
 
     AprilTagDetection tagOfInterest = null;
 

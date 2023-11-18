@@ -15,8 +15,9 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 
 import java.util.ArrayList;
+import java.lang.Math;
 
-public class AprilTagProcessor {
+public class AprilTagProcessing {
     Robot robot;
     LinearOpMode opMode;
     OpenCvCamera camera;
@@ -31,27 +32,12 @@ public class AprilTagProcessor {
     double cy = 221.506;
     // UNITS ARE METERS
     double tagsize = 0.166;
-    private static final int ID_TAG_OF_INTEREST = 7; // tag ID - from 36h11 family
     AprilTagDetection tagOfInterest = null;
-    boolean tagFound = false;
-
-    // DRIVING CONSTANTS
-    final double DESIRED_DISTANCE = 12.0; // how close the camera should get to the target (inches)
-
-    // gain constants = error correction
-    final double SPEED_GAIN  =  0.02  ;   //  forward control: ramp up to 50% power at a 25 inch error (0.50 / 25.0)
-    final double STRAFE_GAIN =  0.015 ;   //  strafe control: ramp up to 25% power at a 25 degree Yaw error (0.25 / 25.0)
-    final double TURN_GAIN   =  0.01  ;   //  turn control: Ramp up to 25% power at a 25 degree error. (0.25 / 25.0)
-
-    final double MAX_AUTO_SPEED = 0.5;
-    final double MAX_AUTO_STRAFE= 0.5;
-    final double MAX_AUTO_TURN  = 0.3;
-    double drive = 0;        // Desired forward power/speed (-1 to +1)
-    double strafe = 0;        // Desired strafe power/speed (-1 to +1)
-    double turn = 0;
+    boolean tagsFound = false;
+    boolean tagOfInterestFound = false;
     ArrayList<AprilTagDetection> currentDetections = aprilTagDetectionPipeline.getLatestDetections();
 
-    public AprilTagProcessor(LinearOpMode opMode) {
+    public AprilTagProcessing(LinearOpMode opMode) {
         robot = new Robot(opMode);
         HardwareMap map = opMode.hardwareMap;
         Telemetry telemetry = opMode.telemetry;
@@ -80,6 +66,7 @@ public class AprilTagProcessor {
      * This function identifies and prints the position of a detected tag.
      * @param detection If an AprilTag is detected, it is called a detection.
      */
+
     public void tagToTelemetry(AprilTagDetection detection) {
         Orientation rotation = Orientation.getOrientation(detection.pose.R, AxesReference.INTRINSIC, AxesOrder.YXZ, AngleUnit.DEGREES);
         opMode.telemetry.addLine(String.format("\nDetected tag ID=%d", detection.id));
@@ -97,16 +84,17 @@ public class AprilTagProcessor {
      * If something is being detected, but the tag we are looking for has not been detected, the tag is not found. The robot will keep looking.
      * If nothing is being detected, the tag is null.
      */
-    public void identifyTeamObject() {
+
+    public void identifyTag(int id) {
         if (currentDetections.size() != 0) {
             for (AprilTagDetection tag : currentDetections) {
-                if (tag.id == ID_TAG_OF_INTEREST) {
+                if (tag.id == id) {
                     tagOfInterest = tag;
-                    tagFound = true;
+                    tagOfInterestFound = true;
                     break;
                 }
             }
-            if (tagFound) {
+            if (tagOfInterestFound) {
                 opMode.telemetry.addLine("tag in sight!\n\nLocation:");
                 tagToTelemetry(tagOfInterest);
             } else {
@@ -136,51 +124,18 @@ public class AprilTagProcessor {
      * While similar to identifyTeamObject(), this function is applicable to settings with multiple AprilTags, not just one.
      * @return
      */
+
     public boolean anyTags() {
-        boolean found = false;
         if (currentDetections.size() != 0) {
             opMode.telemetry.addLine("there are tags here!");
-            found = true;
-            return found;
+            tagsFound = true;
+            return tagsFound;
         } else {
             opMode.telemetry.addLine("there are no tags here :(");
-            return found;
+            return tagsFound;
         }
     }
 
-    /***
-     * This function returns an array of all tags that have been detected in the nearby area.
-     * If no tags have been found, the function returns null.
-     * @return
-     */
-    public ArrayList<AprilTagDetection> getCurrentDetections() {
-        if (currentDetections.size() != 0) {
-            return currentDetections;
-        } else {
-            opMode.telemetry.addLine("there are no tags here :(");
-            return null;
-        }
-    }
-
-    /***
-     * This function retrieves the ID of a detected tag.
-     * @return
-     */
-    public java.lang.Integer getTagID() {
-        AprilTagDetection detection = new AprilTagDetection();
-        getCurrentDetections();
-        try {
-            return detection.id;
-        } catch (Exception e) {
-            opMode.telemetry.addLine("there are no tags here :(");
-            return null;
-        }
-    }
-
-    /***
-     * This function locates the position of the AprilTag on the field and stores the position in a vector.
-     * @return
-     */
     public TelemetryVector findTagPosition() {
         AprilTagDetection detection = new AprilTagDetection();
         Orientation rotation = Orientation.getOrientation(detection.pose.R, AxesReference.INTRINSIC, AxesOrder.YXZ, AngleUnit.DEGREES);
@@ -191,6 +146,7 @@ public class AprilTagProcessor {
         double pitch = rotation.secondAngle;
         double yaw = rotation.firstAngle;
         return new TelemetryVector(xPos, yPos, zPos, roll, pitch, yaw);
+
     }
 
     class TelemetryVector {
@@ -209,22 +165,25 @@ public class AprilTagProcessor {
             this.pitch = pitch;
             this.yaw = yaw;
         }
-    }
 
-    public goToTag() {
-    }
-
-    public enum Spike {
-        RedLeft,
-        RedCenter,
-        RedRight,
-        BlueLeft,
-        BlueCenter,
-        BlueRight,
+        public void goToTag(int tag) {
+            if (tagsFound) {
+                anyTags();
+                identifyTag(4);
+                if (tagOfInterestFound) {
+                    findTagPosition();
+                    while (Math.abs(yaw) > 15) {
+                        robot.driving.turn(0.25f);
+                        if (yaw < 0) {
+                            robot.driving.turn(-0.25f);
+                        }
+                    } while (x < 0.3) {
+                        robot.driving.horizontal(0.25f);
+                    } while (z > 3) {
+                        robot.driving.vertical(0.25f);
+                    }
+                }
+            }
+        }
     }
 }
-
-
-
-
-
