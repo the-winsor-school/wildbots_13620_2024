@@ -33,7 +33,7 @@ public class Robot {
         rb = map.tryGet(DcMotor.class, "rb");
         lf = map.tryGet(DcMotor.class, "lf");
         lb = map.tryGet(DcMotor.class, "lb");
-        color = map.tryGet(ColorSensor.class, "Color");
+        color = map.tryGet(ColorSensor.class, "color");
 
         driving = new StrafeDrive(rf, rb, lf, lb);
     }

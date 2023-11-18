@@ -21,7 +21,7 @@ public class ParkingAutonism extends LinearOpMode{
             while (!robot.checkTape()) {
                 telemetry.addData("tape","not found");
                 telemetry.update();
-                robot.driving.vertical(0.25f);
+                robot.driving.vertical(0.50f);
                 sleep(20);
             }
 
