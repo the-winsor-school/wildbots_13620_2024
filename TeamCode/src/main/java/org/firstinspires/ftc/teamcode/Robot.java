@@ -38,6 +38,14 @@ public class Robot {
         driving = new StrafeDrive(rf, rb, lf, lb);
     }
 
+    public void printWheelPowers() {
+        opMode.telemetry.addData("rf: ", rf.getPower());
+        opMode.telemetry.addData("lf: ", lf.getPower());
+        opMode.telemetry.addData("rb: ", rb.getPower());
+        opMode.telemetry.addData("lb: ", lb.getPower());
+
+    }
+
     public boolean checkRedTape() {
         if (color.red()  > 500)
             return true;
