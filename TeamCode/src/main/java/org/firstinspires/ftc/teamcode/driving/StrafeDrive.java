@@ -49,7 +49,7 @@ public class StrafeDrive implements IDriving {
     }
 
     public void vertical (float power) { //forward positive
-        setEachPower(power, power, power, power); //one side negative -rf, -rb
+        setEachPower(power,  power, power, power); //one side negative -rf, -rb
     }
 
     public void stop () {
