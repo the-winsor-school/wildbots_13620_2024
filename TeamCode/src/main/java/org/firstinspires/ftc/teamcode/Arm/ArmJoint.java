@@ -11,6 +11,13 @@ public class ArmJoint {
 
     public int targetPosition;
 
+    /**
+     * difference between target rotations and current postiton at any given point in time
+     * positive means current < target
+     * negative means current > target
+     */
+    public int deltaRotations;
+
     public ArmJoint(DcMotor motor, double powerUsed, int armTolerance) {
         this.motor = motor;
         this.powerUsed = powerUsed;
@@ -22,6 +29,7 @@ public class ArmJoint {
                 || getCurrentPosition() - targetPosition < -armTolerance) {
             moveJointRotations();
         }
+        deltaRotations = targetPosition - getTargetPosition();
     }
 
     public void resetEncoders() {
@@ -35,7 +43,7 @@ public class ArmJoint {
 
     public void moveJointRotations() {
         motor.setTargetPosition(targetPosition);
-        motor.setPower(0.5f);
+        motor.setPower(sigmoidMath(deltaRotations));
         motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
 
@@ -67,6 +75,7 @@ public class ArmJoint {
 
     /**
      * calculates motor power at a given rotations value
+     * in an effort to make the power less as the delta rotations gets lower
      * @param rotations number of rotations until the target position
      * @return the motor's power at the inputted number of rotations
      */
