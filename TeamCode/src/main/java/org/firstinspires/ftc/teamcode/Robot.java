@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.Arm.*;
@@ -22,8 +22,8 @@ public class Robot {
     //arm
     private DcMotor liftMotor;
     private DcMotor clawMotor;
-    private Servo rightServo;
-    private Servo leftServo;
+    private CRServo rightServo;
+    private CRServo leftServo;
 
     //libraries
     public IDriving driving;
@@ -48,8 +48,8 @@ public class Robot {
         //just because o the orienttion o the motor
         liftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        rightServo = map.tryGet(Servo.class, "right servo");
-        leftServo = map.tryGet(Servo.class, "left servo");
+        rightServo = map.tryGet(CRServo.class, "right servo");
+        leftServo = map.tryGet(CRServo.class, "left servo");
 
         driving = new StrafeDrive(rf, rb, lf, lb);
         arm = new FullArm(liftMotor, clawMotor, rightServo, leftServo);

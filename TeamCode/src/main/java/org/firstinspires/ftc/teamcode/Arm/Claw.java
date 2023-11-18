@@ -1,12 +1,12 @@
 package org.firstinspires.ftc.teamcode.Arm;
 
-import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.CRServo;
 
 public class Claw {
-    Servo right;
-    Servo left;
+    CRServo right;
+    CRServo left;
 
-    public Claw(Servo rightServo, Servo leftServo) {
+    public Claw(CRServo rightServo, CRServo leftServo) {
         right = rightServo;
         left = leftServo;
     }
@@ -14,20 +14,26 @@ public class Claw {
     public void controlClaw(ClawPos pos) {
         switch (pos) {
             case OPEN:
-                right.setPosition(-1);
-                left.setPosition(1);
+                right.setPower(-1);
+                left.setPower(1);
                 break;
 
             case STOP:
-                right.setPosition(0);
-                left.setPosition(0);
+                right.setPower(0.5);
+                left.setPower(0.5);
                 break;
 
             case CLOSE:
-                right.setPosition(1);
-                left.setPosition(-1);
+                right.setPower(1);
+                left.setPower(-1);
                 break;
         }
+    }
+
+    public double getPower(String side) {
+        if (side == "right")
+            return right.getPower();
+        return left.getPower();
     }
 
     public enum ClawPos {

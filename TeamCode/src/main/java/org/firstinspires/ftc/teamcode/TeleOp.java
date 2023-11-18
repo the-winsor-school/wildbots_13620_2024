@@ -57,12 +57,10 @@ public class TeleOp extends LinearOpMode {
                 robot.arm.clawJoint.changeTargetPosition(-25);
 
             //claw controls
-            if (gamepad2.left_stick_x > 0.75f)
+            if (gamepad2.right_bumper)
                 robot.arm.claw.controlClaw(Claw.ClawPos.OPEN);
-            else if (gamepad2.left_stick_x < 0.75f)
+            if (gamepad2.left_bumper)
                 robot.arm.claw.controlClaw(Claw.ClawPos.CLOSE);
-            else
-                robot.arm.claw.controlClaw(Claw.ClawPos.STOP);
 
             //update arm positions
             robot.arm.clawJoint.armLoop();
@@ -79,6 +77,8 @@ public class TeleOp extends LinearOpMode {
             //wheels powers
             //robot.printWheelPowers();
 
+            telemetry.addLine("----------------ARM-------------------------");
+
             //arm current position
             telemetry.addData("lift joint: ", robot.arm.liftJoint.getCurrentPosition());
             telemetry.addData("claw joint: ", robot.arm.clawJoint.getCurrentPosition());
@@ -87,8 +87,14 @@ public class TeleOp extends LinearOpMode {
             telemetry.addData("lift joint: ", robot.arm.liftJoint.getDirection());
             telemetry.addData("claw joint: ", robot.arm.clawJoint.getDirection());
 
-            telemetry.addData("target lift joint", robot.arm.liftJoint.targetPosition);
-            telemetry.addData("target claw joint", robot.arm.clawJoint.targetPosition);
+            telemetry.addData("target lift joint: ", robot.arm.liftJoint.targetPosition);
+            telemetry.addData("target claw joint: ", robot.arm.clawJoint.targetPosition);
+
+            telemetry.addLine("----------------CLAW-------------------------");
+
+            telemetry.addData("right servo: ", robot.arm.claw.getPower("right"));
+            telemetry.addData("left servo: ", robot.arm.claw.getPower("left"));
+
 
             robot.arm.liftJoint.armLoop();
             robot.arm.clawJoint.armLoop();
