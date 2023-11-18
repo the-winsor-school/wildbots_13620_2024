@@ -23,6 +23,7 @@ public class AprilTagProcessor {
     AprilTagDetectionPipeline aprilTagDetectionPipeline;
     private static final double FEET_PER_METER = 3.28084;
 
+    // APRIL TAG CONSTANTS
     // units in pixels
     double fx = 578.272;
     double fy = 578.272;
@@ -30,10 +31,24 @@ public class AprilTagProcessor {
     double cy = 221.506;
     // UNITS ARE METERS
     double tagsize = 0.166;
-
     private static final int ID_TAG_OF_INTEREST = 7; // tag ID - from 36h11 family
     AprilTagDetection tagOfInterest = null;
     boolean tagFound = false;
+
+    // DRIVING CONSTANTS
+    final double DESIRED_DISTANCE = 12.0; // how close the camera should get to the target (inches)
+
+    // gain constants = error correction
+    final double SPEED_GAIN  =  0.02  ;   //  forward control: ramp up to 50% power at a 25 inch error (0.50 / 25.0)
+    final double STRAFE_GAIN =  0.015 ;   //  strafe control: ramp up to 25% power at a 25 degree Yaw error (0.25 / 25.0)
+    final double TURN_GAIN   =  0.01  ;   //  turn control: Ramp up to 25% power at a 25 degree error. (0.25 / 25.0)
+
+    final double MAX_AUTO_SPEED = 0.5;
+    final double MAX_AUTO_STRAFE= 0.5;
+    final double MAX_AUTO_TURN  = 0.3;
+    double drive = 0;        // Desired forward power/speed (-1 to +1)
+    double strafe = 0;        // Desired strafe power/speed (-1 to +1)
+    double turn = 0;
     ArrayList<AprilTagDetection> currentDetections = aprilTagDetectionPipeline.getLatestDetections();
 
     public AprilTagProcessor(LinearOpMode opMode) {
@@ -44,7 +59,6 @@ public class AprilTagProcessor {
         int cameraMonitorViewId = map.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", map.appContext.getPackageName());
         camera = OpenCvCameraFactory.getInstance().createWebcam(map.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
         aprilTagDetectionPipeline = new AprilTagDetectionPipeline(tagsize, fx, fy, cx, cy);
-
         camera.setPipeline(aprilTagDetectionPipeline);
         camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
@@ -72,9 +86,9 @@ public class AprilTagProcessor {
         opMode.telemetry.addLine(String.format("Translation X: %.2f feet", detection.pose.x * FEET_PER_METER));
         opMode.telemetry.addLine(String.format("Translation Y: %.2f feet", detection.pose.y * FEET_PER_METER));
         opMode.telemetry.addLine(String.format("Translation Z: %.2f feet", detection.pose.z * FEET_PER_METER));
-        opMode.telemetry.addLine(String.format("Rotation Yaw: %.2f degrees", rotation.firstAngle));
-        opMode.telemetry.addLine(String.format("Rotation Pitch: %.2f degrees", rotation.secondAngle));
         opMode.telemetry.addLine(String.format("Rotation Roll: %.2f degrees", rotation.thirdAngle));
+        opMode.telemetry.addLine(String.format("Rotation Pitch: %.2f degrees", rotation.secondAngle));
+        opMode.telemetry.addLine(String.format("Rotation Yaw: %.2f degrees", rotation.firstAngle));
     }
 
     /***
@@ -148,31 +162,38 @@ public class AprilTagProcessor {
         }
     }
 
+    /***
+     * This function retrieves the ID of a detected tag.
+     * @return
+     */
     public java.lang.Integer getTagID() {
         AprilTagDetection detection = new AprilTagDetection();
         getCurrentDetections();
         try {
             return detection.id;
-        } catch (Exception e){
+        } catch (Exception e) {
             opMode.telemetry.addLine("there are no tags here :(");
             return null;
         }
     }
 
+    /***
+     * This function locates the position of the AprilTag on the field and stores the position in a vector.
+     * @return
+     */
     public TelemetryVector findTagPosition() {
         AprilTagDetection detection = new AprilTagDetection();
         Orientation rotation = Orientation.getOrientation(detection.pose.R, AxesReference.INTRINSIC, AxesOrder.YXZ, AngleUnit.DEGREES);
         double xPos = detection.pose.x * FEET_PER_METER;
         double yPos = detection.pose.y * FEET_PER_METER;
         double zPos = detection.pose.z * FEET_PER_METER;
-        double yaw = rotation.firstAngle;
-        double pitch = rotation.secondAngle;
         double roll = rotation.thirdAngle;
-        return new TelemetryVector (xPos, yPos, zPos, roll, yaw, pitch);
+        double pitch = rotation.secondAngle;
+        double yaw = rotation.firstAngle;
+        return new TelemetryVector(xPos, yPos, zPos, roll, pitch, yaw);
     }
 
-   class TelemetryVector
-    {
+    class TelemetryVector {
         double x;
         double y;
         double z;
@@ -188,13 +209,18 @@ public class AprilTagProcessor {
             this.pitch = pitch;
             this.yaw = yaw;
         }
-        public double getX() {return x;}
-        public double getY() {return y;}
-        public double getZ() {return z;}
-        public double getRoll() {return roll;}
-        public double getPitch() {return pitch;}
-        public double getYaw() {return yaw;}
+    }
 
+    public goToTag() {
+    }
+
+    public enum Spike {
+        RedLeft,
+        RedCenter,
+        RedRight,
+        BlueLeft,
+        BlueCenter,
+        BlueRight,
     }
 }
 
