@@ -21,7 +21,9 @@ public class StrafeDrive implements IDriving {
         this.lb =lb;
 
         //This corrects the 2022-2023 13620 wiring!! may need to switch for this year's robots
-        this.lb.setDirection(DcMotorSimple.Direction.REVERSE);
+        this.rf.setDirection(DcMotorSimple.Direction.REVERSE);
+        this.lf.setDirection(DcMotorSimple.Direction.REVERSE);
+        this.rb.setDirection(DcMotorSimple.Direction.REVERSE);
     }
 
     public void joystickDrive (float X, float Y, float T) {
@@ -47,7 +49,7 @@ public class StrafeDrive implements IDriving {
     }
 
     public void vertical (float power) { //forward positive
-        setEachPower(-power, -power, power, power); //one side negative -rf, -rb
+        setEachPower(power, power, power, power); //one side negative -rf, -rb
     }
 
     public void stop () {
@@ -58,10 +60,10 @@ public class StrafeDrive implements IDriving {
     }
 
     private void setEachPower (float rfp, float rbp, float lfp, float lbp) {
-        rf.setPower(rfp);
-        lf.setPower(rbp);
-        lf.setPower(lfp);
-        lb.setPower(lbp);
+        rf.setPower(rfp * speed);
+        rb.setPower(rbp * speed);
+        lf.setPower(lfp * speed);
+        lb.setPower(lbp * speed);
     }
 
 }

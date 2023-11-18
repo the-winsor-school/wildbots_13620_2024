@@ -54,10 +54,20 @@ public class Robot {
         lf = map.tryGet(DcMotor.class, "lf");
         lb = map.tryGet(DcMotor.class, "lb");
 
+        color = map.tryGet(ColorSensor.class, "color");
+
         /**
          * currently using StrafeDrive
          */
         driving = new StrafeDrive(rf, rb, lf, lb);
+    }
+
+    public void printWheelPowers() {
+        opMode.telemetry.addData("rf: ", rf.getPower());
+        opMode.telemetry.addData("lf: ", lf.getPower());
+        opMode.telemetry.addData("rb: ", rb.getPower());
+        opMode.telemetry.addData("lb: ", lb.getPower());
+
     }
 
     public boolean checkRedTape() {
