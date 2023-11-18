@@ -11,6 +11,10 @@ public class Claw {
         left = leftServo;
     }
 
+    /**
+     * moves both claw servos
+     * @param pos enum for the claw position
+     */
     public void controlClaw(ClawPos pos) {
         switch (pos) {
             case OPEN:
@@ -30,12 +34,20 @@ public class Claw {
         }
     }
 
+    /**
+     * for telemetry
+     * @param side either "right" or "left"
+     * @return double of the current power
+     */
     public double getPower(String side) {
         if (side == "right")
             return right.getPower();
         return left.getPower();
     }
 
+    /**
+     * enum for the claw position
+     */
     public enum ClawPos {
         OPEN,
         CLOSE,
