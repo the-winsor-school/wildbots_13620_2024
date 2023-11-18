@@ -37,6 +37,13 @@ public class ArmJoint {
         targetPosition = (getCurrentPosition() + rotations);
     }
 
+    public void moveJointSync(int rotations) {
+        targetPosition = rotations;
+        while (getCurrentPosition() - targetPosition > armTolerance
+                || getCurrentPosition() - targetPosition < -armTolerance)
+            moveJointRotations();
+    }
+
     public void moveJointRotations() {
         motor.setTargetPosition(targetPosition);
         motor.setPower(powerUsed);
@@ -60,7 +67,11 @@ public class ArmJoint {
 
     public void brake() { motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE); }
 
-    public void setMotorPower(double power) { motor.setPower(power); }
+    public void setMotorPower(double power) { powerUsed = power; }
+
+    public void scaleMotorPower(double power) {
+        powerUsed = powerUsed * power;
+    }
 
     public void changeMotorPower(int power) { powerUsed += power; }
 

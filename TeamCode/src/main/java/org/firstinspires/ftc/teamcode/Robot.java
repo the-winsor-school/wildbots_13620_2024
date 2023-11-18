@@ -42,8 +42,8 @@ public class Robot {
         lb = map.tryGet(DcMotor.class, "lb");
 
         //arm
-        liftMotor = map.tryGet(DcMotor.class, "bottom arm joint");
-        clawMotor = map.tryGet(DcMotor.class, "top arm joint");
+        liftMotor = map.tryGet(DcMotor.class, "elbow");
+        clawMotor = map.tryGet(DcMotor.class, "wrist");
 
         //just because o the orienttion o the motor
         liftMotor.setDirection(DcMotorSimple.Direction.REVERSE);

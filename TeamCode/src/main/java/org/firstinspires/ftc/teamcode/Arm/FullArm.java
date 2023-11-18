@@ -30,22 +30,26 @@ public class FullArm {
         switch (level) {
             case RESET: //init position
                 liftJoint.setTargetPosition(0);
-                clawJoint.setTargetPosition(0);
+                clawJoint.setTargetPosition(80);
                 break;
 
             case PLACINGLOW: //placing on board
                 liftJoint.setTargetPosition(1340);
                 clawJoint.setTargetPosition(-182);
                 break;
+
             case PICKINGUP: //picking up
-                liftJoint.setTargetPosition(841);
-                clawJoint.setTargetPosition(-244);
+                int liftJointRotations = 900;
+                liftJoint.moveJointSync(liftJointRotations + 500);
+                clawJoint.moveJointSync(-530);
+                liftJoint.moveJointSync(liftJointRotations);
                 claw.controlClaw(Claw.ClawPos.OPEN);
                 break;
 
             case PLACINGHIGH:
                 liftJoint.setTargetPosition(1605);
                 clawJoint.setTargetPosition(-190);
+                liftJoint.scaleMotorPower(2);
                 break;
         }
     }
