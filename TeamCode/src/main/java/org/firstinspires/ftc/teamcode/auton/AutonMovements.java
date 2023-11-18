@@ -17,6 +17,10 @@ public class AutonMovements {
         this.telemetry = opMode.telemetry;
     }
 
+    public void FarPark(FieldPosition fieldPosition) {
+
+    }
+
     public void ClosePark() {
 
         while (!robot.checkTape()) {
@@ -30,6 +34,13 @@ public class AutonMovements {
         telemetry.addData("tape", "found");
         telemetry.update();
         robot.driving.stop();
+    }
+
+    public enum FieldPosition {
+        FAR_RED, //far side from stage
+        CLOSE_RED, //close side to stage
+        FAR_BLUE,
+        CLOSE_BLUE,
     }
 
 }
