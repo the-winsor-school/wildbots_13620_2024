@@ -34,10 +34,10 @@ public class StrafeDrive implements IDriving {
         float t = (Math.abs(T) < 0.2f) ? 0 : T;
 
         //explanation in drive and slack
-        rf.setPower((y - x - t));
-        rb.setPower((y + x - t));
-        lf.setPower((y + x + t));
-        lb.setPower((y - x + t));
+        rf.setPower((y - x - t) * speed);
+        rb.setPower((y + x - t) * speed);
+        lf.setPower((y + x + t) * speed);
+        lb.setPower((y - x + t) * speed);
     }
 
     public void turn (float t) {
@@ -49,7 +49,7 @@ public class StrafeDrive implements IDriving {
     }
 
     public void vertical (float power) { //forward positive
-        setEachPower(power, power, power, power); //one side negative -rf, -rb
+        setEachPower(power,  power, power, power); //one side negative -rf, -rb
     }
 
     public void stop () {
