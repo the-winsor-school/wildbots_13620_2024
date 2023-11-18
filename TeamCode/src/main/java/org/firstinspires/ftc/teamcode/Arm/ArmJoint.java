@@ -65,4 +65,14 @@ public class ArmJoint {
         motor.setPower(power);
     }
 
+    /**
+     * calculates motor power at a given rotations value
+     * @param rotations number of rotations until the target position
+     * @return the motor's power at the inputted number of rotations
+     */
+    public double sigmoidMath (int rotations){
+        float slope = 8; //can be tested (higher for steeper slope, lower for shallower slope
+        int denomDecel = (int)(1000*(Math.pow(Math.E, -(slope*(2*rotations - 200))/(2*200)))); //if <200 rotations until target position, then power begins to decelerate
+        return 1000.0/(1000.0 + denomDecel);
+    }
 }
