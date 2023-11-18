@@ -5,8 +5,8 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.auton.AutonMovements;
 
-@Autonomous(name = "Close Park (red or blue)", group = "park")
-public class ClosePark extends LinearOpMode {
+@Autonomous(name = "Red Far Park", group = "park")
+public class RedFarPark extends LinearOpMode {
 
     Robot robot;
     AutonMovements autonMovements;
@@ -17,8 +17,8 @@ public class ClosePark extends LinearOpMode {
 
         waitForStart();
 
-        if (opModeIsActive())  {
-            autonMovements.ClosePark();
+        if (opModeIsActive()) {
+            autonMovements.SimplePark(AutonMovements.FieldPosition.FAR_RED);
         }
     }
 }
