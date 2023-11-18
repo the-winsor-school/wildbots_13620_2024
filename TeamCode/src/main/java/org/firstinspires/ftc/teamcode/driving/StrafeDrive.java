@@ -20,7 +20,7 @@ public class StrafeDrive implements IDriving {
         this.lf = lf;
         this.lb =lb;
 
-        //This corrects the 2022-2023 13620 wiring!! may need to switch for this year's robots
+        //just the way it was built this year
         this.rf.setDirection(DcMotorSimple.Direction.REVERSE);
         this.lf.setDirection(DcMotorSimple.Direction.REVERSE);
         this.rb.setDirection(DcMotorSimple.Direction.REVERSE);
