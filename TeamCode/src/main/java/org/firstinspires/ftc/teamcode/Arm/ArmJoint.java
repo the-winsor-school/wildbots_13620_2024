@@ -3,6 +3,8 @@ package org.firstinspires.ftc.teamcode.Arm;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
+import org.firstinspires.ftc.robotcontroller.external.samples.RobotTeleopPOV_Linear;
+
 
 public class ArmJoint {
     /**
@@ -34,8 +36,9 @@ public class ArmJoint {
      * always should be running to move joint closer to target position
      */
     public void armLoop() {
-        if (getCurrentPosition() - targetPosition > armTolerance
-                || getCurrentPosition() - targetPosition < -armTolerance) {
+        int current = getCurrentPosition();
+        if (current - targetPosition > armTolerance
+                || current - targetPosition < -armTolerance) {
             moveJointRotations();
         }
         else {
@@ -58,7 +61,7 @@ public class ArmJoint {
      * @param rotations will be added to the current position
      */
     public void changeTargetPosition(int rotations) {
-        targetPosition = (getCurrentPosition() + rotations);
+        targetPosition += rotations;
     }
 
     @Deprecated

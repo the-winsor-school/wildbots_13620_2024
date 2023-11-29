@@ -66,4 +66,8 @@ public class StrafeDrive implements IDriving {
         lb.setPower(lbp * speed);
     }
 
+    public void adjustSpeed(float x) {
+        speed = speed + x;
+    }
+
 }

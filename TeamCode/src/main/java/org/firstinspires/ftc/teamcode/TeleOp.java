@@ -24,12 +24,21 @@ public class TeleOp extends LinearOpMode {
             //_______________________________________________
             
             float x = gamepad1.right_stick_x;
-            float y = gamepad1.right_stick_y;
+            float y = -gamepad1.right_stick_y; //inputs from joystick are opposite
             float t = gamepad1.left_stick_x;
 
             robot.driving.joystickDrive(x, y, t);
 
-            if (gamepad1.a)
+            //make wheels go faster
+            if (gamepad1.dpad_up)
+                robot.driving.adjustSpeed(0.05f);
+
+            //make wheels speed slower
+            if(gamepad1.dpad_down)
+                robot.driving.adjustSpeed(-0.05f);
+
+            //reset arm encoders
+            if (gamepad1.x)
                 robot.arm.resetEncoders();
 
             //_______________________________________________
@@ -91,7 +100,6 @@ public class TeleOp extends LinearOpMode {
 
             telemetry.addData("right servo: ", robot.arm.claw.getPower("right"));
             telemetry.addData("left servo: ", robot.arm.claw.getPower("left"));
-
 
             robot.arm.liftJoint.armLoop();
             robot.arm.clawJoint.armLoop();

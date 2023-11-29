@@ -17,12 +17,8 @@ public class Claw {
      */
     public void controlClaw(ClawPos pos) {
         switch (pos) {
+            //TODO test for close values
             case OPEN:
-                right.setPower(-1);
-                left.setPower(1);
-                break;
-
-            case STOP:
                 right.setPower(0.5);
                 left.setPower(0.5);
                 break;
@@ -51,7 +47,6 @@ public class Claw {
     public enum ClawPos {
         OPEN,
         CLOSE,
-        STOP
     }
 }
 
