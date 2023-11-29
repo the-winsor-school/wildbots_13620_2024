@@ -37,6 +37,11 @@ public class Robot {
 
     public void goToTag(int tag) {
         TelemetryVector tagsFound = atp.getVectorToTag(tag);
+        if (tagsFound == null) {
+            opMode.telemetry.addLine("no tags found, keep looking");
+            //driving.vertical(0.25f);
+            return;
+        }
         double x = tagsFound.getX();
         double z = tagsFound.getZ();
         double yaw = tagsFound.getYaw();

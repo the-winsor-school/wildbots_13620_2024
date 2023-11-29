@@ -38,6 +38,7 @@ public class ATP {
     //boolean tagOfInterestFound = false;
     ArrayList<AprilTagDetection> getCurrentDetections()
     {
+        telemetry.addData("latest detections", aprilTagDetectionPipeline.getLatestDetections());
         return aprilTagDetectionPipeline.getLatestDetections();
     }
     Telemetry telemetry;
@@ -92,28 +93,31 @@ public class ATP {
 
     public TelemetryVector getVectorToTag (int id) {
         ArrayList<AprilTagDetection> currentDetections = this.getCurrentDetections();
+        telemetry.addData("detections", currentDetections);
         AprilTagDetection tagOfInterest = null;
-        boolean tagOfInterestFound = false;
+        //boolean tagOfInterestFound = false;
         if (currentDetections.size() != 0) {
             for (AprilTagDetection tag : currentDetections) {
                 if (tag.id == id) {
                     tagOfInterest = tag;
-                    tagOfInterestFound = true;
+                    //tagOfInterestFound = true;
                     break;
                 }
             }
-            if (!tagOfInterestFound) {
+            if (tagOfInterest == null) {
                 telemetry.addLine("can't find tag :(");
                 return null;
-            } else if (tagOfInterestFound) {
-                telemetry.addLine("tag in sight!\n\nLocation:");
-                getTagTelemetryData(tagOfInterest);
             }
-        } else {
-            telemetry.addLine("no tags here :(");
+
+            telemetry.addLine("tag in sight!\n\nLocation:");
+            getTagTelemetryData(tagOfInterest);
+            telemetry.update();
+            return findTagPosition(tagOfInterest);
         }
+
+        telemetry.addLine("no tags here :(");
         telemetry.update();
-        return findTagPosition(tagOfInterest);
+        return null;
     }
 
     /***

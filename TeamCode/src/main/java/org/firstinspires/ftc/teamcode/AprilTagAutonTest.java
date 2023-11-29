@@ -6,30 +6,33 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import org.firstinspires.ftc.teamcode.AprilTag.ATP;
 
 @Autonomous(name="april tag auton")
-@Disabled
 public class AprilTagAutonTest extends LinearOpMode {
     Robot robot;
     LinearOpMode opMode;
-    ATP atp;
 
-    Location location;
+    //Location location;
 
     @Override
     public void runOpMode() {
-        atp = new ATP(opMode);
-        location = new Location();
+        //atp = new ATP(this);
+        robot = new Robot(this);
+        //location = new Location();
         telemetry.addData("Status", "Initialized");
         telemetry.update();
         waitForStart();
         if (opModeIsActive()) {
-            Location.TYPE zone = location.getType();
+            //Location.TYPE zone = location.getType();
+            robot.goToTag(4);
+            /*
             if (zone == Location.TYPE.ZONE1) {
                 robot.goToTag(4);
             } else if (zone == Location.TYPE.ZONE2) {
-                robot.driving.horizontal(1);
+                robot.goToTag(5);
             } else if (zone == Location.TYPE.ZONE3) {
-                robot.driving.horizontal(1);
+                robot.goToTag(6);
             }
+
+             */
         }
     }
 

@@ -38,7 +38,7 @@ public class EasyAprilTag extends LinearOpMode
     // UNITS ARE METERS
     double tagsize = 0.166;
 
-    int ID_TAG_OF_INTEREST = 8; // Tag ID - from 36h11 family
+    int ID_TAG_OF_INTEREST = 4; // Tag ID - from 36h11 family
 
     AprilTagDetection tagOfInterest = null;
 
@@ -46,12 +46,15 @@ public class EasyAprilTag extends LinearOpMode
     public void runOpMode()
     {
         robot = new Robot(this);
+        telemetry.addLine("initialized robot");
+        telemetry.update();
         //setting pipeline
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
         aprilTagDetectionPipeline = new AprilTagDetectionPipeline(tagsize, fx, fy, cx, cy);
-
         camera.setPipeline(aprilTagDetectionPipeline);
+        telemetry.addLine("initialized camera");
+        telemetry.update();
         camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
         {
             @Override
@@ -63,16 +66,17 @@ public class EasyAprilTag extends LinearOpMode
             @Override
             public void onError(int errorCode)
             {
-
+                telemetry.addLine("something went wrong");
             }
         });
 
         telemetry.setMsTransmissionInterval(50);
+        waitForStart();
 
-        while (!isStarted() && !isStopRequested())
+        while (isStarted() && !isStopRequested())
         {
             ArrayList<AprilTagDetection> currentDetections = aprilTagDetectionPipeline.getLatestDetections();
-
+            telemetry.addLine("initialized detections");
             if(currentDetections.size() != 0)
             {
                 boolean tagFound = false;
