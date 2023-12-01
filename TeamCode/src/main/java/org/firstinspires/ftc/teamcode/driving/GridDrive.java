@@ -69,5 +69,8 @@ public class GridDrive implements IDriving {
         lf.setPower(lfp);
         lb.setPower(lbp);
     }
+    public void adjustSpeed(float x) {
+        int t=5;
+    }
 
 }
