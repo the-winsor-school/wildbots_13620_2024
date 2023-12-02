@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 
-@Autonomous(name="parking")
+@Autonomous(name="ClosePark")
 public class ParkingAutonism extends LinearOpMode{
     Robot robot;
     public ColorSensor color;
