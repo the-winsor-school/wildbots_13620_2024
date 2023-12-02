@@ -61,7 +61,7 @@ public class ArmJoint {
      * @param rotations will be added to the current position
      */
     public void changeTargetPosition(int rotations) {
-        targetPosition += rotations;
+        targetPosition = getCurrentPosition() + rotations;
     }
 
     @Deprecated
