@@ -76,7 +76,6 @@ class AprilTagDetectionPipeline extends OpenCvPipeline
     public Mat processFrame(Mat input)
     {
         Imgproc.cvtColor(input, grey, Imgproc.COLOR_RGBA2GRAY);
-
         synchronized (decimationSync)
         {
             if(needToSetDecimation)
@@ -99,6 +98,7 @@ class AprilTagDetectionPipeline extends OpenCvPipeline
             Pose pose = aprilTagPoseToOpenCvPose(detection.pose);
             drawAxisMarker(input, tagsizeY/2.0, 6, pose.rvec, pose.tvec, cameraMatrix);
             draw3dCubeMarker(input, tagsizeX, tagsizeX, tagsizeY, 5, pose.rvec, pose.tvec, cameraMatrix);
+            System.out.println(detections);
         }
         return input;
     }

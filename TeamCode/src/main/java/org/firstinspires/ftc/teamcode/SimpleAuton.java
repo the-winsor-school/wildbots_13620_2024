@@ -11,7 +11,7 @@ public class SimpleAuton extends LinearOpMode {
 
     public void runOpMode() throws InterruptedException {
         robot = new Robot(this);
-
+        waitForStart();
         while (opModeIsActive()) {
 
             robot.driving.horizontal(1);

@@ -18,8 +18,6 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 import java.util.ArrayList;
 
 public class ATP {
-    Robot robot;
-    //LinearOpMode opMode;
     OpenCvCamera camera;
     AprilTagDetectionPipeline aprilTagDetectionPipeline;
     private static final double FEET_PER_METER = 3.28084;
@@ -33,9 +31,6 @@ public class ATP {
     // UNITS ARE METERS
     double tagsize = 0.166;
 
-    //AprilTagDetection tagOfInterest = null;
-    //boolean tagsFound = false;
-    //boolean tagOfInterestFound = false;
     ArrayList<AprilTagDetection> getCurrentDetections()
     {
         telemetry.addData("latest detections", aprilTagDetectionPipeline.getLatestDetections());
@@ -69,7 +64,7 @@ public class ATP {
     }
 
     /***
-     * This function identifies and prints the position of a detected tag.
+     * This function identifies and prints the position of a detected tag on the Driver Hub. Distance and angle are calculated.
      * @param detection If an AprilTag is detected, it is called a detection.
      */
 
@@ -85,10 +80,8 @@ public class ATP {
     }
 
     /***
-     * This function is for identifying a set AprilTag (like the one on the team object).
-     * If the tag detected matches the tag we are looking for (ID_TAG_OF_INTEREST), the tag has been "found".
-     * If something is being detected, but the tag we are looking for has not been detected, the tag is not found. The robot will keep looking.
-     * If nothing is being detected, the tag is null.
+     * This function creates a location vector for the tag we want to find. That way, we can use the location data to navigate to the correct position on the field.
+     * @param id the universal ID of the tag we are looking for (1,2,3,4,5, or 6, depending on the zone)
      */
 
     public TelemetryVector getVectorToTag (int id) {
@@ -121,9 +114,7 @@ public class ATP {
     }
 
     /***
-     * This function asks the robot to identify whether it can see any AprilTags in the area.
-     * While similar to identifyTeamObject(), this function is applicable to settings with multiple AprilTags, not just one.
-     * @return
+     * This function creates a vector from the position of the AprilTag with x/y/z coordinates and roll/pitch/yaw angles.
      */
 
     public TelemetryVector findTagPosition (AprilTagDetection detection) {

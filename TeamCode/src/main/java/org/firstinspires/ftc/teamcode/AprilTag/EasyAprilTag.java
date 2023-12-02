@@ -1,25 +1,23 @@
 package org.firstinspires.ftc.teamcode.AprilTag;
-
-import android.annotation.SuppressLint;
-
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
-import org.firstinspires.ftc.teamcode.AprilTag.AprilTagDetectionPipeline;
-import org.firstinspires.ftc.teamcode.Robot;
 import org.openftc.apriltag.AprilTagDetection;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
-
+import org.firstinspires.ftc.teamcode.Robot;
+import org.firstinspires.ftc.teamcode.AprilTag.AprilTagDetectionPipeline;
+import org.firstinspires.ftc.teamcode.AprilTag.ATP;
 import java.util.ArrayList;
 
-@Autonomous(name="easy april tag")
+@Autonomous(name="april tag EASY TEST")
 public class EasyAprilTag extends LinearOpMode
 {
     Robot robot;
@@ -38,7 +36,7 @@ public class EasyAprilTag extends LinearOpMode
     // UNITS ARE METERS
     double tagsize = 0.166;
 
-    int ID_TAG_OF_INTEREST = 4; // Tag ID - from 36h11 family
+    int ID_TAG_OF_INTEREST = 8; // Tag ID - from 36h11 family
 
     AprilTagDetection tagOfInterest = null;
 
@@ -46,15 +44,12 @@ public class EasyAprilTag extends LinearOpMode
     public void runOpMode()
     {
         robot = new Robot(this);
-        telemetry.addLine("initialized robot");
-        telemetry.update();
         //setting pipeline
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
         aprilTagDetectionPipeline = new AprilTagDetectionPipeline(tagsize, fx, fy, cx, cy);
+
         camera.setPipeline(aprilTagDetectionPipeline);
-        telemetry.addLine("initialized camera");
-        telemetry.update();
         camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
         {
             @Override
@@ -66,17 +61,16 @@ public class EasyAprilTag extends LinearOpMode
             @Override
             public void onError(int errorCode)
             {
-                telemetry.addLine("something went wrong");
+
             }
         });
 
         telemetry.setMsTransmissionInterval(50);
-        waitForStart();
 
-        while (isStarted() && !isStopRequested())
+        while (!isStarted() && !isStopRequested())
         {
             ArrayList<AprilTagDetection> currentDetections = aprilTagDetectionPipeline.getLatestDetections();
-            telemetry.addLine("initialized detections");
+
             if(currentDetections.size() != 0)
             {
                 boolean tagFound = false;
@@ -144,40 +138,16 @@ public class EasyAprilTag extends LinearOpMode
 
         if(tagOfInterest == null)
         {
-            telemetry.addLine("test");
-            telemetry.update();
-            //robot.driving.horizontal(1);
+            telemetry.addLine("null");
             // auton stuff
         }
         else
         {
-            telemetry.addLine("test, not null");
-            telemetry.update();
-            robot.driving.horizontal(1);
+            telemetry.addLine("not null");
             //auton stuff
-            // e.g.
-            /*
-            if(tagOfInterest.pose.x <= 20)
-            {
-                // do something
-            }
-
-             */
-            /*
-            else if(tagOfInterest.pose.x >= 20 && tagOfInterest.pose.x <= 50)
-            {
-                // do something else
-            }
-            else if(tagOfInterest.pose.x >= 50)
-            {
-                // do something else
-            }
-
-             */
         }
     }
 
-    @SuppressLint("DefaultLocale")
     void tagToTelemetry(AprilTagDetection detection)
     {
         Orientation rot = Orientation.getOrientation(detection.pose.R, AxesReference.INTRINSIC, AxesOrder.YXZ, AngleUnit.DEGREES);

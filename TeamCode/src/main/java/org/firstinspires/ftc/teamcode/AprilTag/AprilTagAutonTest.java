@@ -1,14 +1,17 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.AprilTag;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-
 import org.firstinspires.ftc.teamcode.AprilTag.ATP;
+import org.firstinspires.ftc.teamcode.AprilTag.AprilTagDetectionPipeline;
+import org.firstinspires.ftc.teamcode.Robot;
+import org.openftc.easyopencv.OpenCvCamera;
 
 @Autonomous(name="april tag auton")
 public class AprilTagAutonTest extends LinearOpMode {
     Robot robot;
-    LinearOpMode opMode;
+    AprilTagDetectionPipeline aprilTagDetectionPipeline;
+
+    ATP atp;
 
     //Location location;
 
@@ -16,6 +19,8 @@ public class AprilTagAutonTest extends LinearOpMode {
     public void runOpMode() {
         //atp = new ATP(this);
         robot = new Robot(this);
+        atp = new ATP(this);
+        aprilTagDetectionPipeline = new AprilTagDetectionPipeline(atp.tagsize, atp.fx, atp.fy, atp.cx, atp.cy);
         //location = new Location();
         telemetry.addData("Status", "Initialized");
         telemetry.update();
