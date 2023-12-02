@@ -37,10 +37,6 @@ public class TeleOp extends LinearOpMode {
             if(gamepad1.dpad_down)
                 robot.driving.adjustSpeed(-0.05f);
 
-            //reset arm encoders
-            if (gamepad1.x)
-                robot.arm.resetEncoders();
-
             //_______________________________________________
             //             MECH CONTROLLER
             //_______________________________________________
@@ -60,6 +56,10 @@ public class TeleOp extends LinearOpMode {
                 robot.arm.claw.controlClaw(Claw.ClawPos.OPEN);
             if (gamepad2.left_bumper)
                 robot.arm.claw.controlClaw(Claw.ClawPos.CLOSE);
+
+            //reset arm encoders
+            if (gamepad2.x)
+                robot.arm.resetEncoders();
 
             //_______________________________________________
             //             PRINT STATEMENTS
