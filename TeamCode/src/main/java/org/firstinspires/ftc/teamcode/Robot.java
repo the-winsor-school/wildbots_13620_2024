@@ -71,8 +71,6 @@ public class Robot {
         //just because o the orienttion o the motor
         liftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        rightServo = map.tryGet(CRServo.class, "right servo");
-        leftServo = map.tryGet(CRServo.class, "left servo");
 
         color = map.tryGet(ColorSensor.class, "color");
 

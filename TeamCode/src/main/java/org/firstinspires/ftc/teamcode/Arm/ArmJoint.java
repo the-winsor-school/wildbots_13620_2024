@@ -133,13 +133,18 @@ public class ArmJoint {
     public void changeMotorPower(int power) { powerUsed += power; }
 
     /**
-     * stop using encoders and just run the motor
+     * stop using encoders and just run the motor with the powerUsed of that motor
      * (will not stop automatically)
-     * @param power power used when motor is running
+     * @param forwardMotion true = forward, flase = backwards
      */
-    public void usePowerOnly(double power) {
+    public void usePower(boolean forwardMotion) {
         motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        motor.setPower(power);
+        if (forwardMotion) {
+            motor.setPower(powerUsed); //move forwards
+        }
+        else {
+            motor.setPower(-powerUsed); //move backwards
+        }
     }
 
 }
