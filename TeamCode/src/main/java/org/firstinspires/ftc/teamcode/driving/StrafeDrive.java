@@ -19,11 +19,6 @@ public class StrafeDrive implements IDriving {
         this.rb = rb;
         this.lf = lf;
         this.lb =lb;
-
-        //just the way it was built this year
-        this.rf.setDirection(DcMotorSimple.Direction.REVERSE);
-        this.lf.setDirection(DcMotorSimple.Direction.REVERSE);
-        this.rb.setDirection(DcMotorSimple.Direction.REVERSE);
     }
 
     public void joystickDrive (float X, float Y, float T) {

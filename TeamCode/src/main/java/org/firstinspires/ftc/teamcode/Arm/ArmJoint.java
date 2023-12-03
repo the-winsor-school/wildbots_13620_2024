@@ -147,4 +147,9 @@ public class ArmJoint {
         }
     }
 
+    public void stop() {
+        motor.setPower(0);
+        motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+    }
+
 }

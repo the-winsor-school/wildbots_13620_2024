@@ -43,9 +43,9 @@ public class TeleOp extends LinearOpMode {
 
             //arm manual controls
             if (gamepad2.dpad_up)
-                robot.arm.liftJoint.changeTargetPosition(200);
+                robot.arm.liftJoint.usePower(true);
             if(gamepad2.dpad_down)
-                robot.arm.liftJoint.changeTargetPosition(-200);
+                robot.arm.liftJoint.usePower(false);
             if (gamepad2.dpad_right)
                 robot.arm.clawJoint.usePower(true);
             if (gamepad2.dpad_left)
@@ -53,16 +53,21 @@ public class TeleOp extends LinearOpMode {
 
             //stops motion of motor if button is not being pressed
             if (!gamepad2.dpad_right && !gamepad2.dpad_left)
-                robot.arm.clawJoint.brake();
+                robot.arm.clawJoint.stop();
+
+            if (!gamepad2.dpad_up && !gamepad2.dpad_down)
+                robot.arm.liftJoint.stop();
 
             //claw controls
-            if (gamepad2.b)
+            if (gamepad2.x)
                 robot.arm.claw.controlClaw(Claw.ClawPos.OPEN);
-            if (gamepad2.left_bumper)
+            if (gamepad2.b)
                 robot.arm.claw.controlClaw(Claw.ClawPos.CLOSE);
+            if(!gamepad2.x && !gamepad2.b)
+                robot.arm.claw.controlClaw(Claw.ClawPos.STOP);
 
             //reset arm encoders
-            if (gamepad2.x)
+            //if (gamepad2.x)
                 //robot.arm.resetEncoders();
 
             //_______________________________________________
@@ -70,12 +75,12 @@ public class TeleOp extends LinearOpMode {
             //_______________________________________________
 
             //joystick inputs
-            //telemetry.addData("x: ", x);
-            //telemetry.addData("y: ", y);
-            //telemetry.addData("t: ", t);
+            telemetry.addData("x: ", x);
+            telemetry.addData("y: ", y);
+            telemetry.addData("t: ", t);
 
             //wheels powers
-            //robot.printWheelPowers();
+            robot.printWheelPowers();
 
            telemetry.addLine("----------------ARM-------------------------");
 
@@ -95,7 +100,7 @@ public class TeleOp extends LinearOpMode {
             telemetry.addData("right servo: ", robot.arm.claw.getPower("right"));
             telemetry.addData("left servo: ", robot.arm.claw.getPower("left"));
 
-            robot.arm.liftJoint.armLoop();
+            //robot.arm.liftJoint.armLoop();
             //robot.arm.clawJoint.armLoop();
 
             telemetry.update();

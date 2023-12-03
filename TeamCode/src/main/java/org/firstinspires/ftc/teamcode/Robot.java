@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.Arm.*;
@@ -37,8 +37,8 @@ public class Robot {
     //arm
     private DcMotor liftMotor;
     private DcMotor clawMotor;
-    private CRServo rightServo;
-    private CRServo leftServo;
+    private Servo rightServo;
+    private Servo leftServo;
 
     //libraries
     private ColorSensor color;
@@ -64,6 +64,12 @@ public class Robot {
         lf = map.tryGet(DcMotor.class, "lf");
         lb = map.tryGet(DcMotor.class, "lb");
 
+
+        rf.setDirection(DcMotor.Direction.FORWARD);
+        rb.setDirection(DcMotor.Direction.REVERSE);
+        lf.setDirection(DcMotor.Direction.REVERSE);
+        lb.setDirection(DcMotor.Direction.REVERSE);
+
         //arm
         liftMotor = map.tryGet(DcMotor.class, "elbow");
         clawMotor = map.tryGet(DcMotor.class, "wrist");
@@ -71,8 +77,8 @@ public class Robot {
         //just because o the orienttion o the motor
         liftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        rightServo = map.tryGet(CRServo.class, "right");
-        leftServo = map.tryGet(CRServo.class, "left");
+        rightServo = map.tryGet(Servo.class, "right");
+        leftServo = map.tryGet(Servo.class, "left");
 
         color = map.tryGet(ColorSensor.class, "color");
 
