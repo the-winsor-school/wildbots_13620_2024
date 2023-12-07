@@ -10,6 +10,13 @@ public class FullArm {
 
     public Claw claw;
 
+    /**
+     * will change the code used in the teleOp for the arm
+     * if false arm will only have manual controls on power
+     * if true arm will have move to position and manual controls that adjust encoder values
+     */
+    public Boolean armEncodersOn;
+
 
     public FullArm(DcMotor liftMotor, DcMotor clawMotor, Servo rightServo, Servo leftServo) {
         liftJoint = new ArmJoint(liftMotor,  0.8f, 50);
@@ -26,8 +33,7 @@ public class FullArm {
         clawJoint.resetEncoders();
     }
 
-    @Deprecated
-    //TODO fix these values (after building fixes arm)
+    //TODO fix these values
     /**
      * moves both of the arm joints to set positons for different arm positions
      */
@@ -35,25 +41,22 @@ public class FullArm {
         switch (pos) {
             case RESET: //init position
                 liftJoint.setTargetPosition(0);
-                clawJoint.setTargetPosition(80);
+                clawJoint.setTargetPosition(0);
                 break;
 
             case PLACINGLOW: //placing on board
-                liftJoint.setTargetPosition(1340);
-                clawJoint.setTargetPosition(-182);
+                liftJoint.setTargetPosition(0);
+                clawJoint.setTargetPosition(0);
                 break;
 
             case PICKINGUP: //picking up
-                int liftJointRotations = 900;
-                liftJoint.moveJointSync(liftJointRotations + 500);
-                clawJoint.moveJointSync(-530);
-                liftJoint.moveJointSync(liftJointRotations);
-                claw.controlClaw(Claw.ClawPos.OPEN);
+                liftJoint.setTargetPosition(0);
+                clawJoint.setTargetPosition(0);
                 break;
 
             case PLACINGHIGH:
-                liftJoint.setTargetPosition(1605);
-                clawJoint.setTargetPosition(-190);
+                liftJoint.setTargetPosition(0);
+                clawJoint.setTargetPosition(0);
                 break;
         }
     }
