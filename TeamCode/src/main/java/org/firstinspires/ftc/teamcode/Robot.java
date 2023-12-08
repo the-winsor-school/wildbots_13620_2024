@@ -56,7 +56,10 @@ public class Robot {
 
         color = map.tryGet(ColorSensor.class, "color");
 
-
+        rf.setDirection(DcMotor.Direction.FORWARD);
+        rb.setDirection(DcMotor.Direction.REVERSE);
+        lf.setDirection(DcMotor.Direction.REVERSE);
+        lb.setDirection(DcMotor.Direction.REVERSE);
 
         /**
          * currently using StrafeDrive
@@ -73,7 +76,7 @@ public class Robot {
     }
 
     public boolean checkRedTape() {
-        if (color.red()  > 500)
+        if (color.red()  > 350)
             return true;
         return false;
     }
