@@ -1,6 +1,7 @@
-package org.firstinspires.ftc.teamcode.AprilTag;
-
+package org.firstinspires.ftc.teamcode;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -9,27 +10,33 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
-import org.firstinspires.ftc.teamcode.Robot;
+import org.firstinspires.ftc.teamcode.driving.IDriving;
 import org.openftc.apriltag.AprilTagDetection;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
-
 import java.util.ArrayList;
 
 public class ATP {
+    Robot robot;
     OpenCvCamera camera;
     AprilTagDetectionPipeline aprilTagDetectionPipeline;
-    private static final double FEET_PER_METER = 3.28084;
 
-    // APRIL TAG CONSTANTS
+    LinearOpMode opMode;
+
+    static final double FEET_PER_METER = 3.28084;
+
     // units in pixels
+    // might need to recalibrate for webcam resolution
     double fx = 578.272;
     double fy = 578.272;
     double cx = 402.145;
     double cy = 221.506;
+
     // UNITS ARE METERS
     double tagsize = 0.166;
+
+    int ID_TAG_OF_INTEREST = 8; // Tag ID - from 36h11 family
 
     ArrayList<AprilTagDetection> getCurrentDetections()
     {
@@ -39,26 +46,28 @@ public class ATP {
     Telemetry telemetry;
 
     public ATP(LinearOpMode opMode) {
-        //robot = new Robot(opMode);
         HardwareMap map = opMode.hardwareMap;
-        telemetry = opMode.telemetry;
+        robot = new Robot(opMode);
         //setting pipeline
         int cameraMonitorViewId = map.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", map.appContext.getPackageName());
         camera = OpenCvCameraFactory.getInstance().createWebcam(map.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
         aprilTagDetectionPipeline = new AprilTagDetectionPipeline(tagsize, fx, fy, cx, cy);
+
         camera.setPipeline(aprilTagDetectionPipeline);
-        camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
+        camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
+        {
             @Override
-            public void onOpened() {
-                camera.startStreaming(800, 448, OpenCvCameraRotation.UPRIGHT);
+            public void onOpened()
+            {
+                camera.startStreaming(800,448, OpenCvCameraRotation.UPRIGHT);
             }
 
             @Override
-            public void onError(int errorCode) {
-                telemetry.addData("error", errorCode);
+            public void onError(int errorCode)
+            {
+
             }
         });
-
         camera.resumeViewport();
         opMode.telemetry.setMsTransmissionInterval(50);
     }

@@ -1,10 +1,6 @@
-package org.firstinspires.ftc.teamcode.AprilTag;
+package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import org.firstinspires.ftc.teamcode.AprilTag.ATP;
-import org.firstinspires.ftc.teamcode.AprilTag.AprilTagDetectionPipeline;
-import org.firstinspires.ftc.teamcode.Robot;
-import org.openftc.easyopencv.OpenCvCamera;
 
 @Autonomous(name="april tag auton")
 public class AprilTagAutonTest extends LinearOpMode {
