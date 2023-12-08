@@ -3,10 +3,11 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.driving.*;
-
+@Disabled
 @Autonomous(name="test auto")
 public class TestingAuton extends LinearOpMode {
     Robot robot;
@@ -14,7 +15,9 @@ public class TestingAuton extends LinearOpMode {
     IDriving driving;
 
     public void runOpMode() throws InterruptedException {
-        robot = new Robot(opMode);
+        robot = new Robot(this);
+
+        waitForStart();
 
         while (opModeIsActive()) {
 
