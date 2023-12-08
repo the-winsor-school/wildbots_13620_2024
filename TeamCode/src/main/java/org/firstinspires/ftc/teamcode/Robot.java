@@ -34,6 +34,7 @@ public class Robot {
         driving = new StrafeDrive(rf, rb, lf, lb);
     }
 
+
     public void goToTag(int tag) {
         TelemetryVector tagsFound = atp.getVectorToTag(tag);
         if (tagsFound == null) {
@@ -59,4 +60,6 @@ public class Robot {
             opMode.telemetry.addLine("can't go to any tags because we can't see them");
         }
     }
+
+
 }

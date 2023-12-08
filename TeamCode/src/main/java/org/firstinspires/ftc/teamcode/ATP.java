@@ -18,7 +18,7 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 import java.util.ArrayList;
 
 public class ATP {
-    Robot robot;
+    //Robot robot;
     OpenCvCamera camera;
     AprilTagDetectionPipeline aprilTagDetectionPipeline;
 
@@ -35,19 +35,11 @@ public class ATP {
 
     // UNITS ARE METERS
     double tagsize = 0.166;
-
-    int ID_TAG_OF_INTEREST = 8; // Tag ID - from 36h11 family
-
-    ArrayList<AprilTagDetection> getCurrentDetections()
-    {
-        telemetry.addData("latest detections", aprilTagDetectionPipeline.getLatestDetections());
-        return aprilTagDetectionPipeline.getLatestDetections();
-    }
     Telemetry telemetry;
 
     public ATP(LinearOpMode opMode) {
         HardwareMap map = opMode.hardwareMap;
-        robot = new Robot(opMode);
+        //robot = new Robot(opMode);
         //setting pipeline
         int cameraMonitorViewId = map.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", map.appContext.getPackageName());
         camera = OpenCvCameraFactory.getInstance().createWebcam(map.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
@@ -77,6 +69,7 @@ public class ATP {
      * @param detection If an AprilTag is detected, it is called a detection.
      */
 
+
     public void getTagTelemetryData (AprilTagDetection detection) {
         Orientation rotation = Orientation.getOrientation(detection.pose.R, AxesReference.INTRINSIC, AxesOrder.YXZ, AngleUnit.DEGREES);
         telemetry.addLine(String.format("\nDetected tag ID=%d", detection.id));
@@ -93,14 +86,19 @@ public class ATP {
      * @param id the universal ID of the tag we are looking for (1,2,3,4,5, or 6, depending on the zone)
      */
 
+
     public TelemetryVector getVectorToTag (int id) {
-        ArrayList<AprilTagDetection> currentDetections = this.getCurrentDetections();
+        ArrayList<AprilTagDetection> currentDetections = aprilTagDetectionPipeline.getLatestDetections();
+        aprilTagDetectionPipeline.getDetectionsUpdate();
         telemetry.addData("detections", currentDetections);
+        telemetry.update();
         AprilTagDetection tagOfInterest = null;
         //boolean tagOfInterestFound = false;
         if (currentDetections.size() != 0) {
             for (AprilTagDetection tag : currentDetections) {
                 if (tag.id == id) {
+                    telemetry.addData("tag found! tag id: ", id);
+                    telemetry.update();
                     tagOfInterest = tag;
                     //tagOfInterestFound = true;
                     break;
@@ -108,6 +106,7 @@ public class ATP {
             }
             if (tagOfInterest == null) {
                 telemetry.addLine("can't find tag :(");
+                telemetry.update();
                 return null;
             }
 
@@ -115,16 +114,21 @@ public class ATP {
             getTagTelemetryData(tagOfInterest);
             telemetry.update();
             return findTagPosition(tagOfInterest);
+        } else if (currentDetections.size() == 0) {
+            telemetry.addLine("no tags here :(");
+            telemetry.update();
+            return null;
+        } else {
+            telemetry.addLine("current detections = 0 but not null");
+            telemetry.update();
+            return null;
         }
-
-        telemetry.addLine("no tags here :(");
-        telemetry.update();
-        return null;
     }
 
     /***
      * This function creates a vector from the position of the AprilTag with x/y/z coordinates and roll/pitch/yaw angles.
      */
+
 
     public TelemetryVector findTagPosition (AprilTagDetection detection) {
         Orientation rotation = Orientation.getOrientation(detection.pose.R, AxesReference.INTRINSIC, AxesOrder.YXZ, AngleUnit.DEGREES);
