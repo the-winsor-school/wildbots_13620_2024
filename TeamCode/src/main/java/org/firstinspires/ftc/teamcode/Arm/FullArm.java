@@ -3,47 +3,64 @@ package org.firstinspires.ftc.teamcode.Arm;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.teamcode.*;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-
 public class FullArm {
 
     public ArmJoint liftJoint;
     public ArmJoint clawJoint;
-    
+
     public Claw claw;
 
-    double armPower = 0.5;
-    int tolerance = 100;
 
     public FullArm(DcMotor liftMotor, DcMotor clawMotor, Servo rightServo, Servo leftServo) {
-        liftJoint = new ArmJoint(liftMotor,  armPower, tolerance);
-        clawJoint = new ArmJoint(clawMotor, armPower, tolerance);
+        liftJoint = new ArmJoint(liftMotor,  0.8f, 50);
+        clawJoint = new ArmJoint(clawMotor, 0.2f, 5);
 
         claw = new Claw(rightServo, leftServo);
     }
 
-    public void moveToLevel(ArmLevel level) {
-        switch (level) {
+    /**
+     * resets encoder to 0 for both arm joints
+     */
+    public void resetEncoders() {
+        liftJoint.resetEncoders();
+        clawJoint.resetEncoders();
+    }
+
+    @Deprecated
+    //TODO fix these values (after building fixes arm)
+    /**
+     * moves both of the arm joints to set positons for different arm positions
+     */
+    public void moveArmToPosition(ArmPosition pos) {
+        switch (pos) {
             case RESET: //init position
-                liftJoint.setTargetPosition(100);
-                clawJoint.setTargetPosition(100);
+                liftJoint.setTargetPosition(0);
+                clawJoint.setTargetPosition(80);
                 break;
 
-            case PLACE: //placing on board
-                liftJoint.setTargetPosition(1300);
-                clawJoint.setTargetPosition(800);
+            case PLACINGLOW: //placing on board
+                liftJoint.setTargetPosition(1340);
+                clawJoint.setTargetPosition(-182);
                 break;
+
             case PICKINGUP: //picking up
-                liftJoint.setTargetPosition(1300);
-                clawJoint.setTargetPosition(100);
+                int liftJointRotations = 900;
+                liftJoint.moveJointSync(liftJointRotations + 500);
+                clawJoint.moveJointSync(-530);
+                liftJoint.moveJointSync(liftJointRotations);
                 claw.controlClaw(Claw.ClawPos.OPEN);
+                break;
+
+            case PLACINGHIGH:
+                liftJoint.setTargetPosition(1605);
+                clawJoint.setTargetPosition(-190);
                 break;
         }
     }
-    public enum ArmLevel {
+    public enum ArmPosition {
         RESET,
-        PLACE,
+        PLACINGLOW,
         PICKINGUP,
+        PLACINGHIGH,
     }
 }

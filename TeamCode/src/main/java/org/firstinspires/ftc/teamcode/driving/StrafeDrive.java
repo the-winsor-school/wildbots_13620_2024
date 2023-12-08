@@ -19,9 +19,6 @@ public class StrafeDrive implements IDriving {
         this.rb = rb;
         this.lf = lf;
         this.lb =lb;
-
-        //we dont know why we need this but we do - dont worry about it
-        this.lb.setDirection(DcMotorSimple.Direction.REVERSE);
     }
 
     public void joystickDrive (float X, float Y, float T) {
@@ -47,7 +44,7 @@ public class StrafeDrive implements IDriving {
     }
 
     public void vertical (float power) { //forward positive
-        setEachPower(-power, -power, power, power); //one side negative -rf, -rb
+        setEachPower(power,  power, power, power); //one side negative -rf, -rb
     }
 
     public void stop () {
@@ -58,10 +55,14 @@ public class StrafeDrive implements IDriving {
     }
 
     private void setEachPower (float rfp, float rbp, float lfp, float lbp) {
-        rf.setPower(rfp);
-        lf.setPower(rbp);
-        lf.setPower(lfp);
-        lb.setPower(lbp);
+        rf.setPower(rfp * speed);
+        rb.setPower(rbp * speed);
+        lf.setPower(lfp * speed);
+        lb.setPower(lbp * speed);
+    }
+
+    public void adjustSpeed(float x) {
+        speed = speed + x;
     }
 
 }
