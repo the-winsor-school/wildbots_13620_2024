@@ -44,10 +44,19 @@ public class AutonMovements {
             else if (fieldPosition == FieldPosition.FAR_RED)
                 horizontalDirection = -1;
 
+            //reverse
+            robot.driving.vertical(-0.5f);
+            opMode.sleep(500);
+            robot.driving.stop();
+
+            //first horizontal
             robot.driving.horizontal(0.50f * horizontalDirection);
-            robot.printWheelPowers();
-            telemetry.update();
-            opMode.sleep(7250);
+            opMode.sleep(4000);
+            robot.driving.stop();
+
+            //keep going
+            robot.driving.horizontal(0.50f * horizontalDirection);
+            opMode.sleep(3500);
             robot.driving.stop();
 
             while (!robot.checkTape()) {
