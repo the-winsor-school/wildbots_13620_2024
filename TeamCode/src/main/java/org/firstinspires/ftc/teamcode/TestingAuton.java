@@ -16,11 +16,13 @@ public class TestingAuton extends LinearOpMode {
     IDriving driving;
 
     public void runOpMode() throws InterruptedException {
-        robot = new Robot(opMode);
+        robot = new Robot(this);
+
+        waitForStart();
 
         while (opModeIsActive()) {
 
-            robot.driving.horizontal(1);
+            robot.checkColorValues();
 
 
         }
