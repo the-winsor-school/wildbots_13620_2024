@@ -17,10 +17,9 @@ public class FullArm {
      */
     public Boolean armEncodersOn;
 
-
     public FullArm(DcMotor liftMotor, DcMotor clawMotor, Servo rightServo, Servo leftServo) {
         liftJoint = new ArmJoint(liftMotor,  0.8f, 50);
-        clawJoint = new ArmJoint(clawMotor, 0.2f, 5);
+        clawJoint = new ArmJoint(clawMotor, 0.1f, 10);
 
         claw = new Claw(rightServo, leftServo);
     }
