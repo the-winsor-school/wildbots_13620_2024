@@ -24,20 +24,32 @@ public class OpenCV {
         private static final int GREEN1 = 20; // white < 140 < purple
 
         //CHANGE DIMENSIONS BASED ON POSITOIN FROM START OF AUTON
-        Point topLeft = new Point(100, 100);
-        Point bottomRight = new Point(125, 150);
+        Point topLeftZone1 = new Point(0, 0);
+        Point bottomRightZone1 = new Point(266, 448);
+        Point topLeftZone2 = new Point(266,0);
+        Point bottomRightZone2 = new Point(533,448);
+        Point topLeftZone3 = new Point(533,0);
+        Point bottomRightZone3 = new Point(800,448);
 
         Mat region1_Cb;
         Mat region1_Cg;
         Mat region1_Cr;
+        Mat region2_Cb;
+        Mat region2_Cg;
+        Mat region2_Cr;
+        Mat region3_Cb;
+        Mat region3_Cg;
+        Mat region3_Cr;
         //Mat YCrCb = new Mat();
         Mat Cb = new Mat();
         Mat Cg = new Mat();
         Mat Cr = new Mat();
 
-        private volatile int averageRed;
-        private volatile int averageBlue;
-        private volatile int averageGreen;
+        private volatile int averageRedZone1;
+        private volatile int averageRedZone2;
+        private volatile int averageRedZone3;
+        //private volatile int averageBlue;
+        //private volatile int averageGreen;
         private volatile TYPE type = TYPE.ZONE2; //default value
 
         private void inputToCb(Mat input) {
@@ -51,9 +63,11 @@ public class OpenCV {
         public void init(Mat input) {
             inputToCb(input);
 
-            region1_Cb = Cb.submat(new Rect(topLeft, bottomRight)); //setting region dimensions
-            region1_Cg = Cg.submat(new Rect(topLeft, bottomRight)); //setting region dimensions
-            region1_Cr = Cr.submat(new Rect(topLeft, bottomRight)); //setting region dimensions
+            //region1_Cb = Cb.submat(new Rect(topLeft, bottomRight)); //setting region dimensions
+            //region1_Cg = Cg.submat(new Rect(topLeft, bottomRight)); //setting region dimensions
+            region1_Cr = Cr.submat(new Rect(topLeftZone1, bottomRightZone1)); //setting region dimensions
+            region2_Cr = Cr.submat(new Rect(topLeftZone2, bottomRightZone2));
+            region3_Cr = Cr.submat(new Rect(topLeftZone3, bottomRightZone3));
 
         }
 
@@ -61,12 +75,39 @@ public class OpenCV {
         public Mat processFrame(Mat input) {
             inputToCb(input);
 
-            averageBlue = (int) Core.mean(region1_Cb).val[0]; // red average values
-            averageGreen = (int) Core.mean(region1_Cg).val[0]; // blue average values
-            averageRed = (int) Core.mean(region1_Cr).val[0]; // green average values
+            //averageBlue = (int) Core.mean(region1_Cb).val[0]; // red average values
+            //averageGreen = (int) Core.mean(region1_Cg).val[0]; // blue average values
+            averageRedZone1 = (int) Core.mean(region1_Cr).val[0]; // green average values
+            averageRedZone2 = (int) Core.mean(region2_Cr).val[0];
+            averageRedZone3 = (int) Core.mean(region3_Cr).val[0];
 
-            Imgproc.rectangle(input, topLeft, bottomRight, BLUE, 2);
+            //Imgproc.rectangle(input, topLeft, bottomRight, BLUE, 2);
 
+            /*
+
+            Imgproc.rectangle(
+                input,
+		        new Point(0,0),
+		        new Point(266,448),
+		        new Scalar(0,255,0), 5
+            );
+
+            Imgproc.rectangle(
+		        input,
+		        new Point(266,0),
+		        new Point (533,448),
+		        new Scalar(0,255,0), 5
+            );
+
+            Imgproc.rectangle(
+		        input,
+		        new Point(533,0),
+		        new Point (800,448),
+		        new Scalar(0,255,0), 5
+            );
+
+             */
+            
             if (averageBlue < averageRed && averageGreen < averageRed) {
                 type = TYPE.ZONE1;
             }
@@ -81,6 +122,7 @@ public class OpenCV {
             }
 
             return input;
+
         }
 
         public TYPE getType() {
