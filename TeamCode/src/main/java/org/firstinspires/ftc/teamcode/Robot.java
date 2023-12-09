@@ -64,12 +64,6 @@ public class Robot {
         lf = map.tryGet(DcMotor.class, "lf");
         lb = map.tryGet(DcMotor.class, "lb");
 
-
-        rf.setDirection(DcMotor.Direction.FORWARD);
-        rb.setDirection(DcMotor.Direction.REVERSE);
-        lf.setDirection(DcMotor.Direction.REVERSE);
-        lb.setDirection(DcMotor.Direction.REVERSE);
-
         //arm
         liftMotor = map.tryGet(DcMotor.class, "elbow");
         clawMotor = map.tryGet(DcMotor.class, "wrist");
@@ -82,10 +76,10 @@ public class Robot {
 
         color = map.tryGet(ColorSensor.class, "color");
 
-        rf.setDirection(DcMotor.Direction.FORWARD);
+        rf.setDirection(DcMotor.Direction.REVERSE);
         rb.setDirection(DcMotor.Direction.REVERSE);
         lf.setDirection(DcMotor.Direction.REVERSE);
-        lb.setDirection(DcMotor.Direction.REVERSE);
+        lb.setDirection(DcMotor.Direction.FORWARD);
 
         /**
          * currently using StrafeDrive
