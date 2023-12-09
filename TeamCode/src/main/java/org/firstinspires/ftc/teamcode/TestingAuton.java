@@ -12,8 +12,6 @@ import org.firstinspires.ftc.teamcode.driving.*;
 @Autonomous(name="test auto")
 public class TestingAuton extends LinearOpMode {
     Robot robot;
-    LinearOpMode opMode;
-    IDriving driving;
 
     public void runOpMode() throws InterruptedException {
         robot = new Robot(this);
