@@ -88,6 +88,68 @@ public class AutonMovements {
         robot.driving.stop();
     }
 
+    public void PlacingAuton (FieldPosition fieldPosition) {
+        int horizontalDirection = 0; //will never be zero
+
+        if (fieldPosition == FieldPosition.FAR_BLUE)
+            horizontalDirection = 1;
+        else if (fieldPosition == FieldPosition.FAR_RED)
+            horizontalDirection = -1;
+        if (fieldPosition == FieldPosition.CLOSE_BLUE
+                || fieldPosition == FieldPosition.CLOSE_RED){
+
+            robot.driving.horizontal(0.50f * horizontalDirection);
+            opMode.sleep(1700);//have to test time
+
+            robot.driving.vertical(0.50f);
+            opMode.sleep(1200);//have to test time
+            robot.driving.stop();
+
+            //lift arm here
+
+            robot.driving.vertical(0.25f);
+            opMode.sleep(100);//have to test time
+            robot.driving.stop();
+
+            //open claw here
+            //close claw here
+            //drop arm here
+        }
+
+        else if (fieldPosition == FieldPosition.FAR_BLUE
+                || fieldPosition == FieldPosition.FAR_RED){
+
+            robot.driving.vertical(-0.5f);
+            opMode.sleep(500);
+            robot.driving.stop();
+
+            robot.driving.horizontal(0.50f * horizontalDirection);
+            opMode.sleep(4000);
+            robot.driving.stop();
+            robot.driving.horizontal(0.50f * horizontalDirection);
+            opMode.sleep(3500);
+            robot.driving.stop();
+
+            robot.driving.vertical(0.50f);
+            opMode.sleep(2500);
+            robot.driving.stop();
+
+            robot.driving.horizontal(0.50f * horizontalDirection);
+            opMode.sleep(2000);
+            robot.driving.stop();
+
+            //lift arm here
+
+            robot.driving.vertical(0.25f);
+            opMode.sleep(100);//have to test time
+            robot.driving.stop();
+
+            //open claw here
+            //close claw here
+            //drop arm here
+        }
+    }
+
     /**
      * gives you all the field positions
      * (CLOSE means close side to stage and FAR is far from stage)
