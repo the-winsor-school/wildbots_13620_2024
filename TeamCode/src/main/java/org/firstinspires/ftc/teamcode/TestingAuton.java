@@ -7,6 +7,8 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.driving.*;
+
+@Disabled
 @Autonomous(name="test auto")
 public class TestingAuton extends LinearOpMode {
     Robot robot;

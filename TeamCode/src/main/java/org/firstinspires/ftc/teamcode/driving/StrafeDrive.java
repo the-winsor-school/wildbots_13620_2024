@@ -24,9 +24,9 @@ public class StrafeDrive implements IDriving {
     public void joystickDrive (float X, float Y, float T) {
         //threshold for values (bc our controllers are old and bad)
         //these are condensed if statements
-        float x = (Math.abs(X) < 0.2f) ? 0 : X;
-        float y = (Math.abs(Y) < 0.2f) ? 0 : Y;
-        float t = (Math.abs(T) < 0.2f) ? 0 : T;
+        float x = (Math.abs(X) < 0.1f) ? 0 : X;
+        float y = (Math.abs(Y) < 0.1f) ? 0 : Y;
+        float t = (Math.abs(T) < 0.1f) ? 0 : T;
 
         //explanation in drive and slack
         rf.setPower((y - x - t) * speed);
@@ -59,6 +59,10 @@ public class StrafeDrive implements IDriving {
         rb.setPower(rbp * speed);
         lf.setPower(lfp * speed);
         lb.setPower(lbp * speed);
+    }
+
+    public void adjustSpeed(float x) {
+        speed = speed + x;
     }
 
 }
