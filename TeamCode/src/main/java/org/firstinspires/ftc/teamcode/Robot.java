@@ -36,7 +36,7 @@ public class Robot {
 
 
     public void goToTag(int tag) {
-        driving.turn(0.25f);
+        driving.turn(-0.25f);
         opMode.sleep(400);
         TelemetryVector tagsFound = atp.getVectorToTag(tag);
         double x = tagsFound.getX();
@@ -47,24 +47,26 @@ public class Robot {
             driving.vertical(0.05f);
             opMode.sleep(200);
             return;
-        }
-        while (tagsFound != null) {
-            while (Math.abs(yaw) > 15) {
+        } while (tagsFound != null) {
+            if (Math.abs(yaw) > 15) {
+                opMode.telemetry.addData("yaw", yaw);
                 driving.turn(0.25f);
+                opMode.sleep(200);
                 if (yaw < 0) {
+                    opMode.telemetry.addData("negative yaw", yaw);
                     driving.turn(-0.25f);
+                    opMode.sleep(200);
                 }
-                atp.findTagPosition(tag);
-            }
-            while (x < 0.3) {
+            } if (x < 0.3) {
+                opMode.telemetry.addData("x", x);
                 driving.horizontal(0.25f);
-            } while (z > 3) {
+                opMode.sleep(200);
+            } if (z > 3) {
+                opMode.telemetry.addData("z", z);
                 driving.vertical(0.25f);
+                opMode.sleep(200);
             }
-        } else {
-            opMode.telemetry.addLine("can't go to any tags because we can't see them");
         }
     }
-
 
 }
