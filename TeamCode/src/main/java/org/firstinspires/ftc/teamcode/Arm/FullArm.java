@@ -43,14 +43,14 @@ public class FullArm {
                 clawJoint.setTargetPosition(0);
                 break;
 
-            case PLACINGLOW: //placing on board
-                liftJoint.setTargetPosition(0);
-                clawJoint.setTargetPosition(0);
+            case PICKINGUP: //picking up
+                liftJoint.setTargetPosition(150);
+                clawJoint.setTargetPosition(25);
                 break;
 
-            case PICKINGUP: //picking up
-                liftJoint.setTargetPosition(0);
-                clawJoint.setTargetPosition(0);
+            case PLACINGLOW: //placing on board
+                liftJoint.setTargetPosition(2650);
+                clawJoint.setTargetPosition(90);
                 break;
 
             case PLACINGHIGH:

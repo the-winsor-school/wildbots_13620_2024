@@ -40,7 +40,6 @@ public class Robot {
     private Servo rightServo;
     private Servo leftServo;
 
-    //libraries
     private ColorSensor color;
 
     /**
@@ -76,6 +75,7 @@ public class Robot {
 
         //just because o the orienttion o the motor
         liftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        clawMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
         rightServo = map.tryGet(Servo.class, "right");
         leftServo = map.tryGet(Servo.class, "left");

@@ -5,6 +5,8 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import org.firstinspires.ftc.teamcode.Arm.Claw;
 import org.firstinspires.ftc.teamcode.Arm.FullArm;
 
+import java.lang.reflect.Field;
+
 @com.qualcomm.robotcore.eventloop.opmode.TeleOp(name = "TeleOp")
 public class TeleOp extends LinearOpMode {
 
@@ -58,12 +60,12 @@ public class TeleOp extends LinearOpMode {
                     robot.arm.clawJoint.changeTargetPosition(-50);
 
                 //arm levels
+                if (gamepad2.x)
+                    robot.arm.moveArmToPosition(FullArm.ArmPosition.PICKINGUP);
                 if (gamepad2.a)
                     robot.arm.moveArmToPosition(FullArm.ArmPosition.RESET);
-
-                //reset arm encoders
-                if (gamepad2.x)
-                    robot.arm.resetEncoders();
+                if (gamepad2.b)
+                    robot.arm.moveArmToPosition(FullArm.ArmPosition.PLACINGLOW);
 
                 robot.arm.liftJoint.armLoop();
                 robot.arm.clawJoint.armLoop();
