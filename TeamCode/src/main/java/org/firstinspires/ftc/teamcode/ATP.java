@@ -39,6 +39,7 @@ public class ATP {
 
     public ATP(LinearOpMode opMode) {
         HardwareMap map = opMode.hardwareMap;
+        this.telemetry = opMode.telemetry;
         //robot = new Robot(opMode);
         //setting pipeline
         int cameraMonitorViewId = map.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", map.appContext.getPackageName());
@@ -91,7 +92,7 @@ public class ATP {
         ArrayList<AprilTagDetection> currentDetections = aprilTagDetectionPipeline.getLatestDetections();
         aprilTagDetectionPipeline.getDetectionsUpdate();
         telemetry.addData("detections", currentDetections);
-        telemetry.update();
+        //telemetry.update();
         AprilTagDetection tagOfInterest = null;
         //boolean tagOfInterestFound = false;
         if (currentDetections.size() != 0) {
@@ -101,7 +102,6 @@ public class ATP {
                     telemetry.update();
                     tagOfInterest = tag;
                     //tagOfInterestFound = true;
-                    break;
                 }
             }
             if (tagOfInterest == null) {
@@ -114,6 +114,7 @@ public class ATP {
             getTagTelemetryData(tagOfInterest);
             telemetry.update();
             return findTagPosition(tagOfInterest);
+
         } else if (currentDetections.size() == 0) {
             telemetry.addLine("no tags here :(");
             telemetry.update();

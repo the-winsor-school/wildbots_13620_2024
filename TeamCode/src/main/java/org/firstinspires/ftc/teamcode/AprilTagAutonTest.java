@@ -23,7 +23,31 @@ public class AprilTagAutonTest extends LinearOpMode {
         waitForStart();
         if (opModeIsActive()) {
             //Location.TYPE zone = location.getType();
-            robot.goToTag(8);
+            robot.goToTag(1);
+
+            /*
+            averageBlue = (int) Core.mean(region1_Cb).val[0]; // red average values
+            averageGreen = (int) Core.mean(region1_Cg).val[0]; // blue average values
+            averageRed = (int) Core.mean(region1_Cr).val[0]; // green average values
+
+            Imgproc.rectangle(input, topLeft, bottomRight, BLUE, 2);
+
+            if (averageBlue < averageRed && averageGreen < averageRed) {
+                type = TYPE.ZONE1;
+            }
+            else if (averageBlue < averageGreen && averageRed < averageGreen) {
+                type = TYPE.ZONE2;
+            }
+            else if (averageGreen < averageBlue && averageRed < averageBlue) {
+                type = TYPE.ZONE3;
+            }
+            else {
+                type = null;
+            }
+
+            return input;
+             */
+
             /*
             if (zone == Location.TYPE.ZONE1) {
                 robot.goToTag(4);
