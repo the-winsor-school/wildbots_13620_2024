@@ -8,20 +8,19 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.driving.*;
 
-@Disabled
 @Autonomous(name="test auto")
 public class TestingAuton extends LinearOpMode {
     Robot robot;
-    LinearOpMode opMode;
-    IDriving driving;
 
     public void runOpMode() throws InterruptedException {
-        robot = new Robot(opMode);
+        robot = new Robot(this);
+
+        waitForStart();
 
         while (opModeIsActive()) {
 
-            robot.driving.horizontal(1);
-
+            telemetry.addData("limit switch", robot.liftLimitValue());
+            telemetry.update();
 
         }
 

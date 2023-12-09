@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
+import android.text.method.Touch;
+
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -10,6 +12,7 @@ import org.firstinspires.ftc.teamcode.Arm.*;
 import org.firstinspires.ftc.teamcode.driving.IDriving;
 import org.firstinspires.ftc.teamcode.driving.StrafeDrive;
 import com.qualcomm.robotcore.hardware.ColorSensor;
+import com.qualcomm.robotcore.hardware.TouchSensor;
 
 /**
  * In this file we:
@@ -39,8 +42,8 @@ public class Robot {
     private DcMotor clawMotor;
     private Servo rightServo;
     private Servo leftServo;
+    private TouchSensor liftResetPositionLimitSensor;
 
-    //libraries
     private ColorSensor color;
 
     /**
@@ -64,23 +67,23 @@ public class Robot {
         lf = map.tryGet(DcMotor.class, "lf");
         lb = map.tryGet(DcMotor.class, "lb");
 
-
-        rf.setDirection(DcMotor.Direction.FORWARD);
-        rb.setDirection(DcMotor.Direction.REVERSE);
-        lf.setDirection(DcMotor.Direction.REVERSE);
-        lb.setDirection(DcMotor.Direction.REVERSE);
-
         //arm
         liftMotor = map.tryGet(DcMotor.class, "elbow");
         clawMotor = map.tryGet(DcMotor.class, "wrist");
-
-        //just because o the orienttion o the motor
-        liftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-
         rightServo = map.tryGet(Servo.class, "right");
         leftServo = map.tryGet(Servo.class, "left");
 
+        //just because o the orienttion o the motor
+        liftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        clawMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        liftResetPositionLimitSensor = map.tryGet(TouchSensor.class, "elbowLimit");
         color = map.tryGet(ColorSensor.class, "color");
+
+        rf.setDirection(DcMotor.Direction.REVERSE);
+        rb.setDirection(DcMotor.Direction.REVERSE);
+        lf.setDirection(DcMotor.Direction.REVERSE);
+        lb.setDirection(DcMotor.Direction.FORWARD);
 
         /**
          * currently using StrafeDrive
@@ -98,7 +101,7 @@ public class Robot {
     }
 
     public boolean checkRedTape() {
-        if (color.red()  > 500)
+        if (color.red()  > 350)
             return true;
         return false;
     }
@@ -119,5 +122,9 @@ public class Robot {
         opMode.telemetry.addData("red",color.red());
         opMode.telemetry.addData("blue", color.blue());
         opMode.telemetry.update();
+    }
+
+    public Boolean liftLimitValue() {
+        return liftResetPositionLimitSensor.isPressed();
     }
 }
