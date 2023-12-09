@@ -25,8 +25,6 @@ public class AprilTagAutonTest extends LinearOpMode {
             telemetry.addData("Average Blue: ", averages[2]);
             sleep(3000);
             telemetry.update();
-            //Location.TYPE zone = location.getType();
-            robot.goToTag(1);
 
             if (zone == OpenCV.SignalPipeline.TYPE.ZONE1) {
                 robot.goToTag(1);

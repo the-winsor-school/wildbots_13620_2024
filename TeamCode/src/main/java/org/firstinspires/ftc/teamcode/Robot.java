@@ -36,22 +36,27 @@ public class Robot {
 
 
     public void goToTag(int tag) {
+        driving.turn(0.25f);
+        opMode.sleep(400);
         TelemetryVector tagsFound = atp.getVectorToTag(tag);
-        if (tagsFound == null) {
-            opMode.telemetry.addLine("no tags found, keep looking");
-            driving.vertical(0.05f);
-            return;
-        }
         double x = tagsFound.getX();
         double z = tagsFound.getZ();
         double yaw = tagsFound.getYaw();
-        if (tagsFound != null) {
+        while (tagsFound == null) {
+            opMode.telemetry.addLine("no tags found, keep looking");
+            driving.vertical(0.05f);
+            opMode.sleep(200);
+            return;
+        }
+        while (tagsFound != null) {
             while (Math.abs(yaw) > 15) {
                 driving.turn(0.25f);
                 if (yaw < 0) {
                     driving.turn(-0.25f);
                 }
-            } while (x < 0.3) {
+                atp.findTagPosition(tag);
+            }
+            while (x < 0.3) {
                 driving.horizontal(0.25f);
             } while (z > 3) {
                 driving.vertical(0.25f);
