@@ -22,7 +22,10 @@ public class ATP {
     OpenCvCamera camera;
     AprilTagDetectionPipeline aprilTagDetectionPipeline;
 
-    LinearOpMode opMode;
+    OpenCV.SignalPipeline openCVPipeline;
+
+    OpenCV opencv;
+    Telemetry telemetry;
 
     static final double FEET_PER_METER = 3.28084;
 
@@ -35,18 +38,18 @@ public class ATP {
 
     // UNITS ARE METERS
     double tagsize = 0.166;
-    Telemetry telemetry;
 
     public ATP(LinearOpMode opMode) {
         HardwareMap map = opMode.hardwareMap;
         this.telemetry = opMode.telemetry;
+        opencv = new OpenCV();
         //robot = new Robot(opMode);
         //setting pipeline
         int cameraMonitorViewId = map.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", map.appContext.getPackageName());
         camera = OpenCvCameraFactory.getInstance().createWebcam(map.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
         aprilTagDetectionPipeline = new AprilTagDetectionPipeline(tagsize, fx, fy, cx, cy);
-
         camera.setPipeline(aprilTagDetectionPipeline);
+        openCVPipeline = new OpenCV.SignalPipeline();
         camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
         {
             @Override
@@ -180,4 +183,6 @@ public class ATP {
             this.yaw = yaw;
         }
     }
+
+
 }
