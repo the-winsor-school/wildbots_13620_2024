@@ -8,7 +8,6 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.driving.*;
 
-@Disabled
 @Autonomous(name="test auto")
 public class TestingAuton extends LinearOpMode {
     Robot robot;
@@ -20,8 +19,8 @@ public class TestingAuton extends LinearOpMode {
 
         while (opModeIsActive()) {
 
-            robot.checkColorValues();
-
+            telemetry.addData("limit switch", robot.liftLimitValue());
+            telemetry.update();
 
         }
 
