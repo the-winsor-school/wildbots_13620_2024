@@ -1,7 +1,7 @@
 package org.firstinspires.ftc.teamcode.Arm;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.CRServo;
 
 public class FullArm {
 
@@ -17,7 +17,7 @@ public class FullArm {
      */
     public Boolean armEncodersOn;
 
-    public FullArm(DcMotor liftMotor, DcMotor clawMotor, Servo rightServo, Servo leftServo) {
+    public FullArm(DcMotor liftMotor, DcMotor clawMotor, CRServo rightServo, CRServo leftServo) {
         liftJoint = new ArmJoint(liftMotor,  0.8f, 50);
         clawJoint = new ArmJoint(clawMotor, 0.1f, 10);
 

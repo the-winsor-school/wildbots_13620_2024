@@ -5,8 +5,6 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import org.firstinspires.ftc.teamcode.Arm.Claw;
 import org.firstinspires.ftc.teamcode.Arm.FullArm;
 
-import java.lang.reflect.Field;
-
 @com.qualcomm.robotcore.eventloop.opmode.TeleOp(name = "TeleOp")
 public class TeleOp extends LinearOpMode {
 
@@ -84,11 +82,11 @@ public class TeleOp extends LinearOpMode {
 
             //claw controls
             if (gamepad2.right_bumper)
-                robot.arm.claw.controlClaw(Claw.ClawPos.OPEN);
+                robot.arm.claw.moveClaw(Claw.ClawPos.OPEN);
             if (gamepad2.left_bumper)
-                robot.arm.claw.controlClaw(Claw.ClawPos.CLOSE);
+                robot.arm.claw.moveClaw(Claw.ClawPos.CLOSE);
             if(!gamepad2.right_bumper && !gamepad2.left_bumper)
-                robot.arm.claw.controlClaw(Claw.ClawPos.STOP);
+                robot.arm.claw.moveClaw(Claw.ClawPos.STOP);
 
             //_______________________________________________
             //             PRINT STATEMENTS
