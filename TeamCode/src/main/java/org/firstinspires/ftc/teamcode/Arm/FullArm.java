@@ -1,10 +1,7 @@
 package org.firstinspires.ftc.teamcode.Arm;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.Servo;
-
-import org.firstinspires.ftc.teamcode.*;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.CRServo;
 
 public class FullArm {
 
@@ -13,39 +10,59 @@ public class FullArm {
 
     public Claw claw;
 
-    double armPower = 0.5;
-    int tolerance = 100;
+    /**
+     * will change the code used in the teleOp for the arm
+     * if false arm will only have manual controls on power
+     * if true arm will have move to position and manual controls that adjust encoder values
+     */
+    public Boolean armEncodersOn;
 
-    public FullArm(DcMotor liftMotor, DcMotor clawMotor,
-                   DcMotor liftMotorEncoder, DcMotor clawMotorEncoder,
-                   Servo rightServo, Servo leftServo) {
-        liftJoint = new ArmJoint(liftMotor, liftMotorEncoder, 0, armPower, tolerance);
-        clawJoint = new ArmJoint(clawMotor, clawMotorEncoder,  0, armPower, tolerance);
+    public FullArm(DcMotor liftMotor, DcMotor clawMotor, CRServo rightServo, CRServo leftServo) {
+        liftJoint = new ArmJoint(liftMotor,  0.8f, 50);
+        clawJoint = new ArmJoint(clawMotor, 0.1f, 10);
 
         claw = new Claw(rightServo, leftServo);
     }
 
-    public void moveToLevel(ArmLevel level) {
-        switch (level) {
+    /**
+     * resets encoder to 0 for both arm joints
+     */
+    public void resetEncoders() {
+        liftJoint.resetEncoders();
+        clawJoint.resetEncoders();
+    }
+
+    //TODO fix these values
+    /**
+     * moves both of the arm joints to set positons for different arm positions
+     */
+    public void moveArmToPosition(ArmPosition pos) {
+        switch (pos) {
             case RESET: //init position
-                liftJoint.setTargetPosition(100);
-                clawJoint.setTargetPosition(100);
+                liftJoint.setTargetPosition(0);
+                clawJoint.setTargetPosition(0);
                 break;
 
-            case PLACE: //placing on board
-                liftJoint.setTargetPosition(1300);
-                clawJoint.setTargetPosition(800);
-                break;
             case PICKINGUP: //picking up
-                liftJoint.setTargetPosition(1300);
-                clawJoint.setTargetPosition(100);
-                claw.controlClaw(Claw.ClawPos.OPEN);
+                liftJoint.setTargetPosition(150);
+                clawJoint.setTargetPosition(25);
+                break;
+
+            case PLACINGLOW: //placing on board
+                liftJoint.setTargetPosition(2650);
+                clawJoint.setTargetPosition(90);
+                break;
+
+            case PLACINGHIGH:
+                liftJoint.setTargetPosition(0);
+                clawJoint.setTargetPosition(0);
                 break;
         }
     }
-    public enum ArmLevel {
+    public enum ArmPosition {
         RESET,
-        PLACE,
+        PLACINGLOW,
         PICKINGUP,
+        PLACINGHIGH,
     }
 }

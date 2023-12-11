@@ -15,61 +15,95 @@ public class TeleOp extends LinearOpMode {
 
         waitForStart();
 
+        //we are using arm encoders right now
+        robot.arm.armEncodersOn = true;
+
+        robot.arm.resetEncoders();
+
         while (opModeIsActive()){
 
             //_______________________________________________
             //             MAIN CONTROLLER
             //_______________________________________________
-
+            
             float x = gamepad1.right_stick_x;
-            float y = gamepad1.right_stick_y;
+            float y = -gamepad1.right_stick_y; //inputs from joystick are opposite
             float t = gamepad1.left_stick_x;
 
             robot.driving.joystickDrive(x, y, t);
+
+            //make wheels go faster
+            if (gamepad1.dpad_up)
+                robot.driving.adjustSpeed(0.05f);
+
+            //make wheels speed slower
+            if(gamepad1.dpad_down)
+                robot.driving.adjustSpeed(-0.05f);
 
             //_______________________________________________
             //             MECH CONTROLLER
             //_______________________________________________
 
-            //arm levels
-            if (gamepad2.y)
-                robot.arm.moveToLevel(FullArm.ArmLevel.PICKINGUP);
-            if(gamepad2.b)
-                robot.arm.moveToLevel(FullArm.ArmLevel.RESET);
-            if(gamepad2.a)
-                robot.arm.moveToLevel(FullArm.ArmLevel.PLACE);
 
-            //arm manual controls
-            if (gamepad2.dpad_up)
-                robot.arm.liftJoint.changeTargetPosition(200);
-            if(gamepad2.dpad_down)
-                robot.arm.liftJoint.changeTargetPosition(-200);
-            if (gamepad2.dpad_left)
-                robot.arm.clawJoint.changeTargetPosition(200);
-            if(gamepad2.dpad_right)
-                robot.arm.clawJoint.changeTargetPosition(-200);
+            if (robot.arm.armEncodersOn) {
+
+                //arm manual controls
+                if (gamepad2.dpad_up)
+                    robot.arm.liftJoint.changeTargetPosition(200);
+                if(gamepad2.dpad_down)
+                    robot.arm.liftJoint.changeTargetPosition(-200);
+                if (gamepad2.dpad_right)
+                    robot.arm.clawJoint.changeTargetPosition(50);
+                if (gamepad2.dpad_left)
+                    robot.arm.clawJoint.changeTargetPosition(-50);
+
+                //arm levels
+                if (gamepad2.x)
+                    robot.arm.moveArmToPosition(FullArm.ArmPosition.PICKINGUP);
+                if (gamepad2.a)
+                    robot.arm.moveArmToPosition(FullArm.ArmPosition.RESET);
+                if (gamepad2.b)
+                    robot.arm.moveArmToPosition(FullArm.ArmPosition.PLACINGLOW);
+
+                robot.arm.liftJoint.armLoop();
+                robot.arm.clawJoint.armLoop();
+
+            } else {
+                //arm manual controls
+                if (gamepad2.dpad_up)
+                    robot.arm.liftJoint.usePower(true);
+                if(gamepad2.dpad_down)
+                    robot.arm.liftJoint.usePower(true);
+                if (gamepad2.dpad_right)
+                    robot.arm.clawJoint.usePower(false);
+                if (gamepad2.dpad_left)
+                    robot.arm.clawJoint.usePower(false);
+            }
 
             //claw controls
-            if (gamepad2.left_stick_x > 0.75f)
-                robot.arm.claw.controlClaw(Claw.ClawPos.OPEN);
-            if (gamepad2.left_stick_x < 0.75f)
-                robot.arm.claw.controlClaw(Claw.ClawPos.CLOSE);
-
-            //update arm positions
-            robot.arm.liftJoint.armLoop();
-            robot.arm.clawJoint.armLoop();
+            if (gamepad2.right_bumper)
+                robot.arm.claw.moveClaw(Claw.ClawPos.OPEN);
+            if (gamepad2.left_bumper)
+                robot.arm.claw.moveClaw(Claw.ClawPos.CLOSE);
+            if(!gamepad2.right_bumper && !gamepad2.left_bumper)
+                robot.arm.claw.moveClaw(Claw.ClawPos.STOP);
 
             //_______________________________________________
             //             PRINT STATEMENTS
             //_______________________________________________
 
-            //joystick inputs
-            //telemetry.addData("x: ", x);
-            //telemetry.addData("y: ", y);
-            //telemetry.addData("t: ", t);
+            telemetry.addData("ARM MODE:", robot.arm.armEncodersOn? "using encoders" : "not using encoders");
+            telemetry.addLine("\n");
+
+/*            //joystick inputs
+            telemetry.addData("x: ", x);
+            telemetry.addData("y: ", y);
+            telemetry.addData("t: ", t);
 
             //wheels powers
-            //robot.printWheelPowers();
+            robot.printWheelPowers();*/
+
+           telemetry.addLine("----------------ARM-------------------------");
 
             //arm current position
             telemetry.addData("lift joint: ", robot.arm.liftJoint.getCurrentPosition());
@@ -78,6 +112,14 @@ public class TeleOp extends LinearOpMode {
             //arm directions
             telemetry.addData("lift joint: ", robot.arm.liftJoint.getDirection());
             telemetry.addData("claw joint: ", robot.arm.clawJoint.getDirection());
+
+            telemetry.addData("target lift joint: ", robot.arm.liftJoint.targetPosition);
+            telemetry.addData("target claw joint: ", robot.arm.clawJoint.targetPosition);
+
+            telemetry.addLine("----------------CLAW-------------------------");
+
+            telemetry.addData("right servo: ", robot.arm.claw.getPower("right"));
+            telemetry.addData("left servo: ", robot.arm.claw.getPower("left"));
 
             telemetry.update();
         }

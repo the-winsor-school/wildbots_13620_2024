@@ -3,23 +3,24 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.driving.*;
 
 @Autonomous(name="test auto")
-public class SimpleAuton extends LinearOpMode {
+public class TestingAuton extends LinearOpMode {
     Robot robot;
-    LinearOpMode opMode;
-    IDriving driving;
 
     public void runOpMode() throws InterruptedException {
-        robot = new Robot(opMode);
+        robot = new Robot(this);
+
+        waitForStart();
 
         while (opModeIsActive()) {
 
-            robot.driving.horizontal(1);
-
+            telemetry.addData("limit switch", robot.liftLimitValue());
+            telemetry.update();
 
         }
 
