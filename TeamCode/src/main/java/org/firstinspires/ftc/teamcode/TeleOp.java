@@ -15,6 +15,9 @@ public class TeleOp extends LinearOpMode {
 
         waitForStart();
 
+        //we are using arm encoders right now
+        robot.arm.armEncodersOn = true;
+
         robot.arm.resetEncoders();
 
         while (opModeIsActive()){
@@ -41,46 +44,64 @@ public class TeleOp extends LinearOpMode {
             //             MECH CONTROLLER
             //_______________________________________________
 
-            //arm manual controls
-            if (gamepad2.dpad_up)
-                robot.arm.liftJoint.usePower(true);
-            if(gamepad2.dpad_down)
-                robot.arm.liftJoint.usePower(false);
-            if (gamepad2.dpad_right)
-                robot.arm.clawJoint.usePower(true);
-            if (gamepad2.dpad_left)
-                robot.arm.clawJoint.usePower(false);
 
-            //stops motion of motor if button is not being pressed
-            if (!gamepad2.dpad_right && !gamepad2.dpad_left)
-                robot.arm.clawJoint.stop();
+            if (robot.arm.armEncodersOn) {
 
-            if (!gamepad2.dpad_up && !gamepad2.dpad_down)
-                robot.arm.liftJoint.stop();
+                //arm manual controls
+                if (gamepad2.dpad_up)
+                    robot.arm.liftJoint.changeTargetPosition(200);
+                if(gamepad2.dpad_down)
+                    robot.arm.liftJoint.changeTargetPosition(-200);
+                if (gamepad2.dpad_right)
+                    robot.arm.clawJoint.changeTargetPosition(50);
+                if (gamepad2.dpad_left)
+                    robot.arm.clawJoint.changeTargetPosition(-50);
+
+                //arm levels
+                if (gamepad2.x)
+                    robot.arm.moveArmToPosition(FullArm.ArmPosition.PICKINGUP);
+                if (gamepad2.a)
+                    robot.arm.moveArmToPosition(FullArm.ArmPosition.RESET);
+                if (gamepad2.b)
+                    robot.arm.moveArmToPosition(FullArm.ArmPosition.PLACINGLOW);
+
+                robot.arm.liftJoint.armLoop();
+                robot.arm.clawJoint.armLoop();
+
+            } else {
+                //arm manual controls
+                if (gamepad2.dpad_up)
+                    robot.arm.liftJoint.usePower(true);
+                if(gamepad2.dpad_down)
+                    robot.arm.liftJoint.usePower(true);
+                if (gamepad2.dpad_right)
+                    robot.arm.clawJoint.usePower(false);
+                if (gamepad2.dpad_left)
+                    robot.arm.clawJoint.usePower(false);
+            }
 
             //claw controls
-            if (gamepad2.x)
-                robot.arm.claw.controlClaw(Claw.ClawPos.OPEN);
-            if (gamepad2.b)
-                robot.arm.claw.controlClaw(Claw.ClawPos.CLOSE);
-            if(!gamepad2.x && !gamepad2.b)
-                robot.arm.claw.controlClaw(Claw.ClawPos.STOP);
-
-            //reset arm encoders
-            //if (gamepad2.x)
-                //robot.arm.resetEncoders();
+            if (gamepad2.right_bumper)
+                robot.arm.claw.moveClaw(Claw.ClawPos.OPEN);
+            if (gamepad2.left_bumper)
+                robot.arm.claw.moveClaw(Claw.ClawPos.CLOSE);
+            if(!gamepad2.right_bumper && !gamepad2.left_bumper)
+                robot.arm.claw.moveClaw(Claw.ClawPos.STOP);
 
             //_______________________________________________
             //             PRINT STATEMENTS
             //_______________________________________________
 
-            //joystick inputs
+            telemetry.addData("ARM MODE:", robot.arm.armEncodersOn? "using encoders" : "not using encoders");
+            telemetry.addLine("\n");
+
+/*            //joystick inputs
             telemetry.addData("x: ", x);
             telemetry.addData("y: ", y);
             telemetry.addData("t: ", t);
 
             //wheels powers
-            robot.printWheelPowers();
+            robot.printWheelPowers();*/
 
            telemetry.addLine("----------------ARM-------------------------");
 
@@ -99,9 +120,6 @@ public class TeleOp extends LinearOpMode {
 
             telemetry.addData("right servo: ", robot.arm.claw.getPower("right"));
             telemetry.addData("left servo: ", robot.arm.claw.getPower("left"));
-
-            //robot.arm.liftJoint.armLoop();
-            //robot.arm.clawJoint.armLoop();
 
             telemetry.update();
         }
