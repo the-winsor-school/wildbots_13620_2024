@@ -48,8 +48,8 @@ public class OpenCV {
         private volatile int averageRedZone1;
         private volatile int averageRedZone2;
         private volatile int averageRedZone3;
-        //private volatile int averageBlue;
-        //private volatile int averageGreen;
+        private volatile int averageBlue;
+        private volatile int averageGreen;
         private volatile TYPE type = TYPE.ZONE2; //default value
 
         private void inputToCb(Mat input) {
@@ -108,13 +108,13 @@ public class OpenCV {
 
              */
             
-            if (averageBlue < averageRed && averageGreen < averageRed) {
+            if (averageRedZone2 < averageRedZone1 && averageRedZone3 < averageRedZone1) {
                 type = TYPE.ZONE1;
             }
-            else if (averageBlue < averageGreen && averageRed < averageGreen) {
+            else if (averageRedZone1 < averageRedZone2 && averageRedZone3 < averageRedZone2) {
                 type = TYPE.ZONE2;
             }
-            else if (averageGreen < averageBlue && averageRed < averageBlue) {
+            else if (averageRedZone1 < averageRedZone3 && averageRedZone2 < averageRedZone3) {
                 type = TYPE.ZONE3;
             }
             else {
@@ -128,11 +128,12 @@ public class OpenCV {
         public TYPE getType() {
             return type;
         }
-
+        /*
         public int[] getAverage () {
             int[] averages = {averageRed, averageGreen, averageBlue};
             return averages;
         }
+         */
 
         public enum TYPE {
             ZONE1, ZONE2, ZONE3, ZONE4, ZONE5, ZONE6
