@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode;
 
-import android.text.method.Touch;
-
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -50,7 +48,7 @@ public class Robot {
      * itialization of libraires
      */
     public IDriving driving;
-    public FullArm arm;
+    public ArmJoints arm;
 
     private LinearOpMode opMode;
 
@@ -89,7 +87,7 @@ public class Robot {
          * currently using StrafeDrive
          */
         driving = new StrafeDrive(rf, rb, lf, lb);
-        arm = new FullArm(liftMotor, clawMotor, rightServo, leftServo);
+        arm = new ArmJoints(liftMotor, clawMotor, rightServo, leftServo);
     }
 
     public void printWheelPowers() {
