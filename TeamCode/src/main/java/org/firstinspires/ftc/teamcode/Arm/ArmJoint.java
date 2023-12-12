@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode.Arm;
 
 
+import android.text.method.Touch;
+
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.TouchSensor;
@@ -30,26 +32,23 @@ public class ArmJoint {
 
     TouchSensor resetLimit;
 
-    public ArmJoint(DcMotor motor, double powerUsed, int armTolerance) {
+    public ArmJoint(DcMotor motor, TouchSensor resetLimit, double powerUsed, int armTolerance) {
         this.motor = motor;
+        this.resetLimit = resetLimit;
         this.powerUsed = powerUsed;
         this.armTolerance = armTolerance;
-    }
-
-    public void addResetLimit(TouchSensor touch) {
-        resetLimit = touch;
     }
 
     /**
      * always should be running to move joint closer to target position
      */
     public void armLoop() {
-        int current = getCurrentPosition();
-        if (resetLimit != null) {
-            if (resetLimit.isPressed()) {
-                resetEncoders();
-            }
+        if (resetLimit.isPressed()) {
+            resetEncoders();
         }
+
+        int current = getCurrentPosition();
+
         if (current - targetPosition > armTolerance
                 || current - targetPosition < -armTolerance) {
             moveJointRotations();

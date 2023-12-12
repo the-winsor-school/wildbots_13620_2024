@@ -19,11 +19,9 @@ public class FullArm {
      */
     public Boolean armEncodersOn;
 
-    public FullArm(DcMotor liftMotor, TouchSensor liftResetLimit, DcMotor clawMotor, CRServo rightServo, CRServo leftServo) {
-        liftJoint = new ArmJoint(liftMotor,  0.8f, 50);
-        clawJoint = new ArmJoint(clawMotor, 0.1f, 10);
-
-        liftJoint.addResetLimit(liftResetLimit);
+    public FullArm(DcMotor liftMotor, TouchSensor liftResetLimit, DcMotor clawMotor, TouchSensor wristResetLimit, CRServo rightServo, CRServo leftServo) {
+        liftJoint = new ArmJoint(liftMotor, liftResetLimit, 0.8f, 50);
+        clawJoint = new ArmJoint(clawMotor, wristResetLimit, 0.1f, 10);
 
         claw = new Claw(rightServo, leftServo);
     }

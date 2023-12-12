@@ -43,6 +43,7 @@ public class Robot {
     private CRServo rightServo;
     private CRServo leftServo;
     private TouchSensor liftResetPositionLimitSensor;
+    private TouchSensor clawResetPositionLimitSensor;
 
     private ColorSensor color;
 
@@ -78,6 +79,7 @@ public class Robot {
         clawMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
         liftResetPositionLimitSensor = map.tryGet(TouchSensor.class, "elbowLimit");
+        clawResetPositionLimitSensor = map.tryGet(TouchSensor.class, "wristLimit");
         color = map.tryGet(ColorSensor.class, "color");
 
         rf.setDirection(DcMotor.Direction.REVERSE);
@@ -89,7 +91,7 @@ public class Robot {
          * currently using StrafeDrive
          */
         driving = new StrafeDrive(rf, rb, lf, lb);
-        arm = new FullArm(liftMotor, liftResetPositionLimitSensor, clawMotor, rightServo, leftServo);
+        arm = new FullArm(liftMotor, liftResetPositionLimitSensor, clawMotor, clawResetPositionLimitSensor, rightServo, leftServo);
     }
 
     public void printWheelPowers() {
