@@ -89,7 +89,7 @@ public class Robot {
          * currently using StrafeDrive
          */
         driving = new StrafeDrive(rf, rb, lf, lb);
-        arm = new FullArm(liftMotor, clawMotor, rightServo, leftServo);
+        arm = new FullArm(liftMotor, liftResetPositionLimitSensor, clawMotor, rightServo, leftServo);
     }
 
     public void printWheelPowers() {

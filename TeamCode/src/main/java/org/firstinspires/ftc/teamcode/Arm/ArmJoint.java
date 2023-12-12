@@ -1,9 +1,11 @@
 package org.firstinspires.ftc.teamcode.Arm;
 
+
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.TouchSensor;
 
-import org.firstinspires.ftc.robotcontroller.external.samples.RobotTeleopPOV_Linear;
+
 
 
 public class ArmJoint {
@@ -26,10 +28,16 @@ public class ArmJoint {
 
     public int targetPosition;
 
+    TouchSensor resetLimit;
+
     public ArmJoint(DcMotor motor, double powerUsed, int armTolerance) {
         this.motor = motor;
         this.powerUsed = powerUsed;
         this.armTolerance = armTolerance;
+    }
+
+    public void addResetLimit(TouchSensor touch) {
+        resetLimit = touch;
     }
 
     /**
@@ -37,6 +45,11 @@ public class ArmJoint {
      */
     public void armLoop() {
         int current = getCurrentPosition();
+        if (resetLimit != null) {
+            if (resetLimit.isPressed()) {
+                resetEncoders();
+            }
+        }
         if (current - targetPosition > armTolerance
                 || current - targetPosition < -armTolerance) {
             moveJointRotations();
