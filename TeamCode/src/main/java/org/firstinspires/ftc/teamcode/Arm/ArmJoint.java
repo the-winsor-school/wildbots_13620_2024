@@ -22,7 +22,7 @@ public class ArmJoint {
      * tolerance used for this joint
      * (which is how accurate it will try to get to the exact target position)
      */
-    int armTolerance;
+    public int armTolerance;
 
     public int targetPosition;
 

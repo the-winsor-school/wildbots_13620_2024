@@ -4,6 +4,8 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.*;
+import org.firstinspires.ftc.teamcode.Arm.Claw;
+import org.firstinspires.ftc.teamcode.Arm.FullArm;
 
 public class AutonMovements {
 
@@ -89,31 +91,40 @@ public class AutonMovements {
     }
 
     public void PlacingAuton (FieldPosition fieldPosition) {
+        robot.arm.resetEncoders();
         int horizontalDirection = 0; //will never be zero
 
-        if (fieldPosition == FieldPosition.FAR_BLUE)
+        if (fieldPosition == FieldPosition.FAR_BLUE || fieldPosition == FieldPosition.CLOSE_BLUE)
             horizontalDirection = 1;
-        else if (fieldPosition == FieldPosition.FAR_RED)
+        else if (fieldPosition == FieldPosition.FAR_RED || fieldPosition == FieldPosition.CLOSE_RED)
             horizontalDirection = -1;
+
         if (fieldPosition == FieldPosition.CLOSE_BLUE
                 || fieldPosition == FieldPosition.CLOSE_RED){
+            opMode.telemetry.addData("I'm","in the loop");
+            robot.printWheelPowers();
+            telemetry.update();
 
             robot.driving.horizontal(0.50f * horizontalDirection);
-            opMode.sleep(1700);//have to test time
+            opMode.sleep(4200);//have to test time
 
             robot.driving.vertical(0.50f);
-            opMode.sleep(1200);//have to test time
-            robot.driving.stop();
+            opMode.sleep(1000);//have to test time
 
-            //lift arm here
+            opMode.telemetry.addData("moving","arm!");
+            robot.arm.moveArmToPosition(FullArm.ArmPosition.PLACINGLOW);
+            while(Math.abs(robot.arm.liftJoint.getCurrentPosition() - robot.arm.liftJoint.targetPosition) > robot.arm.liftJoint.armTolerance) {
+                robot.arm.clawJoint.armLoop();
+                robot.arm.liftJoint.armLoop();
+            }
 
             robot.driving.vertical(0.25f);
-            opMode.sleep(100);//have to test time
+            opMode.sleep(1000);//have to test time
             robot.driving.stop();
 
-            //open claw here
-            //close claw here
-            //drop arm here
+            robot.arm.claw.moveClaw(Claw.ClawPos.OPEN);
+            opMode.sleep(1000);
+            robot.arm.claw.moveClaw(Claw.ClawPos.STOP);
         }
 
         else if (fieldPosition == FieldPosition.FAR_BLUE
@@ -138,15 +149,16 @@ public class AutonMovements {
             opMode.sleep(2000);
             robot.driving.stop();
 
-            //lift arm here
+            robot.arm.moveArmToPosition(FullArm.ArmPosition.PLACINGLOW);
+            robot.arm.clawJoint.armLoop();
+            robot.arm.liftJoint.armLoop();
 
             robot.driving.vertical(0.25f);
             opMode.sleep(100);//have to test time
             robot.driving.stop();
 
-            //open claw here
-            //close claw here
-            //drop arm here
+            robot.arm.claw.moveClaw(Claw.ClawPos.OPEN);
+            robot.arm.claw.moveClaw(Claw.ClawPos.STOP);
         }
     }
 
