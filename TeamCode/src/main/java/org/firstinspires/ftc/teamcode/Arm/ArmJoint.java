@@ -30,7 +30,7 @@ public class ArmJoint {
 
     public int targetPosition;
 
-    TouchSensor resetLimit;
+    public TouchSensor resetLimit;
 
     public ArmJoint(DcMotor motor, TouchSensor resetLimit, double powerUsed, int armTolerance) {
         this.motor = motor;
