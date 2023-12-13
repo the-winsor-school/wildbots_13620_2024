@@ -65,6 +65,10 @@ public class ArmJoint {
         targetPosition = getCurrentPosition() + rotations;
     }
 
+    public void setZeroBehavoir(DcMotor.ZeroPowerBehavior thing) {
+        motor.setZeroPowerBehavior(thing);
+    }
+
     @Deprecated
     /**
      * takes the thread and stops rest of progam whiles its executing

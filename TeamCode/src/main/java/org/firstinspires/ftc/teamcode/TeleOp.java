@@ -64,6 +64,8 @@ public class TeleOp extends LinearOpMode {
                     robot.arm.moveArmToPosition(FullArm.ArmPosition.RESET);
                 if (gamepad2.b)
                     robot.arm.moveArmToPosition(FullArm.ArmPosition.PLACINGLOW);
+                if (gamepad2.y)
+                    robot.arm.moveArmToPosition(FullArm.ArmPosition.TRAVEL);
 
                 robot.arm.liftJoint.armLoop();
                 robot.arm.clawJoint.armLoop();
