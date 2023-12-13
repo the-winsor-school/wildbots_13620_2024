@@ -129,4 +129,8 @@ public class Robot {
     public Boolean liftLimitValue() {
         return liftResetPositionLimitSensor.isPressed();
     }
+    public Boolean clawLimitValue() {
+        return clawResetPositionLimitSensor.isPressed();
+    }
+
 }

@@ -97,13 +97,16 @@ public class TeleOp extends LinearOpMode {
             telemetry.addData("ARM MODE1:", robot.arm.armEncodersOn? "using encoders" : "not using encoders");
             telemetry.addLine("\n");
 
-/*            //joystick inputs
+            telemetry.addLine("----------------WHEELS-------------------------");
+
+
+            //joystick inputs
             telemetry.addData("x: ", x);
             telemetry.addData("y: ", y);
             telemetry.addData("t: ", t);
 
             //wheels powers
-            robot.printWheelPowers();*/
+            robot.printWheelPowers();
 
            telemetry.addLine("----------------ARM-------------------------");
 
@@ -122,6 +125,9 @@ public class TeleOp extends LinearOpMode {
 
             telemetry.addData("right servo: ", robot.arm.claw.getPower("right"));
             telemetry.addData("left servo: ", robot.arm.claw.getPower("left"));
+
+            telemetry.addData("lift limit: ", robot.liftLimitValue());
+            telemetry.addData("claw limit: ", robot.clawLimitValue());
 
             telemetry.update();
         }
