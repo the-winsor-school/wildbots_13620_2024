@@ -9,9 +9,6 @@ public class ArmJoints {
     public DcMotorEx elbow;
     public DcMotorEx wrist;
 
-    public float elbowPower;
-    public float wristPower;
-
     public Claw claw;
 
     /**
@@ -24,15 +21,15 @@ public class ArmJoints {
     public ArmJoints(DcMotor elbowMotor, DcMotor wristMotor, CRServo rightServo, CRServo leftServo) {
         elbow = (DcMotorEx) elbowMotor;
         elbow.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        elbowPower = 0.8f;
-        elbow.setPower(elbowPower);
+        elbow.setPower(0.8f);
         elbow.setTargetPositionTolerance(50);
+        elbow.setTargetPosition(0);
 
         wrist = (DcMotorEx) wristMotor;
         wrist.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        wristPower = 0.1f;
-        wrist.setPower(wristPower);
+        wrist.setPower(0.1f);
         wrist.setTargetPositionTolerance(10);
+        wrist.setTargetPosition(0);
 
         claw = new Claw(rightServo, leftServo);
     }

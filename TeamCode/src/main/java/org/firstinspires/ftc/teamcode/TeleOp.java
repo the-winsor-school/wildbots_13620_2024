@@ -14,8 +14,6 @@ public class TeleOp extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         robot = new Robot(this);
 
-        waitForStart();
-
         //we are using arm encoders right now
         robot.arm.armEncodersOn = true;
 
@@ -24,6 +22,8 @@ public class TeleOp extends LinearOpMode {
         } else {
             robot.arm.runWithoutEncoders();
         }
+
+        waitForStart();
 
         while (opModeIsActive()){
 
@@ -54,13 +54,13 @@ public class TeleOp extends LinearOpMode {
 
                 //arm manual controls
                 if (gamepad2.dpad_up)
-                    robot.arm.elbow.setTargetPositionTolerance(robot.arm.elbow.getCurrentPosition() + 200);
+                    robot.arm.elbow.setTargetPosition(robot.arm.elbow.getCurrentPosition() + 200);
                 if(gamepad2.dpad_down)
-                    robot.arm.elbow.setTargetPositionTolerance(robot.arm.elbow.getCurrentPosition() - 200);
+                    robot.arm.elbow.setTargetPosition(robot.arm.elbow.getCurrentPosition() - 200);
                 if (gamepad2.dpad_right)
-                    robot.arm.wrist.setTargetPositionTolerance(robot.arm.wrist.getCurrentPosition() + 50);
+                    robot.arm.wrist.setTargetPosition(robot.arm.wrist.getCurrentPosition() + 50);
                 if (gamepad2.dpad_left)
-                    robot.arm.wrist.setTargetPositionTolerance(robot.arm.wrist.getCurrentPosition() - 50);
+                    robot.arm.wrist.setTargetPosition(robot.arm.wrist.getCurrentPosition() - 50);
 
                 //arm levels
                 if (gamepad2.x)
@@ -100,6 +100,10 @@ public class TeleOp extends LinearOpMode {
                 robot.arm.claw.moveClaw(Claw.ClawPos.CLOSE);
             if(!gamepad2.right_bumper && !gamepad2.left_bumper)
                 robot.arm.claw.moveClaw(Claw.ClawPos.STOP);
+
+
+            robot.arm.elbow.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.arm.wrist.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
             //_______________________________________________
             //             PRINT STATEMENTS
