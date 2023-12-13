@@ -64,6 +64,8 @@ public class TeleOp extends LinearOpMode {
                     robot.arm.moveArmToPosition(FullArm.ArmPosition.RESET);
                 if (gamepad2.b)
                     robot.arm.moveArmToPosition(FullArm.ArmPosition.PLACINGLOW);
+                if (gamepad2.y)
+                    robot.arm.moveArmToPosition(FullArm.ArmPosition.TRAVEL);
 
                 robot.arm.liftJoint.armLoop();
                 robot.arm.clawJoint.armLoop();
@@ -92,7 +94,7 @@ public class TeleOp extends LinearOpMode {
             //             PRINT STATEMENTS
             //_______________________________________________
 
-            telemetry.addData("ARM MODE:", robot.arm.armEncodersOn? "using encoders" : "not using encoders");
+            telemetry.addData("ARM MODE1:", robot.arm.armEncodersOn? "using encoders" : "not using encoders");
             telemetry.addLine("\n");
 
 /*            //joystick inputs

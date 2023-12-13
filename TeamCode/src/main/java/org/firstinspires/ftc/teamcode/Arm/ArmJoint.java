@@ -20,7 +20,7 @@ public class ArmJoint {
     /**
      * actual DcMotor object
      */
-    DcMotor motor;
+    public DcMotor motor;
 
     /**
      * tolerance used for this joint
@@ -54,7 +54,8 @@ public class ArmJoint {
             moveJointRotations();
         }
         else {
-            brake();
+            motor.setPower(0);
+            motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         }
     }
 
@@ -74,6 +75,10 @@ public class ArmJoint {
      */
     public void changeTargetPosition(int rotations) {
         targetPosition = getCurrentPosition() + rotations;
+    }
+
+    public void setZeroBehavoir(DcMotor.ZeroPowerBehavior thing) {
+        motor.setZeroPowerBehavior(thing);
     }
 
     @Deprecated

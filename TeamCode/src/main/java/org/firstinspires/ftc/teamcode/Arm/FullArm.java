@@ -23,6 +23,9 @@ public class FullArm {
         liftJoint = new ArmJoint(liftMotor, liftResetLimit, 0.8f, 50);
         clawJoint = new ArmJoint(clawMotor, wristResetLimit, 0.1f, 10);
 
+        liftJoint.setZeroBehavoir(DcMotor.ZeroPowerBehavior.BRAKE);
+        clawJoint.setZeroBehavoir(DcMotor.ZeroPowerBehavior.FLOAT);
+
         claw = new Claw(rightServo, leftServo);
     }
 
@@ -55,9 +58,9 @@ public class FullArm {
                 clawJoint.setTargetPosition(90);
                 break;
 
-            case PLACINGHIGH:
-                liftJoint.setTargetPosition(0);
-                clawJoint.setTargetPosition(0);
+            case TRAVEL:
+                liftJoint.setTargetPosition(290);
+                clawJoint.setTargetPosition(65);
                 break;
         }
     }
@@ -65,6 +68,6 @@ public class FullArm {
         RESET,
         PLACINGLOW,
         PICKINGUP,
-        PLACINGHIGH,
+        TRAVEL,
     }
 }

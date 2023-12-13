@@ -49,8 +49,9 @@ public class StrafeDrive implements IDriving {
 
     public void stop () {
         rf.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        rb.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        lf.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        rb.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        lf.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         lb.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 
