@@ -82,19 +82,19 @@ public class CombinedArm {
                 wrist.setTargetPosition(0);
                 break;
 
-            case PICKINGUP: //picking up
+            case PICKING_UP: //picking up
                 elbow.setTargetPosition(150);
                 wrist.setTargetPosition(25);
                 break;
 
-            case PLACINGLOW: //placing on board
+            case PLACING: //placing on board
                 elbow.setTargetPosition(2650);
                 wrist.setTargetPosition(90);
                 break;
 
-            case PLACINGHIGH:
-                elbow.setTargetPosition(0);
-                wrist.setTargetPosition(0);
+            case TRAVELING:
+                elbow.setTargetPosition(290);
+                wrist.setTargetPosition(65);
                 break;
         }
         elbow.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -103,8 +103,8 @@ public class CombinedArm {
 
     public enum ArmPosition {
         RESET,
-        PLACINGLOW,
-        PICKINGUP,
-        PLACINGHIGH,
+        PICKING_UP,
+        PLACING,
+        TRAVELING,
     }
 }
