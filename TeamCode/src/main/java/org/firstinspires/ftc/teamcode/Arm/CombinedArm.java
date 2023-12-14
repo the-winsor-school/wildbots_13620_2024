@@ -3,11 +3,18 @@ package org.firstinspires.ftc.teamcode.Arm;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.TouchSensor;
 
-public class ArmJoints {
+public class CombinedArm {
 
     public DcMotorEx elbow;
     public DcMotorEx wrist;
+
+    public float elbowPower;
+    public float wristPower;
+
+    private TouchSensor elbowLimit;
+    private TouchSensor wristLimit;
 
     public Claw claw;
 
@@ -18,18 +25,24 @@ public class ArmJoints {
      */
     public Boolean armEncodersOn;
 
-    public ArmJoints(DcMotor elbowMotor, DcMotor wristMotor, CRServo rightServo, CRServo leftServo) {
+    public CombinedArm(DcMotor elbowMotor, DcMotor wristMotor, TouchSensor elbowLimit, TouchSensor wristLimit, CRServo rightServo, CRServo leftServo) {
         elbow = (DcMotorEx) elbowMotor;
         elbow.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        elbow.setPower(0.8f);
+        elbowPower = 0.8f;
+        elbow.setPower(elbowPower);
         elbow.setTargetPositionTolerance(50);
         elbow.setTargetPosition(0);
+        this.elbowLimit = elbowLimit;
+        elbow.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         wrist = (DcMotorEx) wristMotor;
         wrist.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        wrist.setPower(0.1f);
+        wristPower = 0.1f;
+        wrist.setPower(wristPower);
         wrist.setTargetPositionTolerance(10);
         wrist.setTargetPosition(0);
+        this.wristLimit = wristLimit;
+        elbow.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
         claw = new Claw(rightServo, leftServo);
     }
@@ -45,6 +58,18 @@ public class ArmJoints {
     public void runWithoutEncoders() {
         elbow.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         wrist.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+    }
+
+    public void runToPosition() {
+        elbow.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        wrist.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    }
+
+    public void updateZeroWithLimits() {
+        if (elbowLimit.isPressed())
+            elbow.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        if (wristLimit.isPressed())
+            wrist.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
 
     /**
