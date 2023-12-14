@@ -1,9 +1,10 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.Arm.Claw;
-import org.firstinspires.ftc.teamcode.Arm.FullArm;
+import org.firstinspires.ftc.teamcode.Arm.CombinedArm;
 
 @com.qualcomm.robotcore.eventloop.opmode.TeleOp(name = "TeleOp")
 public class TeleOp extends LinearOpMode {
@@ -13,12 +14,16 @@ public class TeleOp extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         robot = new Robot(this);
 
-        waitForStart();
-
         //we are using arm encoders right now
         robot.arm.armEncodersOn = true;
 
-        robot.arm.resetEncoders();
+        if (robot.arm.armEncodersOn) {
+            robot.arm.resetEncoders();
+        } else {
+            robot.arm.runWithoutEncoders();
+        }
+
+        waitForStart();
 
         while (opModeIsActive()){
 
@@ -49,37 +54,43 @@ public class TeleOp extends LinearOpMode {
 
                 //arm manual controls
                 if (gamepad2.dpad_up)
-                    robot.arm.liftJoint.changeTargetPosition(200);
+                    robot.arm.elbow.setTargetPosition(robot.arm.elbow.getCurrentPosition() + 200);
                 if(gamepad2.dpad_down)
-                    robot.arm.liftJoint.changeTargetPosition(-200);
+                    robot.arm.elbow.setTargetPosition(robot.arm.elbow.getCurrentPosition() - 200);
                 if (gamepad2.dpad_right)
-                    robot.arm.clawJoint.changeTargetPosition(50);
+                    robot.arm.wrist.setTargetPosition(robot.arm.wrist.getCurrentPosition() + 50);
                 if (gamepad2.dpad_left)
-                    robot.arm.clawJoint.changeTargetPosition(-50);
+                    robot.arm.wrist.setTargetPosition(robot.arm.wrist.getCurrentPosition() - 50);
 
                 //arm levels
                 if (gamepad2.x)
-                    robot.arm.moveArmToPosition(FullArm.ArmPosition.PICKINGUP);
+                    robot.arm.moveArmToPosition(CombinedArm.ArmPosition.PICKINGUP);
                 if (gamepad2.a)
-                    robot.arm.moveArmToPosition(FullArm.ArmPosition.RESET);
+                    robot.arm.moveArmToPosition(CombinedArm.ArmPosition.RESET);
                 if (gamepad2.b)
-                    robot.arm.moveArmToPosition(FullArm.ArmPosition.PLACINGLOW);
-                if (gamepad2.y)
-                    robot.arm.moveArmToPosition(FullArm.ArmPosition.TRAVEL);
-
-                robot.arm.liftJoint.armLoop();
-                robot.arm.clawJoint.armLoop();
+                    robot.arm.moveArmToPosition(CombinedArm.ArmPosition.PLACINGLOW);
 
             } else {
+
                 //arm manual controls
                 if (gamepad2.dpad_up)
-                    robot.arm.liftJoint.usePower(true);
+                    robot.arm.elbow.setPower(robot.arm.elbowPower);
                 if(gamepad2.dpad_down)
-                    robot.arm.liftJoint.usePower(true);
+                    robot.arm.elbow.setPower(-robot.arm.elbowPower);
                 if (gamepad2.dpad_right)
-                    robot.arm.clawJoint.usePower(false);
+                    robot.arm.wrist.setPower(robot.arm.wristPower);
                 if (gamepad2.dpad_left)
-                    robot.arm.clawJoint.usePower(false);
+                    robot.arm.wrist.setPower(-robot.arm.wristPower);
+
+                //braking
+                if (!gamepad2.dpad_down && !gamepad2.dpad_up) {
+                    robot.arm.elbow.setPower(0);
+                    robot.arm.elbow.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                }
+                if (!gamepad2.dpad_right&& !gamepad2.dpad_left) {
+                    robot.arm.wrist.setPower(0);
+                    robot.arm.wrist.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                }
             }
 
             //claw controls
@@ -91,11 +102,19 @@ public class TeleOp extends LinearOpMode {
                 robot.arm.claw.moveClaw(Claw.ClawPos.STOP);
 
             //_______________________________________________
+            //             ARM LOOPS
+            //_______________________________________________
+
+            robot.arm.runToPosition();
+            robot.arm.updateZeroWithLimits();
+
+            //_______________________________________________
             //             PRINT STATEMENTS
             //_______________________________________________
 
-            telemetry.addData("ARM MODE1:", robot.arm.armEncodersOn? "using encoders" : "not using encoders");
+            telemetry.addData("ARM MODE:", robot.arm.armEncodersOn? "using encoders" : "not using encoders");
             telemetry.addLine("\n");
+/*
 
             telemetry.addLine("----------------WHEELS-------------------------");
 
@@ -107,19 +126,20 @@ public class TeleOp extends LinearOpMode {
 
             //wheels powers
             robot.printWheelPowers();
+*/
 
            telemetry.addLine("----------------ARM-------------------------");
 
             //arm current position
-            telemetry.addData("lift joint: ", robot.arm.liftJoint.getCurrentPosition());
-            telemetry.addData("claw joint: ", robot.arm.clawJoint.getCurrentPosition());
+            telemetry.addData("elbow: ", robot.arm.elbow.getCurrentPosition());
+            telemetry.addData("wrist: ", robot.arm.wrist.getCurrentPosition());
 
             //arm directions
-            telemetry.addData("lift joint: ", robot.arm.liftJoint.getDirection());
-            telemetry.addData("claw joint: ", robot.arm.clawJoint.getDirection());
+            telemetry.addData("elbow: ", robot.arm.elbow.getDirection());
+            telemetry.addData("wrist: ", robot.arm.wrist.getDirection());
 
-            telemetry.addData("target lift joint: ", robot.arm.liftJoint.targetPosition);
-            telemetry.addData("target claw joint: ", robot.arm.clawJoint.targetPosition);
+            telemetry.addData("target lift joint: ", robot.arm.elbow.getTargetPosition());
+            telemetry.addData("target claw joint: ", robot.arm.wrist.getTargetPosition());
 
             telemetry.addLine("----------------CLAW-------------------------");
 
