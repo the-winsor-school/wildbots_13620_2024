@@ -66,4 +66,6 @@ public class StrafeDrive implements IDriving {
         speed = speed + x;
     }
 
+    public float getSpeed() { return speed; }
+
 }

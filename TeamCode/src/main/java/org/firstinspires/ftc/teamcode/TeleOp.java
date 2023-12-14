@@ -114,12 +114,11 @@ public class TeleOp extends LinearOpMode {
             //             PRINT STATEMENTS
             //_______________________________________________
 
-            telemetry.addData("ARM MODE:", robot.arm.armEncodersOn? "using encoders" : "not using encoders");
-            telemetry.addLine("\n");
-/*
+
 
             telemetry.addLine("----------------WHEELS-------------------------");
-
+            telemetry.addData("WHEELS SPEED:", robot.driving.getSpeed());
+/*
 
             //joystick inputs
             telemetry.addData("x: ", x);
@@ -131,6 +130,9 @@ public class TeleOp extends LinearOpMode {
 */
 
            telemetry.addLine("----------------ARM-------------------------");
+
+           telemetry.addData("ARM MODE:", robot.arm.armEncodersOn? "using encoders" : "not using encoders");
+           telemetry.addLine("\n");
 
             //arm current position
             telemetry.addData("elbow: ", robot.arm.elbow.getCurrentPosition());
