@@ -82,7 +82,7 @@ public class CombinedArm {
                 wrist.setTargetPosition(0);
                 break;
 
-            case PICKINGUP: //picking up
+            case PICKING_UP: //picking up
                 elbow.setTargetPosition(150);
                 wrist.setTargetPosition(25);
                 break;
@@ -103,7 +103,7 @@ public class CombinedArm {
 
     public enum ArmPosition {
         RESET,
-        PICKINGUP,
+        PICKING_UP,
         PLACING,
         TRAVELING,
     }
