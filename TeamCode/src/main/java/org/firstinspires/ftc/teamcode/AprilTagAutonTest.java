@@ -17,27 +17,47 @@ public class AprilTagAutonTest extends LinearOpMode {
         if (opModeIsActive()) {
             telemetry.update();
             sleep(3000);
+            //getting telemetry values for each color in each zone
             OpenCV.SignalPipeline.TYPE zone = robot.atp.openCVPipeline.getType();
-            int[] averages = robot.atp.openCVPipeline.getAverage();
+            int[] blueValues = robot.atp.openCVPipeline.getBlueValues();
+            int[] redValues = robot.atp.openCVPipeline.getRedValues();
             telemetry.addData("Signal: ", zone);
-            telemetry.addData("Average Red: ", averages[0]);
-            telemetry.addData("Average Green: ", averages[1]);
-            telemetry.addData("Average Blue: ", averages[2]);
+
+            telemetry.addData("Blue Zone 1: ", blueValues[0]);
+            telemetry.addData("Blue Zone 2: ", blueValues[1]);
+            telemetry.addData("Blue Zone 3: ", blueValues[2]);
+
+            telemetry.addData("Red Zone 1: ", redValues[0]);
+            telemetry.addData("Red Zone 2: ", redValues[1]);
+            telemetry.addData("Red Zone 3: ", redValues[2]);
             sleep(3000);
             telemetry.update();
 
+            //each zone corresponds to a tag
             if (zone == OpenCV.SignalPipeline.TYPE.ZONE1) {
-                robot.goToTag(1);
+                telemetry.addLine("Zone 1, Tag 1");
+                sleep(250);
+                //robot.goToTag(1);
             } else if (zone == OpenCV.SignalPipeline.TYPE.ZONE2) {
-                robot.goToTag(2);
+                telemetry.addLine("Zone 2, Tag 2");
+                sleep(250);
+                //robot.goToTag(2);
             } else if (zone == OpenCV.SignalPipeline.TYPE.ZONE3) {
-                robot.goToTag(3);
+                telemetry.addLine("Zone 3, Tag 3");
+                sleep(250);
+                //robot.goToTag(3);
             } else if (zone == OpenCV.SignalPipeline.TYPE.ZONE4) {
-                robot.goToTag(4);
+                telemetry.addLine("Zone 4, Tag 4");
+                sleep(250);
+                //robot.goToTag(4);
             } else if (zone == OpenCV.SignalPipeline.TYPE.ZONE5) {
-                robot.goToTag(5);
+                telemetry.addLine("Zone 5, Tag 5");
+                sleep(250);
+               // robot.goToTag(5);
             } else if (zone == OpenCV.SignalPipeline.TYPE.ZONE6) {
-                robot.goToTag(6);
+                telemetry.addLine("Zone 6, Tag 6");
+                sleep(250);
+                //robot.goToTag(6);
 
             }
         }

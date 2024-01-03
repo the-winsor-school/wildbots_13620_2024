@@ -5,7 +5,6 @@ import org.opencv.core.Rect;
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
 import org.opencv.core.Scalar;
-import org.opencv.imgproc.Imgproc;
 
 import org.openftc.easyopencv.OpenCvPipeline;
 
@@ -23,7 +22,7 @@ public class OpenCV {
         private static final int RED1 = 20; // yellow < 107 < white
         private static final int GREEN1 = 20; // white < 140 < purple
 
-        //CHANGE DIMENSIONS BASED ON POSITOIN FROM START OF AUTON
+        //CHANGE DIMENSIONS BASED ON POSITION FROM START OF AUTON
         Point topLeftZone1 = new Point(0, 0);
         Point bottomRightZone1 = new Point(266, 448);
         Point topLeftZone2 = new Point(266,0);
@@ -31,55 +30,57 @@ public class OpenCV {
         Point topLeftZone3 = new Point(533,0);
         Point bottomRightZone3 = new Point(800,448);
 
-        Mat region1_Cb;
-        Mat region1_Cg;
-        Mat region1_Cr;
-        Mat region2_Cb;
-        Mat region2_Cg;
-        Mat region2_Cr;
-        Mat region3_Cb;
-        Mat region3_Cg;
-        Mat region3_Cr;
-        //Mat YCrCb = new Mat();
+        // regions 1-3 are for blue
+        // regions 4-6 are for red
+        Mat region1;
+        Mat region2;
+        Mat region3;
+        Mat region4;
+        Mat region5;
+        Mat region6;
         Mat Cb = new Mat();
-        Mat Cg = new Mat();
         Mat Cr = new Mat();
 
-        private volatile int averageRedZone1;
-        private volatile int averageRedZone2;
-        private volatile int averageRedZone3;
-        private volatile int averageBlue;
-        private volatile int averageGreen;
+        // zone 1 = left
+        // zone 2 = center
+        // zone 3 = right
+        private volatile int redZone1;
+        private volatile int redZone2;
+        private volatile int redZone3;
+        private volatile int blueZone1;
+        private volatile int blueZone2;
+        private volatile int blueZone3;
         private volatile TYPE type = TYPE.ZONE2; //default value
 
         private void inputToCb(Mat input) {
-            ///Imgproc.cvtColor(input, YCrCb, Imgproc.COLOR_RGB2YCrCb);
             Core.extractChannel(input, Cb, 2);
-            Core.extractChannel(input, Cg, 1);
             Core.extractChannel(input, Cr, 0);
         }
 
         @Override
         public void init(Mat input) {
             inputToCb(input);
-
-            //region1_Cb = Cb.submat(new Rect(topLeft, bottomRight)); //setting region dimensions
-            //region1_Cg = Cg.submat(new Rect(topLeft, bottomRight)); //setting region dimensions
-            region1_Cr = Cr.submat(new Rect(topLeftZone1, bottomRightZone1)); //setting region dimensions
-            region2_Cr = Cr.submat(new Rect(topLeftZone2, bottomRightZone2));
-            region3_Cr = Cr.submat(new Rect(topLeftZone3, bottomRightZone3));
-
+            //dimensions for blue
+            region1 = Cb.submat(new Rect(topLeftZone1, bottomRightZone1));
+            region2 = Cb.submat(new Rect(topLeftZone2, bottomRightZone2));
+            region3 = Cb.submat(new Rect(topLeftZone3, bottomRightZone3));
+            //dimensions for red
+            region4 = Cr.submat(new Rect(topLeftZone1, bottomRightZone1));
+            region5 = Cr.submat(new Rect(topLeftZone2, bottomRightZone2));
+            region6 = Cr.submat(new Rect(topLeftZone3, bottomRightZone3));
         }
 
         @Override
         public Mat processFrame(Mat input) {
             inputToCb(input);
-
-            //averageBlue = (int) Core.mean(region1_Cb).val[0]; // red average values
-            //averageGreen = (int) Core.mean(region1_Cg).val[0]; // blue average values
-            averageRedZone1 = (int) Core.mean(region1_Cr).val[0]; // green average values
-            averageRedZone2 = (int) Core.mean(region2_Cr).val[0];
-            averageRedZone3 = (int) Core.mean(region3_Cr).val[0];
+            //average values for blue in each zone
+            blueZone1 = (int) Core.mean(region1).val[0];
+            blueZone2 = (int) Core.mean(region2).val[0];
+            blueZone3 = (int) Core.mean(region3).val[0];
+            //average values for red in each zone
+            redZone1 = (int) Core.mean(region4).val[0];
+            redZone2 = (int) Core.mean(region5).val[0];
+            redZone3 = (int) Core.mean(region6).val[0];
 
             //Imgproc.rectangle(input, topLeft, bottomRight, BLUE, 2);
 
@@ -107,15 +108,24 @@ public class OpenCV {
             );
 
              */
-            
-            if (averageRedZone2 < averageRedZone1 && averageRedZone3 < averageRedZone1) {
+
+            if (blueZone2 < blueZone1 && blueZone3 < blueZone1) {
                 type = TYPE.ZONE1;
             }
-            else if (averageRedZone1 < averageRedZone2 && averageRedZone3 < averageRedZone2) {
+            else if (blueZone1 < blueZone2 && blueZone3 < blueZone2) {
                 type = TYPE.ZONE2;
             }
-            else if (averageRedZone1 < averageRedZone3 && averageRedZone2 < averageRedZone3) {
+            else if (blueZone1 < blueZone3 && blueZone2 < blueZone3) {
                 type = TYPE.ZONE3;
+            }
+            else if (redZone2 < redZone1 && redZone3 < redZone1) {
+                type = TYPE.ZONE4;
+            }
+            else if (redZone1 < redZone2 && redZone3 < redZone2) {
+                type = TYPE.ZONE5;
+            }
+            else if (redZone1 < redZone3 && redZone2 < redZone3) {
+                type = TYPE.ZONE6;
             }
             else {
                 type = null;
@@ -128,12 +138,17 @@ public class OpenCV {
         public TYPE getType() {
             return type;
         }
-        /*
-        public int[] getAverage () {
-            int[] averages = {averageRed, averageGreen, averageBlue};
-            return averages;
+
+        public int[] getBlueValues () {
+            int[] blueValues = {blueZone1, blueZone2, blueZone3};
+            return blueValues;
         }
-         */
+
+        public int[] getRedValues () {
+            int[] redValues = {redZone1, redZone2, redZone3};
+            return redValues;
+        }
+
 
         public enum TYPE {
             ZONE1, ZONE2, ZONE3, ZONE4, ZONE5, ZONE6
