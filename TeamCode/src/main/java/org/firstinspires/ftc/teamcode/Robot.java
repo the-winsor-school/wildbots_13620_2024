@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import android.text.method.Touch;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.CRServo;
@@ -43,6 +44,7 @@ public class Robot {
     private CRServo rightServo;
     private CRServo leftServo;
     private TouchSensor liftResetPositionLimitSensor;
+    private AnalogInput wristAngle;
 
     private ColorSensor color;
 
@@ -77,6 +79,8 @@ public class Robot {
         liftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         clawMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
+        wristAngle = map.tryGet(AnalogInput.class, "wristAngle");
+
         liftResetPositionLimitSensor = map.tryGet(TouchSensor.class, "elbowLimit");
         color = map.tryGet(ColorSensor.class, "color");
 
@@ -84,6 +88,7 @@ public class Robot {
         rb.setDirection(DcMotor.Direction.REVERSE);
         lf.setDirection(DcMotor.Direction.REVERSE);
         lb.setDirection(DcMotor.Direction.FORWARD);
+
 
         /**
          * currently using StrafeDrive
@@ -127,4 +132,6 @@ public class Robot {
     public Boolean liftLimitValue() {
         return liftResetPositionLimitSensor.isPressed();
     }
+
+    public double wristAngleValue() {return wristAngle.getVoltage();}
 }
