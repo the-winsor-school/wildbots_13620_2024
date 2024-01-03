@@ -2,9 +2,12 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
+import org.checkerframework.checker.units.qual.A;
 import org.firstinspires.ftc.teamcode.Arm.Claw;
-import org.firstinspires.ftc.teamcode.Arm.CombinedArm;
+import org.firstinspires.ftc.teamcode.Arm.FullArm;
+import org.firstinspires.ftc.teamcode.Arm.SimpleArmJoint;
 
 @com.qualcomm.robotcore.eventloop.opmode.TeleOp(name = "TeleOp")
 public class TeleOp extends LinearOpMode {
@@ -16,12 +19,6 @@ public class TeleOp extends LinearOpMode {
 
         //we are using arm encoders right now
         robot.arm.armEncodersOn = true;
-
-        if (robot.arm.armEncodersOn) {
-            robot.arm.resetEncoders();
-        } else {
-            robot.arm.runWithoutEncoders();
-        }
 
         waitForStart();
 
@@ -54,45 +51,41 @@ public class TeleOp extends LinearOpMode {
 
                 //arm manual controls
                 if (gamepad2.dpad_up)
-                    robot.arm.elbow.setTargetPosition(robot.arm.elbow.getCurrentPosition() + 200);
+                    robot.arm.elbow.changeTargetPosition(200);
                 if(gamepad2.dpad_down)
-                    robot.arm.elbow.setTargetPosition(robot.arm.elbow.getCurrentPosition() - 200);
+                    robot.arm.elbow.changeTargetPosition(-200);
                 if (gamepad2.dpad_right)
-                    robot.arm.wrist.setTargetPosition(robot.arm.wrist.getCurrentPosition() + 50);
+                    robot.arm.wrist.usePower(DcMotorSimple.Direction.FORWARD);
                 if (gamepad2.dpad_left)
-                    robot.arm.wrist.setTargetPosition(robot.arm.wrist.getCurrentPosition() - 50);
+                    robot.arm.wrist.usePower(DcMotorSimple.Direction.REVERSE);
 
                 //arm levels
                 if (gamepad2.x)
-                    robot.arm.moveArmToPosition(CombinedArm.ArmPosition.PICKING_UP);
+                    robot.arm.moveArmToPosition(FullArm.ArmPosition.PICKING_UP);
                 if (gamepad2.a)
-                    robot.arm.moveArmToPosition(CombinedArm.ArmPosition.RESET);
+                    robot.arm.moveArmToPosition(FullArm.ArmPosition.RESET);
                 if (gamepad2.b)
-                    robot.arm.moveArmToPosition(CombinedArm.ArmPosition.PLACING);
+                    robot.arm.moveArmToPosition(FullArm.ArmPosition.PLACING);
                 if (gamepad2.y)
-                    robot.arm.moveArmToPosition(CombinedArm.ArmPosition.TRAVELING);
+                    robot.arm.moveArmToPosition(FullArm.ArmPosition.TRAVELING);
 
             } else {
 
                 //arm manual controls
                 if (gamepad2.dpad_up)
-                    robot.arm.elbow.setPower(robot.arm.elbowPower);
+                    robot.arm.simpleElbow.moveArmJoint(DcMotorSimple.Direction.FORWARD);
                 if(gamepad2.dpad_down)
-                    robot.arm.elbow.setPower(-robot.arm.elbowPower);
+                    robot.arm.simpleElbow.moveArmJoint(DcMotorSimple.Direction.REVERSE);
                 if (gamepad2.dpad_right)
-                    robot.arm.wrist.setPower(robot.arm.wristPower);
+                    robot.arm.simpleWrist.moveArmJoint(DcMotorSimple.Direction.FORWARD);
                 if (gamepad2.dpad_left)
-                    robot.arm.wrist.setPower(-robot.arm.wristPower);
+                    robot.arm.simpleWrist.moveArmJoint(DcMotorSimple.Direction.REVERSE);
 
                 //braking
-                if (!gamepad2.dpad_down && !gamepad2.dpad_up) {
-                    robot.arm.elbow.setPower(0);
-                    robot.arm.elbow.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-                }
-                if (!gamepad2.dpad_right&& !gamepad2.dpad_left) {
-                    robot.arm.wrist.setPower(0);
-                    robot.arm.wrist.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-                }
+                if (!gamepad2.dpad_down && !gamepad2.dpad_up)
+                    robot.arm.simpleElbow.stop();
+                if (!gamepad2.dpad_right&& !gamepad2.dpad_left)
+                    robot.arm.simpleWrist.stop();
             }
 
             //claw controls
@@ -107,8 +100,8 @@ public class TeleOp extends LinearOpMode {
             //             ARM LOOPS
             //_______________________________________________
 
-            robot.arm.runToPosition();
-            robot.arm.updateZeroWithLimits();
+            robot.arm.elbow.moveTowardsTargetPosition();
+            robot.arm.wrist.moveTowardsTargetPosition();
 
             //_______________________________________________
             //             PRINT STATEMENTS
@@ -136,22 +129,24 @@ public class TeleOp extends LinearOpMode {
 
             //arm current position
             telemetry.addData("elbow: ", robot.arm.elbow.getCurrentPosition());
-            telemetry.addData("wrist: ", robot.arm.wrist.getCurrentPosition());
+            telemetry.addData("wrist: ", robot.arm.wrist.getCurrentVolts());
 
             //arm directions
             telemetry.addData("elbow: ", robot.arm.elbow.getDirection());
             telemetry.addData("wrist: ", robot.arm.wrist.getDirection());
 
             telemetry.addData("target lift joint: ", robot.arm.elbow.getTargetPosition());
-            telemetry.addData("target claw joint: ", robot.arm.wrist.getTargetPosition());
+            telemetry.addData("target claw joint: ", robot.arm.wrist.getTargetVolts());
+
+            telemetry.addData("elbow limit: ", robot.liftLimitValue());
+            telemetry.addData("wrist limit: ", robot.clawLimitValue());
 
             telemetry.addLine("----------------CLAW-------------------------");
 
             telemetry.addData("right servo: ", robot.arm.claw.getPower("right"));
             telemetry.addData("left servo: ", robot.arm.claw.getPower("left"));
 
-            telemetry.addData("lift limit: ", robot.liftLimitValue());
-            telemetry.addData("claw limit: ", robot.clawLimitValue());
+
 
             telemetry.update();
         }

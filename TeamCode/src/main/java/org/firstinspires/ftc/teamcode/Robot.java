@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.CRServo;
@@ -35,21 +36,27 @@ public class Robot {
     private DcMotor lf;
     private DcMotor lb;
 
-    //arm
+    //elbow
     private DcMotor elbowMotor;
+    private TouchSensor elbowLimit;
+
+    //wrist
     private DcMotor wristMotor;
+    private TouchSensor wristLimit;
+    private AnalogInput wristPotentiometer;
+
+    //claw
     private CRServo rightServo;
     private CRServo leftServo;
-    private TouchSensor elbowLimit;
-    private TouchSensor wristLimit;
 
+    //auton
     private ColorSensor color;
 
     /**
      * itialization of libraires
      */
     public IDriving driving;
-    public CombinedArm arm;
+    public FullArm arm;
 
     private LinearOpMode opMode;
 
@@ -66,9 +73,14 @@ public class Robot {
         lf = map.tryGet(DcMotor.class, "lf");
         lb = map.tryGet(DcMotor.class, "lb");
 
-        //arm
+        //elbow
         elbowMotor = map.tryGet(DcMotor.class, "elbow");
+        elbowLimit = map.tryGet(TouchSensor.class, "elbowLimit");
+
         wristMotor = map.tryGet(DcMotor.class, "wrist");
+        wristLimit = map.tryGet(TouchSensor.class, "wristLimit");
+        wristPotentiometer = map.tryGet(AnalogInput.class, "wristAngle");
+
         rightServo = map.tryGet(CRServo.class, "right");
         leftServo = map.tryGet(CRServo.class, "left");
 
@@ -76,8 +88,6 @@ public class Robot {
         elbowMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         wristMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        elbowLimit = map.tryGet(TouchSensor.class, "elbowLimit");
-        wristLimit = map.tryGet(TouchSensor.class, "wristLimit");
         color = map.tryGet(ColorSensor.class, "color");
 
         rf.setDirection(DcMotor.Direction.REVERSE);
@@ -87,7 +97,7 @@ public class Robot {
 
         driving = new StrafeDrive(rf, rb, lf, lb);
 
-        arm = new CombinedArm(elbowMotor, wristMotor, elbowLimit, wristLimit, rightServo, leftServo);
+        arm = new FullArm(elbowMotor, elbowLimit, wristMotor, wristLimit, wristPotentiometer, rightServo, leftServo);
     }
 
     public void printWheelPowers() {
