@@ -19,13 +19,13 @@ public class Claw {
         switch (pos) {
             //TODO test for close values
             case OPEN:
-                right.setPower(-1);
-                left.setPower(1);
+                right.setPower(-0.5);
+                left.setPower(0.5);
                 break;
 
             case CLOSE:
-                right.setPower(1);
-                left.setPower(-1);
+                right.setPower(0.5);
+                left.setPower(-0.5);
                 break;
 
             case STOP:

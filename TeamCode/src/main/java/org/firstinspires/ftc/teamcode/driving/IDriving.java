@@ -47,5 +47,10 @@ public interface IDriving {
      */
     public void adjustSpeed(float x);
 
+    /**
+     * retruns current speed
+     */
+    public float getSpeed();
+
 
 }

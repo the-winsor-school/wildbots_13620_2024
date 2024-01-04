@@ -1,8 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
-import android.text.method.Touch;
-
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.CRServo;
@@ -37,13 +36,20 @@ public class Robot {
     private DcMotor lf;
     private DcMotor lb;
 
-    //arm
-    private DcMotor liftMotor;
-    private DcMotor clawMotor;
+    //elbow
+    private DcMotor elbowMotor;
+    private TouchSensor elbowLimit;
+
+    //wrist
+    private DcMotor wristMotor;
+    private TouchSensor wristLimit;
+    private AnalogInput wristPotentiometer;
+
+    //claw
     private CRServo rightServo;
     private CRServo leftServo;
-    private TouchSensor liftResetPositionLimitSensor;
 
+    //auton
     private ColorSensor color;
 
     /**
@@ -67,17 +73,21 @@ public class Robot {
         lf = map.tryGet(DcMotor.class, "lf");
         lb = map.tryGet(DcMotor.class, "lb");
 
-        //arm
-        liftMotor = map.tryGet(DcMotor.class, "elbow");
-        clawMotor = map.tryGet(DcMotor.class, "wrist");
+        //elbow
+        elbowMotor = map.tryGet(DcMotor.class, "elbow");
+        elbowLimit = map.tryGet(TouchSensor.class, "elbowLimit");
+
+        wristMotor = map.tryGet(DcMotor.class, "wrist");
+        wristLimit = map.tryGet(TouchSensor.class, "wristLimit");
+        wristPotentiometer = map.tryGet(AnalogInput.class, "wristAngle");
+
         rightServo = map.tryGet(CRServo.class, "right");
         leftServo = map.tryGet(CRServo.class, "left");
 
         //just because o the orienttion o the motor
-        liftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-        clawMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        elbowMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        wristMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        liftResetPositionLimitSensor = map.tryGet(TouchSensor.class, "elbowLimit");
         color = map.tryGet(ColorSensor.class, "color");
 
         rf.setDirection(DcMotor.Direction.REVERSE);
@@ -85,11 +95,9 @@ public class Robot {
         lf.setDirection(DcMotor.Direction.REVERSE);
         lb.setDirection(DcMotor.Direction.FORWARD);
 
-        /**
-         * currently using StrafeDrive
-         */
         driving = new StrafeDrive(rf, rb, lf, lb);
-        arm = new FullArm(liftMotor, clawMotor, rightServo, leftServo);
+
+        arm = new FullArm(elbowMotor, elbowLimit, wristMotor, wristLimit, wristPotentiometer, rightServo, leftServo);
     }
 
     public void printWheelPowers() {
@@ -125,6 +133,10 @@ public class Robot {
     }
 
     public Boolean liftLimitValue() {
-        return liftResetPositionLimitSensor.isPressed();
+        return elbowLimit.isPressed();
     }
+    public Boolean clawLimitValue() {
+        return wristLimit.isPressed();
+    }
+
 }
