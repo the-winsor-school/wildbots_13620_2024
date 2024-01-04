@@ -1,3 +1,4 @@
+/*
 package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -18,11 +19,14 @@ public class AprilTagAutonTest extends LinearOpMode {
             telemetry.update();
             sleep(3000);
             //getting telemetry values for each color in each zone
+
             OpenCV.SignalPipeline.TYPE zone = robot.atp.openCVPipeline.getType();
             int[] blueValues = robot.atp.openCVPipeline.getBlueValues();
             int[] redValues = robot.atp.openCVPipeline.getRedValues();
             telemetry.addData("Signal: ", zone);
-
+            telemetry.addData("Blue values: ", blueValues);
+            telemetry.addData("Red values: ", redValues);
+            /*
             telemetry.addData("Blue Zone 1: ", blueValues[0]);
             telemetry.addData("Blue Zone 2: ", blueValues[1]);
             telemetry.addData("Blue Zone 3: ", blueValues[2]);
@@ -30,6 +34,9 @@ public class AprilTagAutonTest extends LinearOpMode {
             telemetry.addData("Red Zone 1: ", redValues[0]);
             telemetry.addData("Red Zone 2: ", redValues[1]);
             telemetry.addData("Red Zone 3: ", redValues[2]);
+
+             */
+/*
             sleep(3000);
             telemetry.update();
 
@@ -63,4 +70,7 @@ public class AprilTagAutonTest extends LinearOpMode {
         }
     }
 }
+
+
+ */
 
