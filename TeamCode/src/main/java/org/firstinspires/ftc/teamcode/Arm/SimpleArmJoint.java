@@ -21,6 +21,10 @@ public class SimpleArmJoint {
             motor.setPower(-powerUsed);
     }
 
+    public void setBrake (DcMotor.ZeroPowerBehavior mode) {
+        motor.setZeroPowerBehavior(mode);
+    }
+
     public void stop() {
         motor.setPower(0);
     }

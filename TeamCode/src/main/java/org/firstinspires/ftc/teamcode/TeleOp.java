@@ -55,11 +55,11 @@ public class TeleOp extends LinearOpMode {
                 else if (gamepad2.dpad_down)
                     robot.arm.elbow.changeTargetPosition(-200);
                 if (gamepad2.dpad_right)
-                    robot.arm.wrist.setPower(DcMotorSimple.Direction.FORWARD);
+                    robot.arm.simpleWrist.moveArmJoint(DcMotorSimple.Direction.FORWARD);
                 else if (gamepad2.dpad_left)
-                    robot.arm.wrist.setPower(DcMotorSimple.Direction.REVERSE);
+                    robot.arm.simpleWrist.moveArmJoint(DcMotorSimple.Direction.REVERSE);
                 else
-                    robot.arm.wrist.stop();
+                    robot.arm.simpleWrist.stop();
 
                 //arm levels
                 if (gamepad2.x)
@@ -103,7 +103,7 @@ public class TeleOp extends LinearOpMode {
             //_______________________________________________
 
             robot.arm.elbow.moveTowardsTargetPosition();
-            robot.arm.wrist.moveTowardsTargetPosition();
+            //robot.arm.wrist.moveTowardsTargetPosition();
 
             //_______________________________________________
             //             PRINT STATEMENTS

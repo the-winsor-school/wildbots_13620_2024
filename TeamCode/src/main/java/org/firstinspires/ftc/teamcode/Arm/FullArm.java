@@ -30,7 +30,9 @@ public class FullArm {
         elbow.resetEncoder();
 
         simpleElbow = new SimpleArmJoint(elbowMotor, 0.8);
-        simpleWrist = new SimpleArmJoint(wristMotor, 0.5);
+        simpleWrist = new SimpleArmJoint(wristMotor, 0.3);
+        simpleWrist.setBrake(DcMotor.ZeroPowerBehavior.FLOAT);
+        simpleElbow.setBrake(DcMotor.ZeroPowerBehavior.BRAKE);
 
         claw = new Claw(rightServo, leftServo);
     }
