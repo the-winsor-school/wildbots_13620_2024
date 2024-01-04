@@ -24,6 +24,10 @@ public class WristJoint {
 
         this.motor = (DcMotorEx) motor;
         this.motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        this.anglePotentiometer = anglePotentiometer;
+        this.powerUsed = powerUsed;
+
+        targetVolts = getCurrentVolts();
 
         this.motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
     }
@@ -34,6 +38,10 @@ public class WristJoint {
 
     public void updateCurrentVolts () {
         currentVolts = anglePotentiometer.getVoltage();
+    }
+
+    public void changeTargetVolts(double volts) {
+        targetVolts = getCurrentVolts() + volts;
     }
 
     public double getCurrentVolts () {
@@ -48,7 +56,11 @@ public class WristJoint {
         return targetVolts;
     }
 
-    public void usePower(DcMotorSimple.Direction direction) {
+    public void stop () {
+        motor.setPower(0);
+    }
+
+    public void setPower(DcMotorSimple.Direction direction) {
         if (direction == DcMotorSimple.Direction.FORWARD)
             motor.setPower(powerUsed);
         else if (direction == DcMotorSimple.Direction.REVERSE)
@@ -82,6 +94,10 @@ public class WristJoint {
             setPotentiometerTolerance(0.5);
             setTargetVolts(2.25);
         }
+    }
+
+    public double getPower() {
+        return motor.getPower();
     }
 
     public String getDirection() {

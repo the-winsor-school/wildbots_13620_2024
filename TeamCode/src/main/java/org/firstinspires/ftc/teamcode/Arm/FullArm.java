@@ -6,6 +6,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 
+import org.checkerframework.checker.units.qual.C;
+
 public class FullArm {
 
     public ElbowJoint elbow;
@@ -22,14 +24,15 @@ public class FullArm {
      */
     public Boolean armEncodersOn;
 
-    public FullArm(DcMotor elbowMotor, TouchSensor elbowLimit, DcMotor wristMotor, TouchSensor wristLimit, AnalogInput wristPotentiometer) {
+    public FullArm(DcMotor elbowMotor, TouchSensor elbowLimit, DcMotor wristMotor, TouchSensor wristLimit, AnalogInput wristPotentiometer, CRServo rightServo, CRServo leftServo) {
         elbow = new ElbowJoint(elbowMotor, elbowLimit, 0.8, 50);
-        wrist = new WristJoint(wristMotor, wristPotentiometer, 0.1);
+        wrist = new WristJoint(wristMotor, wristPotentiometer, 0.5);
+        elbow.resetEncoder();
 
         simpleElbow = new SimpleArmJoint(elbowMotor, 0.8);
-        simpleWrist = new SimpleArmJoint(wristMotor, 0.1);
+        simpleWrist = new SimpleArmJoint(wristMotor, 0.5);
 
-        this.claw = claw;
+        claw = new Claw(rightServo, leftServo);
     }
 
     public void armLoop() {

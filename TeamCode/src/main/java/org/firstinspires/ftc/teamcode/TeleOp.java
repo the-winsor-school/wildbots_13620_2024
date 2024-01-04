@@ -52,12 +52,14 @@ public class TeleOp extends LinearOpMode {
                 //arm manual controls
                 if (gamepad2.dpad_up)
                     robot.arm.elbow.changeTargetPosition(200);
-                if(gamepad2.dpad_down)
+                else if (gamepad2.dpad_down)
                     robot.arm.elbow.changeTargetPosition(-200);
                 if (gamepad2.dpad_right)
-                    robot.arm.wrist.usePower(DcMotorSimple.Direction.FORWARD);
-                if (gamepad2.dpad_left)
-                    robot.arm.wrist.usePower(DcMotorSimple.Direction.REVERSE);
+                    robot.arm.wrist.setPower(DcMotorSimple.Direction.FORWARD);
+                else if (gamepad2.dpad_left)
+                    robot.arm.wrist.setPower(DcMotorSimple.Direction.REVERSE);
+                else
+                    robot.arm.wrist.stop();
 
                 //arm levels
                 if (gamepad2.x)
@@ -125,7 +127,6 @@ public class TeleOp extends LinearOpMode {
            telemetry.addLine("----------------ARM-------------------------");
 
            telemetry.addData("ARM MODE:", robot.arm.armEncodersOn? "using encoders" : "not using encoders");
-           telemetry.addLine("\n");
 
             //arm current position
             telemetry.addData("elbow: ", robot.arm.elbow.getCurrentPosition());
@@ -140,6 +141,8 @@ public class TeleOp extends LinearOpMode {
 
             telemetry.addData("elbow limit: ", robot.liftLimitValue());
             telemetry.addData("wrist limit: ", robot.clawLimitValue());
+
+            telemetry.addData("wrist limit: ", robot.arm.wrist.getPower());
 
             telemetry.addLine("----------------CLAW-------------------------");
 
