@@ -72,6 +72,14 @@ public class FullArm {
         }
     }
 
+    public void moveToPositionSync(ArmPosition pos) {
+        moveArmToPosition(pos);
+        while ((elbow.getDirection() != MotorState.STOP) && (wrist.getDirection() != MotorState.STOP)) {
+            elbow.moveTowardsTargetPosition();
+            wrist.moveTowardsTargetPosition();
+        }
+    }
+
     public enum ArmPosition {
         RESET,
         PICKING_UP,

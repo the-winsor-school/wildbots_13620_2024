@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import org.checkerframework.checker.units.qual.A;
 import org.firstinspires.ftc.teamcode.Arm.Claw;
 import org.firstinspires.ftc.teamcode.Arm.FullArm;
+import org.firstinspires.ftc.teamcode.Arm.MotorState;
 import org.firstinspires.ftc.teamcode.Arm.SimpleArmJoint;
 
 @com.qualcomm.robotcore.eventloop.opmode.TeleOp(name = "TeleOp")
@@ -75,9 +76,9 @@ public class TeleOp extends LinearOpMode {
             if (robot.arm.usingSmartWrist) {
                 //smart manual wrist controls
                 if (gamepad2.dpad_right)
-                    robot.arm.wrist.setPower(DcMotorSimple.Direction.FORWARD);
+                    robot.arm.wrist.setPower(MotorState.FORWARD);
                 else if (gamepad2.dpad_left)
-                    robot.arm.wrist.setPower(DcMotorSimple.Direction.REVERSE);
+                    robot.arm.wrist.setPower(MotorState.REVERSE);
                 else
                     robot.arm.wrist.stop();
 
@@ -157,8 +158,6 @@ public class TeleOp extends LinearOpMode {
 
             telemetry.addData("right servo: ", robot.arm.claw.getPower("right"));
             telemetry.addData("left servo: ", robot.arm.claw.getPower("left"));
-
-
 
             telemetry.update();
         }
