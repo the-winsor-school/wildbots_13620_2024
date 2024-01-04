@@ -44,6 +44,10 @@ public class WristJoint {
         targetVolts = getCurrentVolts() + volts;
     }
 
+    public void resetTargetVolts() {
+        targetVolts = getCurrentVolts();
+    }
+
     public double getCurrentVolts () {
         return currentVolts;
     }
