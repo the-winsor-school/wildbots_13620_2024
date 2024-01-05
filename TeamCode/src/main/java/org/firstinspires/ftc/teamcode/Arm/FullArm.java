@@ -17,6 +17,9 @@ public class FullArm {
     public SimpleArmJoint simpleElbow;
     public SimpleArmJoint simpleWrist;
 
+    public Boolean usingSmartElbow;
+    public Boolean usingSmartWrist;
+
     /**
      * will change the code used in the teleOp for the arm
      * if false arm will only have manual controls on power
@@ -28,9 +31,11 @@ public class FullArm {
         elbow = new ElbowJoint(elbowMotor, elbowLimit, 0.8, 50);
         wrist = new WristJoint(wristMotor, wristPotentiometer, 0.5);
         elbow.resetEncoder();
+        wrist.resetTargetVolts();
 
         simpleElbow = new SimpleArmJoint(elbowMotor, 0.8);
         simpleWrist = new SimpleArmJoint(wristMotor, 0.3);
+
         simpleWrist.setBrake(DcMotor.ZeroPowerBehavior.FLOAT);
         simpleElbow.setBrake(DcMotor.ZeroPowerBehavior.BRAKE);
 
@@ -64,6 +69,14 @@ public class FullArm {
         else if (pos == ArmPosition.TRAVELING) {
             elbow.setTargetPosition(290);
             wrist.setTargetPosition(WristJoint.WRIST_POSITION.PULLED_BACK);
+        }
+    }
+
+    public void moveToPositionSync(ArmPosition pos) {
+        moveArmToPosition(pos);
+        while ((elbow.getDirection() != MotorState.STOP) && (wrist.getDirection() != MotorState.STOP)) {
+            elbow.moveTowardsTargetPosition();
+            wrist.moveTowardsTargetPosition();
         }
     }
 

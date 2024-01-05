@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import org.checkerframework.checker.units.qual.A;
 import org.firstinspires.ftc.teamcode.Arm.Claw;
 import org.firstinspires.ftc.teamcode.Arm.FullArm;
+import org.firstinspires.ftc.teamcode.Arm.MotorState;
 import org.firstinspires.ftc.teamcode.Arm.SimpleArmJoint;
 
 @com.qualcomm.robotcore.eventloop.opmode.TeleOp(name = "TeleOp")
@@ -18,7 +19,8 @@ public class TeleOp extends LinearOpMode {
         robot = new Robot(this);
 
         //we are using arm encoders right now
-        robot.arm.armEncodersOn = true;
+        robot.arm.usingSmartElbow = true;
+        robot.arm.usingSmartWrist = true;
 
         waitForStart();
 
@@ -47,48 +49,63 @@ public class TeleOp extends LinearOpMode {
             //_______________________________________________
 
 
-            if (robot.arm.armEncodersOn) {
+            if (robot.arm.usingSmartElbow) {
 
-                //arm manual controls
+                //smart elbow manual controls
                 if (gamepad2.dpad_up)
                     robot.arm.elbow.changeTargetPosition(200);
                 else if (gamepad2.dpad_down)
                     robot.arm.elbow.changeTargetPosition(-200);
-                if (gamepad2.dpad_right)
-                    robot.arm.simpleWrist.moveArmJoint(DcMotorSimple.Direction.FORWARD);
-                else if (gamepad2.dpad_left)
-                    robot.arm.simpleWrist.moveArmJoint(DcMotorSimple.Direction.REVERSE);
-                else
-                    robot.arm.simpleWrist.stop();
 
-                //arm levels
-                if (gamepad2.x)
-                    robot.arm.moveArmToPosition(FullArm.ArmPosition.PICKING_UP);
-                if (gamepad2.a)
-                    robot.arm.moveArmToPosition(FullArm.ArmPosition.RESET);
-                if (gamepad2.b)
-                    robot.arm.moveArmToPosition(FullArm.ArmPosition.PLACING);
-                if (gamepad2.y)
-                    robot.arm.moveArmToPosition(FullArm.ArmPosition.TRAVELING);
+                //smart elbow loop
+                robot.arm.elbow.moveTowardsTargetPosition();
 
             } else {
 
-                //arm manual controls
+                //elbow manual controls
                 if (gamepad2.dpad_up)
-                    robot.arm.simpleElbow.moveArmJoint(DcMotorSimple.Direction.FORWARD);
+                    robot.arm.simpleElbow.setMotorSate(MotorState.FORWARD);
                 if(gamepad2.dpad_down)
-                    robot.arm.simpleElbow.moveArmJoint(DcMotorSimple.Direction.REVERSE);
+                    robot.arm.simpleElbow.setMotorSate(MotorState.REVERSE);
+
+                //elbow braking
+                if (!gamepad2.dpad_down && !gamepad2.dpad_up)
+                    robot.arm.simpleElbow.setMotorSate(MotorState.STOP);
+            }
+
+            if (robot.arm.usingSmartWrist) {
+                //smart manual wrist controls
                 if (gamepad2.dpad_right)
-                    robot.arm.simpleWrist.moveArmJoint(DcMotorSimple.Direction.FORWARD);
+                    robot.arm.wrist.setPower(MotorState.FORWARD);
+                else if (gamepad2.dpad_left)
+                    robot.arm.wrist.setPower(MotorState.REVERSE);
+                else
+                    robot.arm.wrist.stop();
+
+                //wrist loop
+                robot.arm.wrist.moveTowardsTargetPosition();
+            } else {
+
+                //maunal wrist contorls
+                if (gamepad2.dpad_right)
+                    robot.arm.simpleWrist.setMotorSate(MotorState.FORWARD);
                 if (gamepad2.dpad_left)
-                    robot.arm.simpleWrist.moveArmJoint(DcMotorSimple.Direction.REVERSE);
+                    robot.arm.simpleWrist.setMotorSate(MotorState.REVERSE);
 
                 //braking
-                if (!gamepad2.dpad_down && !gamepad2.dpad_up)
-                    robot.arm.simpleElbow.stop();
                 if (!gamepad2.dpad_right&& !gamepad2.dpad_left)
-                    robot.arm.simpleWrist.stop();
+                    robot.arm.simpleWrist.setMotorSate(MotorState.STOP);
             }
+
+            //arm levels (loops only run if the variable are true)
+            if (gamepad2.x)
+                robot.arm.moveArmToPosition(FullArm.ArmPosition.PICKING_UP);
+            if (gamepad2.a)
+                robot.arm.moveArmToPosition(FullArm.ArmPosition.RESET);
+            if (gamepad2.b)
+                robot.arm.moveArmToPosition(FullArm.ArmPosition.PLACING);
+            if (gamepad2.y)
+                robot.arm.moveArmToPosition(FullArm.ArmPosition.TRAVELING);
 
             //claw controls
             if (gamepad2.right_bumper)
@@ -97,13 +114,6 @@ public class TeleOp extends LinearOpMode {
                 robot.arm.claw.moveClaw(Claw.ClawPos.CLOSE);
             if(!gamepad2.right_bumper && !gamepad2.left_bumper)
                 robot.arm.claw.moveClaw(Claw.ClawPos.STOP);
-
-            //_______________________________________________
-            //             ARM LOOPS
-            //_______________________________________________
-
-            robot.arm.elbow.moveTowardsTargetPosition();
-            //robot.arm.wrist.moveTowardsTargetPosition();
 
             //_______________________________________________
             //             PRINT STATEMENTS
@@ -148,8 +158,6 @@ public class TeleOp extends LinearOpMode {
 
             telemetry.addData("right servo: ", robot.arm.claw.getPower("right"));
             telemetry.addData("left servo: ", robot.arm.claw.getPower("left"));
-
-
 
             telemetry.update();
         }

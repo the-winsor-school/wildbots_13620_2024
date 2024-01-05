@@ -9,7 +9,6 @@ public class ElbowJoint {
     private DcMotorEx motor;
     private TouchSensor zeroPositionLimit;
     private double powerUsed;
-    private int tolerance;
 
     /**
      * true for wrist, false for elbow
@@ -71,13 +70,11 @@ public class ElbowJoint {
         motor.setTargetPosition(getCurrentPosition() + position);
     }
 
-    public String getDirection() {
+    public MotorState getDirection() {
         if (motor.getPower() > 0)
-            return "FORWARD";
+            return MotorState.FORWARD;
         else if (motor.getPower() < 0)
-            return "REVERSE";
-        else if (motor.getPower() == 0)
-            return "NOT MOVING";
-        else return "ERROR";
+            return MotorState.REVERSE;
+        return MotorState.STOP;
     }
 }

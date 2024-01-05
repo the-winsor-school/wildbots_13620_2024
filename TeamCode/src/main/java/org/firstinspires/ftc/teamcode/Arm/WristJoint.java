@@ -44,6 +44,10 @@ public class WristJoint {
         targetVolts = getCurrentVolts() + volts;
     }
 
+    public void resetTargetVolts() {
+        targetVolts = getCurrentVolts();
+    }
+
     public double getCurrentVolts () {
         return currentVolts;
     }
@@ -60,10 +64,10 @@ public class WristJoint {
         motor.setPower(0);
     }
 
-    public void setPower(DcMotorSimple.Direction direction) {
-        if (direction == DcMotorSimple.Direction.FORWARD)
+    public void setPower(MotorState state) {
+        if (state == MotorState.FORWARD)
             motor.setPower(powerUsed);
-        else if (direction == DcMotorSimple.Direction.REVERSE)
+        else if (state == MotorState.REVERSE)
             motor.setPower(-powerUsed);
     }
 
@@ -100,13 +104,13 @@ public class WristJoint {
         return motor.getPower();
     }
 
-    public String getDirection() {
+    public MotorState getDirection() {
         if (currentVolts - targetVolts > potentiometerTolerance) //current is too high
-            return "REVERSE";
+            return MotorState.REVERSE;
         else if (currentVolts - targetVolts > -potentiometerTolerance) //current is too low
-            return "FORWARD";
+            return MotorState.FORWARD;
         else
-            return "NOT MOVING";
+            return MotorState.STOP;
     }
 
     public enum WRIST_POSITION {
