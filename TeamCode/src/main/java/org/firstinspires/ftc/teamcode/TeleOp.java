@@ -109,9 +109,9 @@ public class TeleOp extends LinearOpMode {
 
             //claw controls
             if (gamepad2.right_bumper)
-                robot.arm.claw.moveClaw(Claw.ClawPos.OPEN);
-            if (gamepad2.left_bumper)
                 robot.arm.claw.moveClaw(Claw.ClawPos.CLOSE);
+            if (gamepad2.left_bumper)
+                robot.arm.claw.moveClaw(Claw.ClawPos.OPEN);
             if(!gamepad2.right_bumper && !gamepad2.left_bumper)
                 robot.arm.claw.moveClaw(Claw.ClawPos.STOP);
 

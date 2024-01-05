@@ -37,6 +37,8 @@ public class PlacingAuton {
             opMode.sleep(1000);//have to test time
 
             robot.arm.moveToPositionSync(FullArm.ArmPosition.PLACING);
+            telemetry.addLine("Arm Moved");
+            telemetry.update();
 
             robot.driving.vertical(0.25f);
             opMode.sleep(1000);//have to test time
@@ -49,31 +51,21 @@ public class PlacingAuton {
 
         else if (fieldPosition == AllAutonMovements.FieldPosition.FAR_BLUE
                 || fieldPosition == AllAutonMovements.FieldPosition.FAR_RED){
-
+            //reverse
             robot.driving.vertical(-0.5f);
             opMode.sleep(500);
-            robot.driving.stop();
 
+            //horizontal
             robot.driving.horizontal(0.50f * horizontalDirection);
-            opMode.sleep(4000);
-            robot.driving.stop();
-            robot.driving.horizontal(0.50f * horizontalDirection);
-            opMode.sleep(3500);
-            robot.driving.stop();
+            opMode.sleep(7500);
 
-            robot.driving.vertical(0.50f);
-            opMode.sleep(2500);
-            robot.driving.stop();
+            //forward
+            robot.driving.vertical(0.5f);
+            opMode.sleep(6000);
 
-            robot.driving.horizontal(0.50f * horizontalDirection);
+            //sideways
+            robot.driving.horizontal(0.5f * -horizontalDirection);
             opMode.sleep(2000);
-            robot.driving.stop();
-
-            robot.arm.moveToPositionSync(FullArm.ArmPosition.PLACING);
-
-            robot.driving.vertical(0.25f);
-            opMode.sleep(100);//have to test time
-            robot.driving.stop();
 
             robot.arm.claw.moveClaw(Claw.ClawPos.OPEN);
             opMode.sleep(500);
