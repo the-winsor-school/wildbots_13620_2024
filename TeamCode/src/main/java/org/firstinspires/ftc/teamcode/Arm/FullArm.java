@@ -1,14 +1,21 @@
 package org.firstinspires.ftc.teamcode.Arm;
 
+import com.qualcomm.robotcore.hardware.AnalogInput;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.TouchSensor;
+
+import org.checkerframework.checker.units.qual.C;
 
 public class FullArm {
 
-    public ArmJoint liftJoint;
-    public ArmJoint clawJoint;
-
+    public ElbowJoint elbow;
+    public WristJoint wrist;
     public Claw claw;
+
+    public SimpleArmJoint simpleElbow;
+    public SimpleArmJoint simpleWrist;
 
     /**
      * will change the code used in the teleOp for the arm
@@ -17,52 +24,53 @@ public class FullArm {
      */
     public Boolean armEncodersOn;
 
-    public FullArm(DcMotor liftMotor, DcMotor clawMotor, CRServo rightServo, CRServo leftServo) {
-        liftJoint = new ArmJoint(liftMotor,  0.8f, 50);
-        clawJoint = new ArmJoint(clawMotor, 0.1f, 10);
+    public FullArm(DcMotor elbowMotor, TouchSensor elbowLimit, DcMotor wristMotor, TouchSensor wristLimit, AnalogInput wristPotentiometer, CRServo rightServo, CRServo leftServo) {
+        elbow = new ElbowJoint(elbowMotor, elbowLimit, 0.8, 50);
+        wrist = new WristJoint(wristMotor, wristPotentiometer, 0.5);
+        elbow.resetEncoder();
+
+        simpleElbow = new SimpleArmJoint(elbowMotor, 0.8);
+        simpleWrist = new SimpleArmJoint(wristMotor, 0.3);
+        simpleWrist.setBrake(DcMotor.ZeroPowerBehavior.FLOAT);
+        simpleElbow.setBrake(DcMotor.ZeroPowerBehavior.BRAKE);
 
         claw = new Claw(rightServo, leftServo);
     }
 
-    /**
-     * resets encoder to 0 for both arm joints
-     */
-    public void resetEncoders() {
-        liftJoint.resetEncoders();
-        clawJoint.resetEncoders();
+    public void armLoop() {
+        elbow.moveTowardsTargetPosition();
+        wrist.moveTowardsTargetPosition();
     }
 
-    //TODO fix these values
     /**
      * moves both of the arm joints to set positons for different arm positions
      */
     public void moveArmToPosition(ArmPosition pos) {
-        switch (pos) {
-            case RESET: //init position
-                liftJoint.setTargetPosition(0);
-                clawJoint.setTargetPosition(0);
-                break;
+        if (pos == ArmPosition.RESET) {
+            elbow.setTargetPosition(0);
+            wrist.setTargetPosition(WristJoint.WRIST_POSITION.INITIALIZATION);
+        }
 
-            case PICKINGUP: //picking up
-                liftJoint.setTargetPosition(150);
-                clawJoint.setTargetPosition(25);
-                break;
+        else if (pos == ArmPosition.PICKING_UP) {
+            elbow.setTargetPosition(150);
+            wrist.setTargetPosition(WristJoint.WRIST_POSITION.INITIALIZATION);
+        }
 
-            case PLACINGLOW: //placing on board
-                liftJoint.setTargetPosition(2650);
-                clawJoint.setTargetPosition(90);
-                break;
+        else if (pos == ArmPosition.PLACING) {
+            elbow.setTargetPosition(2650);
+            wrist.setTargetPosition(WristJoint.WRIST_POSITION.EXTENDED_OUT);
+        }
 
-            case PLACINGHIGH:
-                liftJoint.setTargetPosition(0);
-                clawJoint.setTargetPosition(0);
-                break;
+        else if (pos == ArmPosition.TRAVELING) {
+            elbow.setTargetPosition(290);
+            wrist.setTargetPosition(WristJoint.WRIST_POSITION.PULLED_BACK);
         }
     }
+
     public enum ArmPosition {
         RESET,
-        PLACINGLOW,
-        PICKINGUP,
-        PLACINGHIGH,
+        PICKING_UP,
+        PLACING,
+        TRAVELING,
     }
 }
