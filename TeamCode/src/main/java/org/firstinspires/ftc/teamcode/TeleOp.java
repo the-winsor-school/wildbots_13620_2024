@@ -4,11 +4,14 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
+import com.qualcomm.robotcore.util.ElapsedTime;
+
 import org.checkerframework.checker.units.qual.A;
 import org.firstinspires.ftc.teamcode.Arm.Claw;
 import org.firstinspires.ftc.teamcode.Arm.FullArm;
 import org.firstinspires.ftc.teamcode.Arm.MotorState;
 import org.firstinspires.ftc.teamcode.Arm.SimpleArmJoint;
+
 
 @com.qualcomm.robotcore.eventloop.opmode.TeleOp(name = "TeleOp")
 public class TeleOp extends LinearOpMode {
@@ -21,6 +24,8 @@ public class TeleOp extends LinearOpMode {
         //we are using arm encoders right now
         robot.arm.usingSmartElbow = true;
         robot.arm.usingSmartWrist = true;
+
+        robot.arm.wrist.setTargetVolts(robot.arm.wrist.getCurrentVolts());
 
         waitForStart();
 
@@ -135,8 +140,6 @@ public class TeleOp extends LinearOpMode {
 */
 
            telemetry.addLine("----------------ARM-------------------------");
-
-           telemetry.addData("ARM MODE:", robot.arm.armEncodersOn? "using encoders" : "not using encoders");
 
             //arm current position
             telemetry.addData("elbow: ", robot.arm.elbow.getCurrentPosition());

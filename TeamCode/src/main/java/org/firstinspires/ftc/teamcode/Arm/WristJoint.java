@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.TouchSensor;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 public class WristJoint {
 
@@ -16,6 +17,8 @@ public class WristJoint {
     private double targetVolts;
     private double currentVolts;
     private double potentiometerTolerance;
+
+    ElapsedTime time = new ElapsedTime();
 
     private Boolean usingPotentiometer = false;
 
@@ -29,6 +32,7 @@ public class WristJoint {
 
         targetVolts = getCurrentVolts();
 
+        time.startTime();
         this.motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
     }
 
@@ -72,11 +76,15 @@ public class WristJoint {
     }
 
     public void moveTowardsTargetPosition() {
-        updateCurrentVolts();
+        if (time.milliseconds() > 20) {
+            updateCurrentVolts();
+            time.reset();
+        }
+
         if (currentVolts - targetVolts > potentiometerTolerance) { //current is too high
             motor.setPower(-powerUsed);
         }
-        else if (currentVolts - targetVolts > -potentiometerTolerance) { //current is too low
+        else if (currentVolts - targetVolts < -potentiometerTolerance) { //current is too low
             motor.setPower(powerUsed);
         }
         else {
@@ -86,16 +94,16 @@ public class WristJoint {
 
     public void setTargetPosition(WRIST_POSITION wristPosition) {
         if (wristPosition == WRIST_POSITION.INITIALIZATION) {
-            setPotentiometerTolerance(0.15);
+            setPotentiometerTolerance(0.1);
             setTargetVolts(1.37);
         }
         else if (wristPosition == WRIST_POSITION.PULLED_BACK) {
-            setPotentiometerTolerance(0.7);
+            setPotentiometerTolerance(0.1);
             setTargetVolts(1.24);
         }
         else if (wristPosition == WRIST_POSITION.EXTENDED_OUT) {
             //TODO find more accurate values (do averages wth drivers)
-            setPotentiometerTolerance(0.5);
+            setPotentiometerTolerance(0.1);
             setTargetVolts(2.25);
         }
     }

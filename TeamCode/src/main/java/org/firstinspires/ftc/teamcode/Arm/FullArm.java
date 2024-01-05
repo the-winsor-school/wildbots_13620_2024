@@ -29,7 +29,7 @@ public class FullArm {
 
     public FullArm(DcMotor elbowMotor, TouchSensor elbowLimit, DcMotor wristMotor, TouchSensor wristLimit, AnalogInput wristPotentiometer, CRServo rightServo, CRServo leftServo) {
         elbow = new ElbowJoint(elbowMotor, elbowLimit, 0.8, 50);
-        wrist = new WristJoint(wristMotor, wristPotentiometer, 0.5);
+        wrist = new WristJoint(wristMotor, wristPotentiometer, 0.3);
         elbow.resetEncoder();
         wrist.resetTargetVolts();
 
