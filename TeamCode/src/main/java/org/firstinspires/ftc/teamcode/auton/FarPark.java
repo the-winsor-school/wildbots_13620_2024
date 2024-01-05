@@ -38,24 +38,27 @@ public class FarPark
         //reverse
         robot.driving.vertical(-0.5f);
         opMode.sleep(500);
-        robot.driving.stop();
 
         //first horizontal
         robot.driving.horizontal(0.50f * horizontalDirection);
-        opMode.sleep(4000);
-        robot.driving.stop();
+        opMode.sleep(7500);
 
-        //keep going
-        robot.driving.horizontal(0.50f * horizontalDirection);
-        opMode.sleep(3500);
-        robot.driving.stop();
+        //forward
+        robot.driving.vertical(0.5f);
+        opMode.sleep(7000);
+
+        //sideways
+        robot.driving.horizontal(0.5f * -horizontalDirection);
+        opMode.sleep(2000);
 
         while (!robot.checkTape()) {
             telemetry.addData("tape: ", "not found");
             telemetry.update();
-            robot.driving.vertical(0.50f);
+            robot.driving.horizontal(0.50f * horizontalDirection);
             opMode.sleep(20);
         }
+
+
         robot.driving.stop();
     }
 }
