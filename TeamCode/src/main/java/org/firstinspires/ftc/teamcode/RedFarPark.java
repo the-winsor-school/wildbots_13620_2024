@@ -18,7 +18,7 @@ public class RedFarPark extends LinearOpMode {
         waitForStart();
 
         if (opModeIsActive()) {
-            autonMovements.SimplePark(AllAutonMovements.FieldPosition.FAR_RED);
+            autonMovements.FarPark(AllAutonMovements.FieldPosition.FAR_RED);
         }
     }
 }
