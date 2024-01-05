@@ -64,13 +64,13 @@ public class TeleOp extends LinearOpMode {
 
                 //elbow manual controls
                 if (gamepad2.dpad_up)
-                    robot.arm.simpleElbow.moveArmJoint(DcMotorSimple.Direction.FORWARD);
+                    robot.arm.simpleElbow.setMotorSate(MotorState.FORWARD);
                 if(gamepad2.dpad_down)
-                    robot.arm.simpleElbow.moveArmJoint(DcMotorSimple.Direction.REVERSE);
+                    robot.arm.simpleElbow.setMotorSate(MotorState.REVERSE);
 
                 //elbow braking
                 if (!gamepad2.dpad_down && !gamepad2.dpad_up)
-                    robot.arm.simpleElbow.stop();
+                    robot.arm.simpleElbow.setMotorSate(MotorState.STOP);
             }
 
             if (robot.arm.usingSmartWrist) {
@@ -88,13 +88,13 @@ public class TeleOp extends LinearOpMode {
 
                 //maunal wrist contorls
                 if (gamepad2.dpad_right)
-                    robot.arm.simpleWrist.moveArmJoint(DcMotorSimple.Direction.FORWARD);
+                    robot.arm.simpleWrist.setMotorSate(MotorState.FORWARD);
                 if (gamepad2.dpad_left)
-                    robot.arm.simpleWrist.moveArmJoint(DcMotorSimple.Direction.REVERSE);
+                    robot.arm.simpleWrist.setMotorSate(MotorState.REVERSE);
 
                 //braking
                 if (!gamepad2.dpad_right&& !gamepad2.dpad_left)
-                    robot.arm.simpleWrist.stop();
+                    robot.arm.simpleWrist.setMotorSate(MotorState.STOP);
             }
 
             //arm levels (loops only run if the variable are true)

@@ -12,20 +12,18 @@ public class SimpleArmJoint {
         this.powerUsed = powerUsed;
     }
 
-    public void moveArmJoint(DcMotorSimple.Direction direction) {
+    public void setMotorSate(MotorState state) {
         motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        if (direction == DcMotorSimple.Direction.FORWARD)
+        if (state == MotorState.FORWARD)
             motor.setPower(powerUsed);
-        else if (direction == DcMotorSimple.Direction.REVERSE)
+        if (state == MotorState.REVERSE)
             motor.setPower(-powerUsed);
+        if (state == MotorState.STOP)
+            motor.setPower(0);
     }
 
     public void setBrake (DcMotor.ZeroPowerBehavior mode) {
         motor.setZeroPowerBehavior(mode);
-    }
-
-    public void stop() {
-        motor.setPower(0);
     }
 }
