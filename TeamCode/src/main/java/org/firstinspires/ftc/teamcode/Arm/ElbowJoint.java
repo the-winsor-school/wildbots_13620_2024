@@ -42,7 +42,9 @@ public class ElbowJoint {
     }
 
     public void resetEncoder() {
+
         motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motor.setTargetPosition(motor.getCurrentPosition());
     }
 
     public void runWithoutEncoder() {
