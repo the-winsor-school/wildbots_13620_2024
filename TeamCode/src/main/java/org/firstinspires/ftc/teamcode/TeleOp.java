@@ -1,9 +1,17 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
+import com.qualcomm.robotcore.util.ElapsedTime;
+
+import org.checkerframework.checker.units.qual.A;
 import org.firstinspires.ftc.teamcode.Arm.Claw;
 import org.firstinspires.ftc.teamcode.Arm.FullArm;
+import org.firstinspires.ftc.teamcode.Arm.MotorState;
+import org.firstinspires.ftc.teamcode.Arm.SimpleArmJoint;
+
 
 @com.qualcomm.robotcore.eventloop.opmode.TeleOp(name = "TeleOp")
 public class TeleOp extends LinearOpMode {
@@ -13,12 +21,15 @@ public class TeleOp extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         robot = new Robot(this);
 
-        waitForStart();
-
         //we are using arm encoders right now
-        robot.arm.armEncodersOn = true;
+        robot.arm.usingSmartElbow = true;
+        robot.arm.usingSmartWrist = true;
 
-        robot.arm.resetEncoders();
+        robot.arm.wrist.setTargetVolts(robot.arm.wrist.getCurrentVolts());
+
+        boolean usingWristPosition = false;
+
+        waitForStart();
 
         while (opModeIsActive()){
 
@@ -45,77 +56,137 @@ public class TeleOp extends LinearOpMode {
             //_______________________________________________
 
 
-            if (robot.arm.armEncodersOn) {
+            if (robot.arm.usingSmartElbow) {
 
-                //arm manual controls
+                //smart elbow manual controls
                 if (gamepad2.dpad_up)
-                    robot.arm.liftJoint.changeTargetPosition(200);
-                if(gamepad2.dpad_down)
-                    robot.arm.liftJoint.changeTargetPosition(-200);
-                if (gamepad2.dpad_right)
-                    robot.arm.clawJoint.changeTargetPosition(50);
-                if (gamepad2.dpad_left)
-                    robot.arm.clawJoint.changeTargetPosition(-50);
+                    robot.arm.elbow.changeTargetPosition(200);
+                else if (gamepad2.dpad_down)
+                    robot.arm.elbow.changeTargetPosition(-200);
 
-                //arm levels
-                if (gamepad2.x)
-                    robot.arm.moveArmToPosition(FullArm.ArmPosition.PICKINGUP);
-                if (gamepad2.a)
-                    robot.arm.moveArmToPosition(FullArm.ArmPosition.RESET);
-                if (gamepad2.b)
-                    robot.arm.moveArmToPosition(FullArm.ArmPosition.PLACINGLOW);
-
-                robot.arm.liftJoint.armLoop();
-                robot.arm.clawJoint.armLoop();
+                //smart elbow loop
+                robot.arm.elbow.moveTowardsTargetPosition();
 
             } else {
-                //arm manual controls
+
+                //elbow manual controls
                 if (gamepad2.dpad_up)
-                    robot.arm.liftJoint.usePower(true);
+                    robot.arm.simpleElbow.setMotorSate(MotorState.FORWARD);
                 if(gamepad2.dpad_down)
-                    robot.arm.liftJoint.usePower(true);
+                    robot.arm.simpleElbow.setMotorSate(MotorState.REVERSE);
+
+                //elbow braking
+                if (!gamepad2.dpad_down && !gamepad2.dpad_up)
+                    robot.arm.simpleElbow.setMotorSate(MotorState.STOP);
+            }
+
+            if (robot.arm.usingSmartWrist) {
+                //smart manual wrist controls
+                if (gamepad2.dpad_right) {
+                    usingWristPosition = false;
+                    robot.arm.wrist.setPower(MotorState.FORWARD);
+                }
+                else if (gamepad2.dpad_left) {
+                    usingWristPosition = false;
+                    robot.arm.wrist.setPower(MotorState.REVERSE);
+                }
+                else
+                    robot.arm.wrist.stop();
+
+                //wrist loop
+                 if (usingWristPosition) {
+                     robot.arm.wrist.moveTowardsTargetPosition();
+                 }
+            } else {
+
+                //maunal wrist contorls
                 if (gamepad2.dpad_right)
-                    robot.arm.clawJoint.usePower(false);
+                    robot.arm.simpleWrist.setMotorSate(MotorState.FORWARD);
                 if (gamepad2.dpad_left)
-                    robot.arm.clawJoint.usePower(false);
+                    robot.arm.simpleWrist.setMotorSate(MotorState.REVERSE);
+
+                //braking
+                if (!gamepad2.dpad_right&& !gamepad2.dpad_left)
+                    robot.arm.simpleWrist.setMotorSate(MotorState.STOP);
+            }
+
+            //arm levels (loops only run if the variable are true)
+            if (gamepad2.x) {
+                usingWristPosition = true;
+                robot.arm.moveArmToPosition(FullArm.ArmPosition.PICKING_UP);
+            }
+            if (gamepad2.a) {
+                usingWristPosition = true;
+                robot.arm.moveArmToPosition(FullArm.ArmPosition.RESET);
+            }
+            if (gamepad2.b) {
+                usingWristPosition = true;
+                robot.arm.moveArmToPosition(FullArm.ArmPosition.PLACING);
+            }
+            if (gamepad2.y) {
+                usingWristPosition = true;
+                robot.arm.moveArmToPosition(FullArm.ArmPosition.TRAVELING);
             }
 
             //claw controls
             if (gamepad2.right_bumper)
-                robot.arm.claw.moveClaw(Claw.ClawPos.OPEN);
-            if (gamepad2.left_bumper)
                 robot.arm.claw.moveClaw(Claw.ClawPos.CLOSE);
+            if (gamepad2.left_bumper)
+                robot.arm.claw.moveClaw(Claw.ClawPos.OPEN);
             if(!gamepad2.right_bumper && !gamepad2.left_bumper)
                 robot.arm.claw.moveClaw(Claw.ClawPos.STOP);
+
+            //chaning smart vs dumb arm controls
+            if (gamepad2.left_trigger > 0.75) {
+                robot.arm.usingSmartWrist = !robot.arm.usingSmartWrist;
+            }
+            if (gamepad2.right_trigger > 0.75) {
+                robot.arm.usingSmartElbow = !robot.arm.usingSmartElbow;
+            }
+
+            //reset encoders
+            if (gamepad2.right_stick_button) {
+                robot.arm.elbow.resetEncoder();
+            }
 
             //_______________________________________________
             //             PRINT STATEMENTS
             //_______________________________________________
 
-            telemetry.addData("ARM MODE:", robot.arm.armEncodersOn? "using encoders" : "not using encoders");
-            telemetry.addLine("\n");
 
-/*            //joystick inputs
+
+            telemetry.addLine("----------------WHEELS-------------------------");
+            telemetry.addData("WHEELS SPEED:", robot.driving.getSpeed());
+/*
+
+            //joystick inputs
             telemetry.addData("x: ", x);
             telemetry.addData("y: ", y);
             telemetry.addData("t: ", t);
 
             //wheels powers
-            robot.printWheelPowers();*/
+            robot.printWheelPowers();
+*/
 
            telemetry.addLine("----------------ARM-------------------------");
 
+           telemetry.addData("ELBOW SMART CONTROL", robot.arm.usingSmartElbow);
+            telemetry.addData("WRIST SMART CONTROL", robot.arm.usingSmartWrist);
+
             //arm current position
-            telemetry.addData("lift joint: ", robot.arm.liftJoint.getCurrentPosition());
-            telemetry.addData("claw joint: ", robot.arm.clawJoint.getCurrentPosition());
+            telemetry.addData("CURRENT ELBOW POSITION: ", robot.arm.elbow.getCurrentPosition());
+            telemetry.addData("wrist: ", robot.arm.wrist.getCurrentVolts());
 
             //arm directions
-            telemetry.addData("lift joint: ", robot.arm.liftJoint.getDirection());
-            telemetry.addData("claw joint: ", robot.arm.clawJoint.getDirection());
+            telemetry.addData("elbow: ", robot.arm.elbow.getDirection());
+            telemetry.addData("wrist: ", robot.arm.wrist.getDirection());
 
-            telemetry.addData("target lift joint: ", robot.arm.liftJoint.targetPosition);
-            telemetry.addData("target claw joint: ", robot.arm.clawJoint.targetPosition);
+            telemetry.addData("target lift joint: ", robot.arm.elbow.getTargetPosition());
+            telemetry.addData("target claw joint: ", robot.arm.wrist.getTargetVolts());
 
+            telemetry.addData("elbow limit: ", robot.liftLimitValue());
+            telemetry.addData("wrist limit: ", robot.clawLimitValue());
+            
             telemetry.addLine("----------------CLAW-------------------------");
 
             telemetry.addData("right servo: ", robot.arm.claw.getPower("right"));

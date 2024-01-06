@@ -18,14 +18,14 @@ public class Claw {
     public void moveClaw(ClawPos pos) {
         switch (pos) {
             //TODO test for close values
-            case OPEN:
-                right.setPower(-1);
-                left.setPower(1);
+            case CLOSE:
+                right.setPower(-0.5);
+                left.setPower(0.5);
                 break;
 
-            case CLOSE:
-                right.setPower(1);
-                left.setPower(-1);
+            case OPEN:
+                right.setPower(0.5);
+                left.setPower(-0.5);
                 break;
 
             case STOP:

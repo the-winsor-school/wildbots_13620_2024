@@ -13,20 +13,20 @@ public interface IDriving {
      * will move robot forward or backwards (on y axis)
      * @param power positive values go forward, negative values backwards, magnitude is speed
      */
-    public void vertical (float power);
+    public void vertical (double power);
 
     /**
      * will move robot left or right (on x axis)
      * uses strafing (robot doesnt turn)
      * @param power positive values go right, negative values go left, magnitude is speed
      */
-    public void horizontal (float power);
+    public void horizontal (double power);
 
     /**
      * will turn robot without moving just a spin
      * @param t positive values go right, negative values go left, magnitude is speed of the turn
      */
-    public void turn (float t);
+    public void turn (double t);
 
     /**
      * stops the robot with brake stop
@@ -45,7 +45,12 @@ public interface IDriving {
      * changes the speed used for the motors
      * @param x adds this value to the current speed;
      */
-    public void adjustSpeed(float x);
+    public void adjustSpeed(double x);
+
+    /**
+     * retruns current speed
+     */
+    public double getSpeed();
 
 
 }

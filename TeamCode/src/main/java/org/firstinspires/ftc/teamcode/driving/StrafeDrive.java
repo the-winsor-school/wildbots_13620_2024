@@ -12,7 +12,7 @@ public class StrafeDrive implements IDriving {
     private DcMotor lf;
     private DcMotor lb;
 
-    private float speed = 0.5f;
+    private double speed = 0.5;
 
     public StrafeDrive(DcMotor rf, DcMotor rb, DcMotor lf, DcMotor lb) {
         this.rf = rf;
@@ -35,15 +35,15 @@ public class StrafeDrive implements IDriving {
         lb.setPower((y - x + t) * speed);
     }
 
-    public void turn (float t) {
+    public void turn (double t) {
         setEachPower(t, t, -t, -t);
     }
 
-    public void horizontal (float power) { //right positive
+    public void horizontal (double power) { //right positive
         setEachPower(-power, power, power, -power); // -rf, +rb, lf, -lb)
     }
 
-    public void vertical (float power) { //forward positive
+    public void vertical (double power) { //forward positive
         setEachPower(power,  power, power, power); //one side negative -rf, -rb
     }
 
@@ -54,15 +54,17 @@ public class StrafeDrive implements IDriving {
         lb.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 
-    private void setEachPower (float rfp, float rbp, float lfp, float lbp) {
+    private void setEachPower (double rfp, double rbp, double lfp, double lbp) {
         rf.setPower(rfp * speed);
         rb.setPower(rbp * speed);
         lf.setPower(lfp * speed);
         lb.setPower(lbp * speed);
     }
 
-    public void adjustSpeed(float x) {
+    public void adjustSpeed(double x) {
         speed = speed + x;
     }
+
+    public double getSpeed() { return speed; }
 
 }

@@ -3,22 +3,28 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.firstinspires.ftc.teamcode.auton.AutonMovements;
+import org.firstinspires.ftc.teamcode.Arm.Claw;
+import org.firstinspires.ftc.teamcode.Arm.MotorState;
+import org.firstinspires.ftc.teamcode.auton.AllAutonMovements;
 
 @Autonomous(name = "Blue Far Park", group = "park")
 public class BlueFarPark extends LinearOpMode {
 
     Robot robot;
-    AutonMovements autonMovements;
+    AllAutonMovements autonMovements;
 
     public void runOpMode() throws InterruptedException {
         robot = new Robot(this);
-        autonMovements = new AutonMovements(this, robot);
+        autonMovements = new AllAutonMovements(this, robot);
+
+        robot.arm.claw.moveClaw(Claw.ClawPos.CLOSE);
+        robot.arm.wrist.setPower(MotorState.REVERSE);
+
 
         waitForStart();
 
         if (opModeIsActive()) {
-            autonMovements.SimplePark(AutonMovements.FieldPosition.FAR_BLUE);
+            autonMovements.FarPark(AllAutonMovements.FieldPosition.FAR_BLUE);
         }
     }
 }
