@@ -120,6 +120,19 @@ public class TeleOp extends LinearOpMode {
             if(!gamepad2.right_bumper && !gamepad2.left_bumper)
                 robot.arm.claw.moveClaw(Claw.ClawPos.STOP);
 
+            //chaning smart vs dumb arm controls
+            if (gamepad2.left_trigger > 0.75) {
+                robot.arm.usingSmartWrist = !robot.arm.usingSmartWrist;
+            }
+            if (gamepad2.right_trigger > 0.75) {
+                robot.arm.usingSmartElbow = !robot.arm.usingSmartElbow;
+            }
+
+            //reset encoders
+            if (gamepad2.right_stick_button) {
+                robot.arm.elbow.resetEncoder();
+            }
+
             //_______________________________________________
             //             PRINT STATEMENTS
             //_______________________________________________
