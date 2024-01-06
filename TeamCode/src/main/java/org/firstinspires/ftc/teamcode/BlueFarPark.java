@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.Arm.Claw;
+import org.firstinspires.ftc.teamcode.Arm.MotorState;
 import org.firstinspires.ftc.teamcode.auton.AllAutonMovements;
 
 @Autonomous(name = "Blue Far Park", group = "park")
@@ -17,6 +18,8 @@ public class BlueFarPark extends LinearOpMode {
         autonMovements = new AllAutonMovements(this, robot);
 
         robot.arm.claw.moveClaw(Claw.ClawPos.CLOSE);
+        robot.arm.wrist.setPower(MotorState.REVERSE);
+
 
         waitForStart();
 

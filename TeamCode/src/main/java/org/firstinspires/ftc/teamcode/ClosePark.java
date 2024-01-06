@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.Arm.Claw;
 import org.firstinspires.ftc.teamcode.Arm.FullArm;
+import org.firstinspires.ftc.teamcode.Arm.MotorState;
 import org.firstinspires.ftc.teamcode.auton.AllAutonMovements;
 
 @Autonomous(name = "Close Park (red or blue)", group = "park")
@@ -16,6 +17,8 @@ public class ClosePark extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         robot = new Robot(this);
         autonMovements = new AllAutonMovements(this, robot);
+
+        robot.arm.wrist.setPower(MotorState.REVERSE);
 
         waitForStart();
 

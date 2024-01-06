@@ -94,16 +94,16 @@ public class WristJoint {
 
     public void setTargetPosition(WRIST_POSITION wristPosition) {
         if (wristPosition == WRIST_POSITION.INITIALIZATION) {
-            setPotentiometerTolerance(0.1);
+            setPotentiometerTolerance(0.2);
             setTargetVolts(1.37);
         }
         else if (wristPosition == WRIST_POSITION.PULLED_BACK) {
-            setPotentiometerTolerance(0.1);
+            setPotentiometerTolerance(0.2);
             setTargetVolts(1.24);
         }
         else if (wristPosition == WRIST_POSITION.EXTENDED_OUT) {
             //TODO find more accurate values (do averages wth drivers)
-            setPotentiometerTolerance(0.1);
+            setPotentiometerTolerance(0.2);
             setTargetVolts(2.25);
         }
     }

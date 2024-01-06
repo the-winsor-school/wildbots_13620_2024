@@ -81,9 +81,9 @@ public class TeleOp extends LinearOpMode {
             if (robot.arm.usingSmartWrist) {
                 //smart manual wrist controls
                 if (gamepad2.dpad_right)
-                    robot.arm.wrist.setPower(MotorState.FORWARD);
+                    robot.arm.wrist.changeTargetVolts(0.2);
                 else if (gamepad2.dpad_left)
-                    robot.arm.wrist.setPower(MotorState.REVERSE);
+                    robot.arm.wrist.changeTargetVolts(-0.2);
                 else
                     robot.arm.wrist.stop();
 
