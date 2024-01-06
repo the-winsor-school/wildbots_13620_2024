@@ -154,8 +154,11 @@ public class TeleOp extends LinearOpMode {
 
            telemetry.addLine("----------------ARM-------------------------");
 
+           telemetry.addData("ELBOW SMART CONTROL", robot.arm.usingSmartElbow);
+            telemetry.addData("WRIST SMART CONTROL", robot.arm.usingSmartWrist);
+
             //arm current position
-            telemetry.addData("elbow: ", robot.arm.elbow.getCurrentPosition());
+            telemetry.addData("CURRENT ELBOW POSITION: ", robot.arm.elbow.getCurrentPosition());
             telemetry.addData("wrist: ", robot.arm.wrist.getCurrentVolts());
 
             //arm directions
@@ -167,9 +170,7 @@ public class TeleOp extends LinearOpMode {
 
             telemetry.addData("elbow limit: ", robot.liftLimitValue());
             telemetry.addData("wrist limit: ", robot.clawLimitValue());
-
-            telemetry.addData("wrist limit: ", robot.arm.wrist.getPower());
-
+            
             telemetry.addLine("----------------CLAW-------------------------");
 
             telemetry.addData("right servo: ", robot.arm.claw.getPower("right"));
