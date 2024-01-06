@@ -27,6 +27,8 @@ public class TeleOp extends LinearOpMode {
 
         robot.arm.wrist.setTargetVolts(robot.arm.wrist.getCurrentVolts());
 
+        boolean usingWristPosition = false;
+
         waitForStart();
 
         while (opModeIsActive()){
@@ -80,15 +82,21 @@ public class TeleOp extends LinearOpMode {
 
             if (robot.arm.usingSmartWrist) {
                 //smart manual wrist controls
-                if (gamepad2.dpad_right)
-                    robot.arm.wrist.changeTargetVolts(0.2);
-                else if (gamepad2.dpad_left)
-                    robot.arm.wrist.changeTargetVolts(-0.2);
+                if (gamepad2.dpad_right) {
+                    usingWristPosition = false;
+                    robot.arm.wrist.setPower(MotorState.FORWARD);
+                }
+                else if (gamepad2.dpad_left) {
+                    usingWristPosition = false;
+                    robot.arm.wrist.setPower(MotorState.REVERSE);
+                }
                 else
                     robot.arm.wrist.stop();
 
                 //wrist loop
-                robot.arm.wrist.moveTowardsTargetPosition();
+                 if (usingWristPosition) {
+                     robot.arm.wrist.moveTowardsTargetPosition();
+                 }
             } else {
 
                 //maunal wrist contorls
@@ -103,14 +111,22 @@ public class TeleOp extends LinearOpMode {
             }
 
             //arm levels (loops only run if the variable are true)
-            if (gamepad2.x)
+            if (gamepad2.x) {
+                usingWristPosition = true;
                 robot.arm.moveArmToPosition(FullArm.ArmPosition.PICKING_UP);
-            if (gamepad2.a)
+            }
+            if (gamepad2.a) {
+                usingWristPosition = true;
                 robot.arm.moveArmToPosition(FullArm.ArmPosition.RESET);
-            if (gamepad2.b)
+            }
+            if (gamepad2.b) {
+                usingWristPosition = true;
                 robot.arm.moveArmToPosition(FullArm.ArmPosition.PLACING);
-            if (gamepad2.y)
+            }
+            if (gamepad2.y) {
+                usingWristPosition = true;
                 robot.arm.moveArmToPosition(FullArm.ArmPosition.TRAVELING);
+            }
 
             //claw controls
             if (gamepad2.right_bumper)

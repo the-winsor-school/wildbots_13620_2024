@@ -22,6 +22,7 @@ public class WristJoint {
 
     private Boolean usingPotentiometer = false;
 
+
     WristJoint (DcMotor motor, AnalogInput anglePotentiometer, double powerUsed) {
         //this. refers to the varaible of the class and without refers to the parameter being passes into the constructor (its a java convension)
 
@@ -29,6 +30,7 @@ public class WristJoint {
         this.motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         this.anglePotentiometer = anglePotentiometer;
         this.powerUsed = powerUsed;
+        setPotentiometerTolerance(0.2);
 
         targetVolts = getCurrentVolts();
 
@@ -70,9 +72,9 @@ public class WristJoint {
 
     public void setPower(MotorState state) {
         if (state == MotorState.FORWARD)
-            motor.setPower(powerUsed);
+            motor.setPower(powerUsed * 0.75);
         else if (state == MotorState.REVERSE)
-            motor.setPower(-powerUsed);
+            motor.setPower(-powerUsed * 0.75);
     }
 
     public void moveTowardsTargetPosition() {
@@ -94,16 +96,13 @@ public class WristJoint {
 
     public void setTargetPosition(WRIST_POSITION wristPosition) {
         if (wristPosition == WRIST_POSITION.INITIALIZATION) {
-            setPotentiometerTolerance(0.2);
             setTargetVolts(1.37);
         }
         else if (wristPosition == WRIST_POSITION.PULLED_BACK) {
-            setPotentiometerTolerance(0.2);
             setTargetVolts(1.24);
         }
         else if (wristPosition == WRIST_POSITION.EXTENDED_OUT) {
             //TODO find more accurate values (do averages wth drivers)
-            setPotentiometerTolerance(0.2);
             setTargetVolts(2.25);
         }
     }

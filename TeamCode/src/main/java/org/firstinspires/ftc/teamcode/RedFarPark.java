@@ -24,7 +24,34 @@ public class RedFarPark extends LinearOpMode {
         waitForStart();
 
         if (opModeIsActive()) {
-            autonMovements.FarPark(AllAutonMovements.FieldPosition.FAR_RED);
+            //reverse
+            robot.driving.vertical(-0.5f);
+            sleep(800);
+
+            //first horizontal
+            robot.driving.horizontal(-0.50f);
+            sleep(8000);
+
+            //forward
+            robot.driving.vertical(0.5f);
+            sleep(8000);
+
+            robot.driving.turn(0.5);
+            sleep(500);
+
+            //sideways
+            robot.driving.horizontal(0.5f);
+            sleep(1000);
+
+            while (!robot.checkTape()) {
+                telemetry.addData("tape: ", "not found");
+                telemetry.update();
+                robot.driving.vertical(0.50f);
+                sleep(20);
+            }
+
+
+            robot.driving.stop();
         }
     }
 }
