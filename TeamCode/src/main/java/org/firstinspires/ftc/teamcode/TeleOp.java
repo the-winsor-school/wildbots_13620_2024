@@ -141,6 +141,9 @@ public class TeleOp extends LinearOpMode {
 
            telemetry.addLine("----------------ARM-------------------------");
 
+           //distance sensors
+            telemetry.addData("front distance",robot.frontDistanceValue());
+
             //arm current position
             telemetry.addData("elbow: ", robot.arm.elbow.getCurrentPosition());
             telemetry.addData("wrist: ", robot.arm.wrist.getCurrentVolts());

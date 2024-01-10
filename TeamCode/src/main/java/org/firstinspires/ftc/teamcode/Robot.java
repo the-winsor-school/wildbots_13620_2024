@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.Arm.*;
 import org.firstinspires.ftc.teamcode.driving.IDriving;
 import org.firstinspires.ftc.teamcode.driving.StrafeDrive;
@@ -52,6 +53,10 @@ public class Robot {
     //auton
     private ColorSensor color;
 
+
+    private DistanceSensor frontDistance;
+    private DistanceSensor leftDistance;
+    private DistanceSensor rightDistance;
     /**
      * itialization of libraires
      */
@@ -139,4 +144,7 @@ public class Robot {
         return wristLimit.isPressed();
     }
 
+    public double frontDistanceValue() {return frontDistance.getDistance(DistanceUnit.CM);}
+    public double leftDistanceValue() {return leftDistance.getDistance(DistanceUnit.CM);}
+    public double rightDistanceValue() {return rightDistance.getDistance(DistanceUnit.CM);}
 }
