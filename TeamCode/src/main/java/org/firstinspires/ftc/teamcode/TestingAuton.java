@@ -22,7 +22,7 @@ public class TestingAuton extends LinearOpMode {
 
         while (opModeIsActive()) {
 
-            while (pixelPlaced = false) {
+            while (pixelPlaced == false) {
                 robot.driving.vertical(-0.50f);//backing up to the tape
                 sleep(2100); //just an estimate - test time
 
@@ -33,6 +33,8 @@ public class TestingAuton extends LinearOpMode {
                     robot.arm.claw.moveClaw(Claw.ClawPos.OPEN);
                     sleep(500);
                     robot.arm.claw.moveClaw(Claw.ClawPos.STOP);
+                    robot.driving.vertical(0.50f); //go back
+                    sleep(1500);
                     pixelPlaced = true;
                 }
 
@@ -45,6 +47,10 @@ public class TestingAuton extends LinearOpMode {
                     robot.arm.claw.moveClaw(Claw.ClawPos.OPEN);
                     sleep(500);
                     robot.arm.claw.moveClaw(Claw.ClawPos.STOP);
+                    robot.driving.vertical(-0.50f);
+                    sleep(300); //go back
+                    robot.driving.turn(-0.50f);
+                    sleep(500); //turn back
                     pixelPlaced = true;
                 }
 
@@ -57,8 +63,26 @@ public class TestingAuton extends LinearOpMode {
                     robot.arm.claw.moveClaw(Claw.ClawPos.OPEN);
                     sleep(500);
                     robot.arm.claw.moveClaw(Claw.ClawPos.STOP);
+                    robot.driving.vertical(-0.50f);
+                    sleep(300); //go back
+                    robot.driving.turn(0.50f);
+                    sleep(500); //turn back
                     pixelPlaced = true;
                 }
+
+            }
+            robot.driving.vertical(0.50f);
+            sleep(1000);
+            robot.driving.turn(0.50f);
+            sleep(1000);
+
+            while (!robot.checkTape())
+            {
+                telemetry.addData("tape: ","not found");
+                robot.printWheelPowers();
+                telemetry.update();
+                robot.driving.vertical(0.50f);
+                sleep(20);
             }
 
 
