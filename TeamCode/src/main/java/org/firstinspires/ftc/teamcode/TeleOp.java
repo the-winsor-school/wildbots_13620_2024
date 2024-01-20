@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.checkerframework.checker.units.qual.A;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.Arm.Claw;
 import org.firstinspires.ftc.teamcode.Arm.FullArm;
 import org.firstinspires.ftc.teamcode.Arm.MotorState;
@@ -125,6 +126,9 @@ public class TeleOp extends LinearOpMode {
             //_______________________________________________
 
 
+            telemetry.addData("front distance", robot.getFrontDistance());
+            telemetry.addData("left distance", robot.getLeftDistance());
+            telemetry.addData("right distance", robot.getRightDistance());
 
             telemetry.addLine("----------------WHEELS-------------------------");
             telemetry.addData("WHEELS SPEED:", robot.driving.getSpeed());
