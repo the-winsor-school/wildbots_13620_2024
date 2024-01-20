@@ -66,9 +66,6 @@ public class Robot {
 
     private LinearOpMode opMode;
 
-    private DistanceSensor leftDistance;
-    private DistanceSensor frontDistance;
-    private DistanceSensor rightDistance;
 
     /**
      * @param opMode pass by writing: new Robot(this);
@@ -152,10 +149,28 @@ public class Robot {
     public Boolean clawLimitValue() {
         return wristLimit.isPressed();
     }
-    
+
     public double frontDistanceValue() {return frontDistance.getDistance(DistanceUnit.CM);}
     public double leftDistanceValue() {return leftDistance.getDistance(DistanceUnit.CM);}
     public double rightDistanceValue() {return rightDistance.getDistance(DistanceUnit.CM);}
 
+
+    boolean frontFound = false;
+    boolean rightFound = false;
+    boolean leftFound = false;
+
+    public void checkAllDistances()
+    {
+        if (frontDistanceValue()<8){
+            frontFound=true;
+        }
+        if(leftDistanceValue()<16){
+            leftFound=true;
+        }
+        if(rightDistanceValue()<16){
+            rightFound=true;
+        }
+
+    }
 
 }

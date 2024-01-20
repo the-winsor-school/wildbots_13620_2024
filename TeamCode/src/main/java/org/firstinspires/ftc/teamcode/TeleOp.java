@@ -126,9 +126,9 @@ public class TeleOp extends LinearOpMode {
             //_______________________________________________
 
 
-            telemetry.addData("front distance", robot.getFrontDistance());
-            telemetry.addData("left distance", robot.getLeftDistance());
-            telemetry.addData("right distance", robot.getRightDistance());
+            telemetry.addData("front distance", robot.frontDistanceValue());
+            telemetry.addData("left distance", robot.leftDistanceValue());
+            telemetry.addData("right distance", robot.rightDistanceValue());
 
             telemetry.addLine("----------------WHEELS-------------------------");
             telemetry.addData("WHEELS SPEED:", robot.driving.getSpeed());
