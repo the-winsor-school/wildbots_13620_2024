@@ -14,6 +14,5 @@ public class EncoderWheel {
         this.motor = motor;
     }
 
-    public Vector getVelocity()
 
 }
