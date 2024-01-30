@@ -1,16 +1,9 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
-import com.qualcomm.robotcore.util.ElapsedTime;
-
-import org.checkerframework.checker.units.qual.A;
 import org.firstinspires.ftc.teamcode.Arm.Claw;
 import org.firstinspires.ftc.teamcode.Arm.FullArm;
-import org.firstinspires.ftc.teamcode.Arm.MotorState;
-import org.firstinspires.ftc.teamcode.Arm.SimpleArmJoint;
 
 
 @com.qualcomm.robotcore.eventloop.opmode.TeleOp(name = "TeleOp")

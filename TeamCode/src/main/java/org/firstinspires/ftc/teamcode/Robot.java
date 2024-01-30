@@ -8,8 +8,7 @@ import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.Arm.*;
-import org.firstinspires.ftc.teamcode.driving.IDriving;
-import org.firstinspires.ftc.teamcode.driving.StrafeDrive;
+import org.firstinspires.ftc.teamcode.driving.*;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 
@@ -49,6 +48,10 @@ public class Robot {
     private CRServo rightServo;
     private CRServo leftServo;
 
+    //encoders
+    private DcMotor leftEncoder;
+    private DcMotor rightEncoder;
+
     //auton
     private ColorSensor color;
 
@@ -57,6 +60,7 @@ public class Robot {
      */
     public IDriving driving;
     public FullArm arm;
+    public Odometry odometry;
 
     private LinearOpMode opMode;
 
@@ -84,6 +88,9 @@ public class Robot {
         rightServo = map.tryGet(CRServo.class, "right");
         leftServo = map.tryGet(CRServo.class, "left");
 
+        leftEncoder = map.tryGet(DcMotor.class, "leftDeadwheel");
+        rightEncoder = map.tryGet(DcMotor.class, "rightDeadwheel");
+
         //just because o the orienttion o the motor
         elbowMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         wristMotor.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -98,6 +105,7 @@ public class Robot {
         driving = new StrafeDrive(rf, rb, lf, lb);
 
         arm = new FullArm(elbowMotor, elbowLimit, wristMotor, wristLimit, wristPotentiometer, rightServo, leftServo);
+        odometry = new Odometry(leftEncoder, rightEncoder, wristMotor, driving);
     }
 
     public void printWheelPowers() {

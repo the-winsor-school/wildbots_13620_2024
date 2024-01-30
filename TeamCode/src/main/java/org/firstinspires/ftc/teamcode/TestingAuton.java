@@ -19,8 +19,7 @@ public class TestingAuton extends LinearOpMode {
 
         while (opModeIsActive()) {
 
-            telemetry.addData("limit switch", robot.liftLimitValue());
-            telemetry.update();
+            robot.odometry.verticalMovement(1000, 0.25);
 
         }
 

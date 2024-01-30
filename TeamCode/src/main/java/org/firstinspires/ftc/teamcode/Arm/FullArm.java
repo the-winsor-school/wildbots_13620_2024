@@ -1,12 +1,11 @@
 package org.firstinspires.ftc.teamcode.Arm;
 
 import com.qualcomm.robotcore.hardware.AnalogInput;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 
-import org.checkerframework.checker.units.qual.C;
+import org.firstinspires.ftc.teamcode.MotorState;
 
 public class FullArm {
 

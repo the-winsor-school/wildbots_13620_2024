@@ -1,7 +1,8 @@
 package org.firstinspires.ftc.teamcode.Arm;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
+
+import org.firstinspires.ftc.teamcode.MotorState;
 
 public class SimpleArmJoint {
     private DcMotor motor;

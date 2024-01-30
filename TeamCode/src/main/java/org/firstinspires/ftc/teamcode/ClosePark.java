@@ -5,7 +5,6 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.Arm.Claw;
 import org.firstinspires.ftc.teamcode.Arm.FullArm;
-import org.firstinspires.ftc.teamcode.Arm.MotorState;
 import org.firstinspires.ftc.teamcode.auton.AllAutonMovements;
 
 @Autonomous(name = "Close Park (red or blue)", group = "park")

@@ -4,6 +4,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 
+import org.firstinspires.ftc.teamcode.MotorState;
+
 public class ElbowJoint {
 
     private DcMotorEx motor;

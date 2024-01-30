@@ -6,8 +6,6 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.Arm.Claw;
 import org.firstinspires.ftc.teamcode.Arm.FullArm;
-import org.firstinspires.ftc.teamcode.Arm.MotorState;
-import org.firstinspires.ftc.teamcode.Arm.WristJoint;
 import org.firstinspires.ftc.teamcode.auton.AllAutonMovements;
 
 @Autonomous(name = "Red Close Placing", group = "place")
