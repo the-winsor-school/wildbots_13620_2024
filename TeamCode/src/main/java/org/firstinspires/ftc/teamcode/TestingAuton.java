@@ -31,7 +31,7 @@ public class TestingAuton extends LinearOpMode {
                 telemetry.addLine("stopping");
                 telemetry.update();
 
-                while (!robot.frontFound && !robot.leftFound && !robot.rightFound)
+                /*while (!robot.frontFound && !robot.leftFound && !robot.rightFound)
                 {
                     robot.driving.turn(0.5f);
                     sleep(100);
@@ -63,28 +63,34 @@ public class TestingAuton extends LinearOpMode {
                     telemetry.update();
 
                     pixelPlaced=true;
-                }
+                }*/
+
+                robot.checkAllDistances();
 
 
                 if (robot.frontFound == true)
                 {
-                    telemetry.addLine("front found");
+                    telemetry.addLine("PLACING PIXEL NOW");
                     telemetry.update();
                     sleep(2000);
                     robot.driving.vertical(-0.50f);//backing up until it's lined up to place the pixel
-                    sleep(1500);
+                    sleep(1550);
                     robot.driving.vertical(0f);
 
-                    /*
-                    COMMENTED THIS OUT BC THE CLAW IS BROKEN RN
+
                     robot.arm.claw.moveClaw(Claw.ClawPos.OPEN);
-                    sleep(500);
+                    sleep(2500);
                     robot.arm.claw.moveClaw(Claw.ClawPos.STOP);
-                     */
+
 
                     robot.driving.vertical(0.50f); //go back
-                    sleep(1500);
+                    sleep(1550);
                     robot.driving.vertical(0f);
+
+                    robot.driving.turn(0.50f);
+                    sleep(6500);
+                    robot.driving.turn(0f);
+
                     pixelPlaced = true;
                 }
 
@@ -92,22 +98,16 @@ public class TestingAuton extends LinearOpMode {
                 {
                     telemetry.addLine("right found");
                     telemetry.update();
-                    robot.driving.turn(0.50f);
-                    sleep(500); //ESTIMATE!! should be a little bit more than a quarter of a turn
-                    robot.driving.vertical(0.50f);
-                    sleep(300); //inch forward a little
-
-                    /*
-                    COMMENTED THIS OUT BC THE CLAW IS BROKEN RN
-                    robot.arm.claw.moveClaw(Claw.ClawPos.OPEN);
-                    sleep(500);
-                    robot.arm.claw.moveClaw(Claw.ClawPos.STOP);*/
-
-                    robot.driving.vertical(-0.50f);
-                    sleep(300); //go back
-                    robot.driving.vertical(0f);
                     robot.driving.turn(-0.50f);
-                    sleep(500); //turn back
+                    sleep(2500); //ESTIMATE!! should be a little bit more than a quarter of a turn
+                    robot.driving.turn(0f);
+
+
+                    robot.arm.claw.moveClaw(Claw.ClawPos.OPEN);
+                    sleep(1500);
+                    robot.arm.claw.moveClaw(Claw.ClawPos.STOP);
+
+
                     pixelPlaced = true;
                 }
 
@@ -116,19 +116,15 @@ public class TestingAuton extends LinearOpMode {
                     telemetry.addLine("left found");
                     telemetry.update();
                     robot.driving.turn(-0.50f);
-                    sleep(500); //ESTIMATE!! should be a little bit more than a quarter of a turn
-                    robot.driving.vertical(0.50f);
-                    sleep(300); //inch forward a little
+                    sleep(2500); //ESTIMATE!! should be a little bit more than a quarter of a turn
+                    robot.driving.vertical(0f);
 
-                    /* COMMENTING CLAW PART OUT
+
                     robot.arm.claw.moveClaw(Claw.ClawPos.OPEN);
                     sleep(500);
-                    robot.arm.claw.moveClaw(Claw.ClawPos.STOP);*/
+                    robot.arm.claw.moveClaw(Claw.ClawPos.STOP);
 
-                    robot.driving.vertical(-0.50f);
-                    sleep(300); //go back
-                    robot.driving.turn(0.50f);
-                    sleep(500); //turn back
+
                     pixelPlaced = true;
                 }
 
@@ -139,23 +135,28 @@ public class TestingAuton extends LinearOpMode {
 
             telemetry.addLine("PIXEL IS PLACED");
             telemetry.update();
-
+/*
             robot.driving.vertical(0.50f);
             sleep(1000);
             robot.driving.vertical(0f);
-            robot.driving.turn(0.50f);
-            sleep(1000);
-            robot.driving.turn(0f);
+            */
+
+
+
+            robot.driving.horizontal(0.50f);
+            sleep(3000);
+            robot.driving.horizontal(0f);
+
 
             while (!robot.checkTape())
             {
                 telemetry.addData("tape: ","not found");
-                robot.printWheelPowers();
                 telemetry.update();
                 robot.driving.vertical(0.50f);
                 sleep(20);
             }
 
+            robot.driving.stop();
 
 
         }
