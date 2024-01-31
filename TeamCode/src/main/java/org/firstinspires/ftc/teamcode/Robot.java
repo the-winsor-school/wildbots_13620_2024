@@ -45,6 +45,9 @@ public class Robot {
     private TouchSensor wristLimit;
     private AnalogInput wristPotentiometer;
 
+    //airplane launcher
+    private CRServo airplaneLauncher;
+
     //claw
     private CRServo rightServo;
     private CRServo leftServo;
@@ -83,6 +86,8 @@ public class Robot {
 
         rightServo = map.tryGet(CRServo.class, "right");
         leftServo = map.tryGet(CRServo.class, "left");
+
+        airplaneLauncher = map.tryGet(CRServo.class, "airplane");
 
         //just because o the orienttion o the motor
         elbowMotor.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -137,6 +142,14 @@ public class Robot {
     }
     public Boolean clawLimitValue() {
         return wristLimit.isPressed();
+    }
+
+    public void moveAirPlaneLauncher() {
+        airplaneLauncher.setPower(1);
+    }
+
+    public void stopAirPlaneLauncher() {
+        airplaneLauncher.setPower(0);
     }
 
 }

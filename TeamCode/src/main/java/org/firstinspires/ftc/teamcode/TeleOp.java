@@ -51,6 +51,11 @@ public class TeleOp extends LinearOpMode {
             if(gamepad1.dpad_down)
                 robot.driving.adjustSpeed(-0.05f);
 
+            if (gamepad1.a)
+                robot.moveAirPlaneLauncher();
+            else
+                robot.stopAirPlaneLauncher();
+
             //_______________________________________________
             //             MECH CONTROLLER
             //_______________________________________________
