@@ -63,7 +63,7 @@ public class Robot {
     /**
      * @param opMode pass by writing: new Robot(this);
      */
-    public Robot(LinearOpMode opMode) {
+    public Robot(LinearOpMode opMode, Boolean isAuton) {
         HardwareMap map = opMode.hardwareMap;
         this.opMode = opMode;
 
@@ -79,8 +79,7 @@ public class Robot {
 
         wristMotor = map.tryGet(DcMotor.class, "wrist");
         wristLimit = map.tryGet(TouchSensor.class, "wristLimit");
-        wristPotentiometer = map.tryGet(AnalogInput.class, "wristAngle");
-
+        wristPotentiometer = map.tryGet(AnalogInput.class, "wristAngle");\
         rightServo = map.tryGet(CRServo.class, "right");
         leftServo = map.tryGet(CRServo.class, "left");
 
