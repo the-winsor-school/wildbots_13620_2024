@@ -164,10 +164,10 @@ public class Robot {
         if (frontDistanceValue()<8){
             frontFound=true;
         }
-        if(leftDistanceValue()<16){
+        if(leftDistanceValue()<20){
             leftFound=true;
         }
-        if(rightDistanceValue()<16){
+        if(rightDistanceValue()<20){
             rightFound=true;
         }
 
