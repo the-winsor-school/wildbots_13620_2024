@@ -63,7 +63,7 @@ public class Robot {
     /**
      * @param opMode pass by writing: new Robot(this);
      */
-    public Robot(LinearOpMode opMode, Boolean isAuton) {
+    public Robot(LinearOpMode opMode) {
         HardwareMap map = opMode.hardwareMap;
         this.opMode = opMode;
 
