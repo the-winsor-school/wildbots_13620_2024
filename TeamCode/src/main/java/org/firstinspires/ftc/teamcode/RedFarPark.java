@@ -36,12 +36,9 @@ public class RedFarPark extends LinearOpMode {
             robot.driving.vertical(0.5f);
             sleep(8000);
 
-            robot.driving.turn(0.5);
-            sleep(500);
-
             //sideways
             robot.driving.horizontal(0.5f);
-            sleep(1000);
+            sleep(1500);
 
             while (!robot.checkTape()) {
                 telemetry.addData("tape: ", "not found");

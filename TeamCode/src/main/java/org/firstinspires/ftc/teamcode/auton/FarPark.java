@@ -54,7 +54,7 @@ public class FarPark
         while (!robot.checkTape()) {
             telemetry.addData("tape: ", "not found");
             telemetry.update();
-            robot.driving.vertical(0.50f * horizontalDirection);
+            robot.driving.vertical(0.50f);
             opMode.sleep(20);
         }
 

@@ -1,3 +1,4 @@
+/*
 package org.firstinspires.ftc.teamcode;
 
 
@@ -31,7 +32,8 @@ public class TestingAuton extends LinearOpMode {
                 telemetry.addLine("stopping");
                 telemetry.update();
 
-                /*while (!robot.frontFound && !robot.leftFound && !robot.rightFound)
+                */
+/*while (!robot.frontFound && !robot.leftFound && !robot.rightFound)
                 {
                     robot.driving.turn(0.5f);
                     sleep(100);
@@ -63,7 +65,8 @@ public class TestingAuton extends LinearOpMode {
                     telemetry.update();
 
                     pixelPlaced=true;
-                }*/
+                }*//*
+
 
                 robot.checkAllDistances();
 
@@ -135,11 +138,13 @@ public class TestingAuton extends LinearOpMode {
 
             telemetry.addLine("PIXEL IS PLACED");
             telemetry.update();
+*/
 /*
             robot.driving.vertical(0.50f);
             sleep(1000);
             robot.driving.vertical(0f);
-            */
+            *//*
+
 
 
 
@@ -163,3 +168,4 @@ public class TestingAuton extends LinearOpMode {
 
     }
 }
+*/

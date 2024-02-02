@@ -24,7 +24,31 @@ public class BlueFarPark extends LinearOpMode {
         waitForStart();
 
         if (opModeIsActive()) {
-            autonMovements.FarPark(AllAutonMovements.FieldPosition.FAR_BLUE);
+            //reverse
+            robot.driving.vertical(-0.5f);
+            sleep(500);
+
+            //first horizontal
+            robot.driving.horizontal(0.50f);
+            sleep(7000);
+
+            //forward
+            robot.driving.vertical(0.5f);
+            sleep(7000);
+
+            //sideways
+            robot.driving.horizontal(-0.5f);
+            sleep(2000);
+
+            while (!robot.checkTape()) {
+                telemetry.addData("tape: ", "not found");
+                telemetry.update();
+                robot.driving.vertical(0.50f);
+                sleep(20);
+            }
+
+
+            robot.driving.stop();
         }
     }
 }

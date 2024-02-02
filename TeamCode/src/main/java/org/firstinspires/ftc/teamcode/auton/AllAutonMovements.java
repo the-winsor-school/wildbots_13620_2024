@@ -29,7 +29,7 @@ public class AllAutonMovements {
         placingAuton.drivePlacingAuton(fieldPosition);
     }
 
-    public void checkDistanceMovement() {
+/*    public void checkDistanceMovement() {
         while (!robot.objectFound()) {
             opMode.telemetry.addData("front", robot.frontDistanceValue());
             opMode.telemetry.addData("right", robot.rightDistanceValue());
@@ -40,7 +40,7 @@ public class AllAutonMovements {
         robot.driving.stop();
 
 
-    }
+    }*/
 
     /**
      * gives you all the field positions
