@@ -5,8 +5,10 @@ import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.Arm.*;
 import org.firstinspires.ftc.teamcode.driving.IDriving;
 import org.firstinspires.ftc.teamcode.driving.StrafeDrive;
@@ -51,6 +53,10 @@ public class Robot {
     //claw
     private CRServo rightServo;
     private CRServo leftServo;
+
+    private DistanceSensor frontDistance;
+    private DistanceSensor leftDistance;
+    private DistanceSensor rightDistance;
 
     //auton
     private ColorSensor color;
@@ -98,6 +104,10 @@ public class Robot {
         rb.setDirection(DcMotor.Direction.REVERSE);
         lf.setDirection(DcMotor.Direction.REVERSE);
         lb.setDirection(DcMotor.Direction.FORWARD);
+
+        leftDistance = map.tryGet(DistanceSensor.class, "leftDistance");
+        rightDistance = map.tryGet(DistanceSensor.class,"rightDistance");
+        frontDistance = map.tryGet(DistanceSensor.class,"frontDistance");
 
         driving = new StrafeDrive(rf, rb, lf, lb);
 
@@ -150,5 +160,16 @@ public class Robot {
     public void stopAirPlaneLauncher() {
         airplaneLauncher.setPower(0);
     }
+
+    public double getFrontDistance() {
+        return frontDistance.getDistance(DistanceUnit.CM);
+    }
+    public double getRightDistance() {
+        return rightDistance.getDistance(DistanceUnit.CM);
+    }
+    public double getLeftDistance() {
+        return leftDistance.getDistance(DistanceUnit.CM);
+    }
+
 
 }
