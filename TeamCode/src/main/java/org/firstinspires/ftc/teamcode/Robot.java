@@ -173,4 +173,12 @@ public class Robot {
 
     }
 
+
+    public boolean objectFound() {
+        checkAllDistances();
+        if (leftFound || rightFound || frontFound)
+            return true;
+        return false;
+    }
+
 }

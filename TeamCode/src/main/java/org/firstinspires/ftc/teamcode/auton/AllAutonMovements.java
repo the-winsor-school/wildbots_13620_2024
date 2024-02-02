@@ -29,6 +29,19 @@ public class AllAutonMovements {
         placingAuton.drivePlacingAuton(fieldPosition);
     }
 
+    public void checkDistanceMovement() {
+        while (!robot.objectFound()) {
+            opMode.telemetry.addData("front", robot.frontDistanceValue());
+            opMode.telemetry.addData("right", robot.rightDistanceValue());
+            opMode.telemetry.addData("left", robot.leftDistanceValue());
+            opMode.telemetry.update();
+            robot.driving.vertical(-0.5);
+        }
+        robot.driving.stop();
+
+
+    }
+
     /**
      * gives you all the field positions
      * (CLOSE means close side to stage and FAR is far from stage)
