@@ -7,7 +7,6 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.checkerframework.checker.units.qual.A;
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.Arm.Claw;
 import org.firstinspires.ftc.teamcode.Arm.FullArm;
 import org.firstinspires.ftc.teamcode.Arm.MotorState;
@@ -27,6 +26,8 @@ public class TeleOp extends LinearOpMode {
         robot.arm.usingSmartWrist = true;
 
         robot.arm.wrist.setTargetVolts(robot.arm.wrist.getCurrentVolts());
+
+        boolean usingWristPosition = false;
 
         waitForStart();
 
@@ -49,6 +50,11 @@ public class TeleOp extends LinearOpMode {
             //make wheels speed slower
             if(gamepad1.dpad_down)
                 robot.driving.adjustSpeed(-0.05f);
+
+            if (gamepad1.a)
+                robot.moveAirPlaneLauncher();
+            else
+                robot.stopAirPlaneLauncher();
 
             //_______________________________________________
             //             MECH CONTROLLER
@@ -81,15 +87,21 @@ public class TeleOp extends LinearOpMode {
 
             if (robot.arm.usingSmartWrist) {
                 //smart manual wrist controls
-                if (gamepad2.dpad_right)
-                    robot.arm.wrist.changeTargetVolts(0.2);
-                else if (gamepad2.dpad_left)
-                    robot.arm.wrist.changeTargetVolts(-0.2);
+                if (gamepad2.dpad_right) {
+                    usingWristPosition = false;
+                    robot.arm.wrist.setPower(MotorState.FORWARD);
+                }
+                else if (gamepad2.dpad_left) {
+                    usingWristPosition = false;
+                    robot.arm.wrist.setPower(MotorState.REVERSE);
+                }
                 else
                     robot.arm.wrist.stop();
 
                 //wrist loop
-                robot.arm.wrist.moveTowardsTargetPosition();
+                 if (usingWristPosition) {
+                     robot.arm.wrist.moveTowardsTargetPosition();
+                 }
             } else {
 
                 //maunal wrist contorls
@@ -104,14 +116,22 @@ public class TeleOp extends LinearOpMode {
             }
 
             //arm levels (loops only run if the variable are true)
-            if (gamepad2.x)
+            if (gamepad2.x) {
+                usingWristPosition = true;
                 robot.arm.moveArmToPosition(FullArm.ArmPosition.PICKING_UP);
-            if (gamepad2.a)
+            }
+            if (gamepad2.a) {
+                usingWristPosition = true;
                 robot.arm.moveArmToPosition(FullArm.ArmPosition.RESET);
-            if (gamepad2.b)
+            }
+            if (gamepad2.b) {
+                usingWristPosition = true;
                 robot.arm.moveArmToPosition(FullArm.ArmPosition.PLACING);
-            if (gamepad2.y)
+            }
+            if (gamepad2.y) {
+                usingWristPosition = true;
                 robot.arm.moveArmToPosition(FullArm.ArmPosition.TRAVELING);
+            }
 
             //claw controls
             if (gamepad2.right_bumper)
@@ -121,14 +141,24 @@ public class TeleOp extends LinearOpMode {
             if(!gamepad2.right_bumper && !gamepad2.left_bumper)
                 robot.arm.claw.moveClaw(Claw.ClawPos.STOP);
 
+            //chaning smart vs dumb arm controls
+            if (gamepad2.left_trigger > 0.75) {
+                robot.arm.usingSmartWrist = !robot.arm.usingSmartWrist;
+            }
+            if (gamepad2.right_trigger > 0.75) {
+                robot.arm.usingSmartElbow = !robot.arm.usingSmartElbow;
+            }
+
+            //reset encoders
+            if (gamepad2.right_stick_button) {
+                robot.arm.elbow.resetEncoder();
+            }
+
             //_______________________________________________
             //             PRINT STATEMENTS
             //_______________________________________________
 
 
-            telemetry.addData("front distance", robot.frontDistanceValue());
-            telemetry.addData("left distance", robot.leftDistanceValue());
-            telemetry.addData("right distance", robot.rightDistanceValue());
 
             telemetry.addLine("----------------WHEELS-------------------------");
             telemetry.addData("WHEELS SPEED:", robot.driving.getSpeed());
@@ -145,11 +175,11 @@ public class TeleOp extends LinearOpMode {
 
            telemetry.addLine("----------------ARM-------------------------");
 
-           //distance sensors
-            telemetry.addData("front distance",robot.frontDistanceValue());
+           telemetry.addData("ELBOW SMART CONTROL", robot.arm.usingSmartElbow);
+            telemetry.addData("WRIST SMART CONTROL", robot.arm.usingSmartWrist);
 
             //arm current position
-            telemetry.addData("elbow: ", robot.arm.elbow.getCurrentPosition());
+            telemetry.addData("CURRENT ELBOW POSITION: ", robot.arm.elbow.getCurrentPosition());
             telemetry.addData("wrist: ", robot.arm.wrist.getCurrentVolts());
 
             //arm directions
@@ -161,9 +191,7 @@ public class TeleOp extends LinearOpMode {
 
             telemetry.addData("elbow limit: ", robot.liftLimitValue());
             telemetry.addData("wrist limit: ", robot.clawLimitValue());
-
-            telemetry.addData("wrist limit: ", robot.arm.wrist.getPower());
-
+            
             telemetry.addLine("----------------CLAW-------------------------");
 
             telemetry.addData("right servo: ", robot.arm.claw.getPower("right"));

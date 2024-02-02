@@ -5,10 +5,8 @@ import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.CRServo;
-import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.Arm.*;
 import org.firstinspires.ftc.teamcode.driving.IDriving;
 import org.firstinspires.ftc.teamcode.driving.StrafeDrive;
@@ -47,6 +45,9 @@ public class Robot {
     private TouchSensor wristLimit;
     private AnalogInput wristPotentiometer;
 
+    //airplane launcher
+    private CRServo airplaneLauncher;
+
     //claw
     private CRServo rightServo;
     private CRServo leftServo;
@@ -54,10 +55,6 @@ public class Robot {
     //auton
     private ColorSensor color;
 
-
-    private DistanceSensor frontDistance;
-    private DistanceSensor leftDistance;
-    private DistanceSensor rightDistance;
     /**
      * itialization of libraires
      */
@@ -65,7 +62,6 @@ public class Robot {
     public FullArm arm;
 
     private LinearOpMode opMode;
-
 
     /**
      * @param opMode pass by writing: new Robot(this);
@@ -87,9 +83,10 @@ public class Robot {
         wristMotor = map.tryGet(DcMotor.class, "wrist");
         wristLimit = map.tryGet(TouchSensor.class, "wristLimit");
         wristPotentiometer = map.tryGet(AnalogInput.class, "wristAngle");
-
         rightServo = map.tryGet(CRServo.class, "right");
         leftServo = map.tryGet(CRServo.class, "left");
+
+        airplaneLauncher = map.tryGet(CRServo.class, "airplane");
 
         //just because o the orienttion o the motor
         elbowMotor.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -105,10 +102,6 @@ public class Robot {
         driving = new StrafeDrive(rf, rb, lf, lb);
 
         arm = new FullArm(elbowMotor, elbowLimit, wristMotor, wristLimit, wristPotentiometer, rightServo, leftServo);
-
-        leftDistance = map.tryGet(DistanceSensor.class, "leftDistance");
-        rightDistance = map.tryGet(DistanceSensor.class,"rightDistance");
-        frontDistance = map.tryGet(DistanceSensor.class,"frontDistance");
     }
 
     public void printWheelPowers() {
@@ -150,35 +143,12 @@ public class Robot {
         return wristLimit.isPressed();
     }
 
-    public double frontDistanceValue() {return frontDistance.getDistance(DistanceUnit.CM);}
-    public double leftDistanceValue() {return leftDistance.getDistance(DistanceUnit.CM);}
-    public double rightDistanceValue() {return rightDistance.getDistance(DistanceUnit.CM);}
-
-
-    boolean frontFound = false;
-    boolean rightFound = false;
-    boolean leftFound = false;
-
-    public void checkAllDistances()
-    {
-        if (frontDistanceValue()<8){
-            frontFound=true;
-        }
-        if(leftDistanceValue()<20){
-            leftFound=true;
-        }
-        if(rightDistanceValue()<20){
-            rightFound=true;
-        }
-
+    public void moveAirPlaneLauncher() {
+        airplaneLauncher.setPower(1);
     }
 
-
-    public boolean objectFound() {
-        checkAllDistances();
-        if (leftFound || rightFound || frontFound)
-            return true;
-        return false;
+    public void stopAirPlaneLauncher() {
+        airplaneLauncher.setPower(0);
     }
 
 }
