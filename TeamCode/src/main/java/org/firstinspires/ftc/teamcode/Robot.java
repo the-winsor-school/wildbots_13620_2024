@@ -82,7 +82,7 @@ public class Robot {
 
         wristMotor = map.tryGet(DcMotor.class, "wrist");
         wristLimit = map.tryGet(TouchSensor.class, "wristLimit");
-        wristPotentiometer = map.tryGet(AnalogInput.class, "wristAngle");\
+        wristPotentiometer = map.tryGet(AnalogInput.class, "wristAngle");
         rightServo = map.tryGet(CRServo.class, "right");
         leftServo = map.tryGet(CRServo.class, "left");
 
