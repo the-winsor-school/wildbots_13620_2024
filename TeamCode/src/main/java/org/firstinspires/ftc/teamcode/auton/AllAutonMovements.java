@@ -5,7 +5,6 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.*;
 import org.firstinspires.ftc.teamcode.Arm.Claw;
-import org.firstinspires.ftc.teamcode.Arm.FullArm;
 
 public class AllAutonMovements {
 
@@ -37,43 +36,68 @@ public class AllAutonMovements {
             robot.driving.vertical(0.25);
             opMode.sleep(100);
             robot.driving.stop();
-            robot.arm.claw.moveClaw(Claw.ClawPos.OPEN);
             opMode.sleep(500);
+            robot.arm.claw.moveClaw(Claw.ClawPos.OPEN);
+            opMode.sleep(1000);
         }
 
         else if (pixel == PixelLocation.LEFT) {
             robot.driving.turn(0.5);
-            opMode.sleep(2400);
+            opMode.sleep(2000);
             robot.driving.stop();
-            robot.arm.claw.moveClaw(Claw.ClawPos.OPEN);
             opMode.sleep(500);
+            robot.arm.claw.moveClaw(Claw.ClawPos.OPEN);
+            opMode.sleep(1000);
         }
         else if (pixel == PixelLocation.RIGHT) {
             robot.driving.turn(-0.5);
-            opMode.sleep(2400);
+            opMode.sleep(2000);
             robot.driving.stop();
-            robot.arm.claw.moveClaw(Claw.ClawPos.OPEN);
             opMode.sleep(500);
+            robot.arm.claw.moveClaw(Claw.ClawPos.OPEN);
+            opMode.sleep(1000);
         }
 
     }
 
-    public void moveUnderLeftDistance(double distance, double power) {
+    public void moveToLeftDistance(double distance, double power) {
+        if (robot.getLeftDistance() < distance) {
+            while (robot.getLeftDistance() < distance) {
+                telemetry.addData("left", robot.getLeftDistance());
+                telemetry.update();
+                robot.driving.horizontal(power);
+                opMode.sleep(10);
+            }
+        }
+        else if (robot.getLeftDistance() > distance) {
             while (robot.getLeftDistance() < distance) {
                 telemetry.addData("left", robot.getLeftDistance());
                 telemetry.update();
                 robot.driving.horizontal(-power);
                 opMode.sleep(10);
             }
+        }
+        robot.driving.stop();
+    }
+
+    public void moveUnderFrontDistance(double distance, double power) {
+        while (robot.getFrontDistance() > distance) {
+            telemetry.addData("front", robot.getFrontDistance());
+            telemetry.update();
+            robot.driving.horizontal(-power);
+            opMode.sleep(10);
+        }
+        robot.driving.stop();
     }
 
     public void moveUnderRightDistance(double distance, double power) {
-        while (robot.getRightDistance() < distance) {
+        while (robot.getRightDistance() > distance) {
             telemetry.addData("right", robot.getRightDistance());
             telemetry.update();
             robot.driving.horizontal(power);
             opMode.sleep(10);
         }
+        robot.driving.stop();
     }
 
 
