@@ -4,11 +4,10 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.firstinspires.ftc.teamcode.Arm.FullArm;
 import org.firstinspires.ftc.teamcode.auton.AllAutonMovements;
 
-@Autonomous(name = "Blue Far Pixel", group = "pixel")
-public class BlueFarPixel extends LinearOpMode {
+@Autonomous(name = "Red Close Pixel", group = "pixel")
+public class RedClosePixel extends LinearOpMode {
 
     Robot robot;
     AllAutonMovements auton;
@@ -20,24 +19,25 @@ public class BlueFarPixel extends LinearOpMode {
         waitForStart();
 
         if (opModeIsActive()) {
-            auton.moveUnderLeftDistance(70, 0.5);
+            auton.moveUnderLeftDistance(123, 0.5);
 
             telemetry.addData("moving", "forward");
             telemetry.update();
             robot.driving.vertical(-0.25);
             sleep(4000);
 
-            auton.moveUnderLeftDistance(69, 0.5);
+            auton.moveUnderLeftDistance(123, 0.5);
 
             while (!robot.seePixel() && opModeIsActive())
             {
-                telemetry.addData("in", "oop");
+                telemetry.addData("in", "loop");
                 telemetry.update();
                 robot.driving.vertical(-0.25);
             }
             robot.driving.stop();
 
             auton.PlacePixel(robot.whatPixel());
+
         }
     }
 }

@@ -58,6 +58,25 @@ public class AllAutonMovements {
 
     }
 
+    public void moveUnderLeftDistance(double distance, double power) {
+            while (robot.getLeftDistance() < distance) {
+                telemetry.addData("left", robot.getLeftDistance());
+                telemetry.update();
+                robot.driving.horizontal(-power);
+                opMode.sleep(10);
+            }
+    }
+
+    public void moveUnderRightDistance(double distance, double power) {
+        while (robot.getRightDistance() < distance) {
+            telemetry.addData("right", robot.getRightDistance());
+            telemetry.update();
+            robot.driving.horizontal(power);
+            opMode.sleep(10);
+        }
+    }
+
+
 /*    public void checkDistanceMovement() {
         while (!robot.objectFound()) {
             opMode.telemetry.addData("front", robot.frontDistanceValue());

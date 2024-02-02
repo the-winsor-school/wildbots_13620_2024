@@ -10,6 +10,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.Arm.*;
+import org.firstinspires.ftc.teamcode.auton.AllAutonMovements;
 import org.firstinspires.ftc.teamcode.driving.IDriving;
 import org.firstinspires.ftc.teamcode.driving.StrafeDrive;
 import com.qualcomm.robotcore.hardware.ColorSensor;
@@ -187,11 +188,41 @@ public class Robot {
         return false;
     }
 
+    public AllAutonMovements.PixelLocation whatPixel() {
+        if (leftPixel())
+            return AllAutonMovements.PixelLocation.LEFT;
+        if (frontPixel())
+            return AllAutonMovements.PixelLocation.FRONT;
+        if (rightPixel())
+            return AllAutonMovements.PixelLocation.RIGHT;
+        return null;
+    }
+
+    public double getDistance(Direction direction) {
+        if (direction == Direction.RIGHT) {
+            return getRightDistance();
+        }
+        else if (direction == Direction.FRONT) {
+            return getFrontDistance();
+        }
+        else if (direction == Direction.LEFT) {
+            return getLeftDistance();
+        }
+        return 0;
+    }
+
     public boolean seePixel() {
         if (leftPixel() || rightPixel() ||frontPixel()) {
             return true;
         }
         return false;
+    }
+
+    public enum Direction {
+        LEFT,
+        RIGHT,
+        FRONT,
+        BACK
     }
 
 
