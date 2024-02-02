@@ -29,6 +29,35 @@ public class AllAutonMovements {
         placingAuton.drivePlacingAuton(fieldPosition);
     }
 
+    public void PlacePixel(PixelLocation pixel) {
+        if (pixel == PixelLocation.FRONT) {
+            robot.driving.turn(0.5);
+            opMode.sleep(5000);
+            robot.driving.stop();
+            robot.driving.vertical(0.25);
+            opMode.sleep(100);
+            robot.driving.stop();
+            robot.arm.claw.moveClaw(Claw.ClawPos.OPEN);
+            opMode.sleep(500);
+        }
+
+        else if (pixel == PixelLocation.LEFT) {
+            robot.driving.turn(0.5);
+            opMode.sleep(2400);
+            robot.driving.stop();
+            robot.arm.claw.moveClaw(Claw.ClawPos.OPEN);
+            opMode.sleep(500);
+        }
+        else if (pixel == PixelLocation.RIGHT) {
+            robot.driving.turn(-0.5);
+            opMode.sleep(2400);
+            robot.driving.stop();
+            robot.arm.claw.moveClaw(Claw.ClawPos.OPEN);
+            opMode.sleep(500);
+        }
+
+    }
+
 /*    public void checkDistanceMovement() {
         while (!robot.objectFound()) {
             opMode.telemetry.addData("front", robot.frontDistanceValue());
@@ -51,6 +80,12 @@ public class AllAutonMovements {
         CLOSE_RED, //close side to stage
         FAR_BLUE,
         CLOSE_BLUE,
+    }
+
+    public enum PixelLocation {
+        LEFT,
+        RIGHT,
+        FRONT,
     }
 
 }

@@ -1,4 +1,4 @@
-/*
+
 package org.firstinspires.ftc.teamcode;
 
 
@@ -19,25 +19,17 @@ public class test extends LinearOpMode {
 
     public void runOpMode() throws InterruptedException {
         robot = new Robot(this);
-        auton =  new AllAutonMovements(this, robot);
-
-        boolean pixelPlaced = false;
-        while(!opModeIsActive()) {
-            robot.checkAllDistances();
-            telemetry.addData("front distance", robot.frontDistanceValue());
-            telemetry.update();
-        }
 
         waitForStart();
 
         while (opModeIsActive()) {
-
-            while (opModeIsActive()) {
-                auton.checkDistanceMovement();
-            }
+                telemetry.addData("front", robot.getFrontDistance());
+                telemetry.addData("right", robot.getRightDistance());
+                telemetry.addData("left", robot.getLeftDistance());
+                telemetry.update();
 
         }
 
     }
 }
-*/
+

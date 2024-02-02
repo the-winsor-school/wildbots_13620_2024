@@ -171,5 +171,28 @@ public class Robot {
         return leftDistance.getDistance(DistanceUnit.CM);
     }
 
+    public boolean frontPixel() {
+        if (getFrontDistance() < 10)
+            return true;
+        return false;
+    }
+    public boolean rightPixel() {
+        if (getRightDistance() < 15)
+            return true;
+        return false;
+    }
+    public boolean leftPixel() {
+        if (getLeftDistance() < 15)
+            return true;
+        return false;
+    }
+
+    public boolean seePixel() {
+        if (leftPixel() || rightPixel() ||frontPixel()) {
+            return true;
+        }
+        return false;
+    }
+
 
 }
