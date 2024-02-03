@@ -1,5 +1,5 @@
 
-package org.firstinspires.ftc.teamcode.AutonOpModes.Pixel;
+package org.firstinspires.ftc.teamcode.AutonOpModes;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -22,24 +22,10 @@ public class TestPixelTurns extends LinearOpMode {
         waitForStart();
 
         if (opModeIsActive()) {
-
-            while (!robot.seePixel() && opModeIsActive())
-            {
-                telemetry.addData("in", "loop");
-                telemetry.update();
-                robot.driving.vertical(-0.5);
-            }
+            robot.driving.turn(0.5);
+            sleep(2500);
             robot.driving.stop();
 
-            if (robot.frontPixel()) {
-                auton.PlacePixel(robot.whatPixel());
-            }
-            else if (robot.rightPixel()) {
-                auton.PlacePixel(robot.whatPixel());
-            }
-            else if (robot.leftPixel()) {
-                auton.PlacePixel(robot.whatPixel());
-            }
         }
     }
 }
