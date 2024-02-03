@@ -10,7 +10,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.Arm.*;
-import org.firstinspires.ftc.teamcode.auton.AllAutonMovements;
+import org.firstinspires.ftc.teamcode.AutonLibrary.AllAutonMovements;
 import org.firstinspires.ftc.teamcode.driving.IDriving;
 import org.firstinspires.ftc.teamcode.driving.StrafeDrive;
 import com.qualcomm.robotcore.hardware.ColorSensor;

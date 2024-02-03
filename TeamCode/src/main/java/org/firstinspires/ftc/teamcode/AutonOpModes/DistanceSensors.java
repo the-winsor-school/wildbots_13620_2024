@@ -1,5 +1,5 @@
 
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.AutonOpModes;
 
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -7,13 +7,12 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.firstinspires.ftc.teamcode.Arm.Claw;
-import org.firstinspires.ftc.teamcode.driving.*;
-import org.firstinspires.ftc.teamcode.auton.*;
+import org.firstinspires.ftc.teamcode.AutonLibrary.*;
+import org.firstinspires.ftc.teamcode.Robot;
 
-
-@Autonomous(name="test")
-public class test extends LinearOpMode {
+@Disabled
+@Autonomous(name="test distance sensors")
+public class DistanceSensors extends LinearOpMode {
     Robot robot;
     AllAutonMovements auton;
 

@@ -1,11 +1,12 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.AutonOpModes.Parking;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.Arm.Claw;
 import org.firstinspires.ftc.teamcode.Arm.MotorState;
-import org.firstinspires.ftc.teamcode.auton.AllAutonMovements;
+import org.firstinspires.ftc.teamcode.AutonLibrary.AllAutonMovements;
+import org.firstinspires.ftc.teamcode.Robot;
 
 @Autonomous(name = "Blue Far Park", group = "park")
 public class BlueFarPark extends LinearOpMode {

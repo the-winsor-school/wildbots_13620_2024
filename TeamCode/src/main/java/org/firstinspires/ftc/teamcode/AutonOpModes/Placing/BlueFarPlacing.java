@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.AutonOpModes.Placing;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -6,10 +6,11 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.Arm.Claw;
 import org.firstinspires.ftc.teamcode.Arm.FullArm;
-import org.firstinspires.ftc.teamcode.auton.AllAutonMovements;
+import org.firstinspires.ftc.teamcode.AutonLibrary.AllAutonMovements;
+import org.firstinspires.ftc.teamcode.Robot;
 
-@Autonomous(name = "Red Far Placing", group = "place")
-public class RedFarPlacing extends LinearOpMode {
+@Autonomous(name = "Blue Far Placing", group = "place")
+public class BlueFarPlacing extends LinearOpMode {
     Robot robot;
     AllAutonMovements autonMovements;
     public void runOpMode() throws InterruptedException {
@@ -25,25 +26,20 @@ public class RedFarPlacing extends LinearOpMode {
 
             //reverse
             robot.driving.vertical(-0.5f);
-            sleep(800);
+            sleep(500);
 
-            while (robot.getRightDistance() < 128) {
-                telemetry.addData("right", robot.getRightDistance());
-                telemetry.update();
-                robot.driving.horizontal(-0.50f);
+            //first horizontal
+            while (robot.getLeftDistance() < 128) {
+                robot.driving.horizontal(0.50f);
                 sleep(20);
             }
 
             //forward
             robot.driving.vertical(0.5f);
-            sleep(8000);
+            sleep(7000);
 
-            //sideways
-            robot.driving.horizontal(0.5f);
-            sleep(1500);
-
-            while (robot.getRightDistance() > 75) {
-                robot.driving.horizontal(0.50f);
+            while (robot.getLeftDistance() > 75) {
+                robot.driving.horizontal(-0.50f);
             }
 
             robot.arm.moveArmToPosition(FullArm.ArmPosition.PLACING);

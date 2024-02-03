@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.auton;
+package org.firstinspires.ftc.teamcode.AutonLibrary;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
@@ -40,7 +40,6 @@ public class AllAutonMovements {
             robot.arm.claw.moveClaw(Claw.ClawPos.OPEN);
             opMode.sleep(1000);
         }
-
         else if (pixel == PixelLocation.LEFT) {
             robot.driving.turn(0.5);
             opMode.sleep(2000);
@@ -60,18 +59,26 @@ public class AllAutonMovements {
 
     }
 
-    public void moveToLeftDistance(double distance, double power) {
-        if (robot.getLeftDistance() < distance) {
-            while (robot.getLeftDistance() < distance) {
-                telemetry.addData("left", robot.getLeftDistance());
+    public void customPlacePixel(double turn, int sleep) {
+        robot.driving.turn(turn);
+        opMode.sleep(sleep);
+        robot.driving.stop();
+        opMode.sleep(500);
+        robot.arm.claw.moveClaw(Claw.ClawPos.OPEN);
+        opMode.sleep(1000);
+    }
+
+    public void moveToLeftDistance(double distance, double tolerance, double power) {
+
+        while (Math.abs(robot.getLeftDistance() - distance) > tolerance) {
+            if (robot.getLeftDistance() < distance) {
+                telemetry.addData("left: ", robot.getLeftDistance());
                 telemetry.update();
                 robot.driving.horizontal(power);
                 opMode.sleep(10);
             }
-        }
-        else if (robot.getLeftDistance() > distance) {
-            while (robot.getLeftDistance() < distance) {
-                telemetry.addData("left", robot.getLeftDistance());
+            else if (robot.getLeftDistance() > distance) {
+                telemetry.addData("left: ", robot.getLeftDistance());
                 telemetry.update();
                 robot.driving.horizontal(-power);
                 opMode.sleep(10);
@@ -80,39 +87,43 @@ public class AllAutonMovements {
         robot.driving.stop();
     }
 
-    public void moveUnderFrontDistance(double distance, double power) {
-        while (robot.getFrontDistance() > distance) {
-            telemetry.addData("front", robot.getFrontDistance());
-            telemetry.update();
-            robot.driving.horizontal(-power);
-            opMode.sleep(10);
+    public void moveToRightDistance(double distance, double tolerance, double power) {
+
+        while (Math.abs(robot.getRightDistance() - distance) > tolerance) {
+            if (robot.getRightDistance() < distance) {
+                telemetry.addData("right: ", robot.getRightDistance());
+                telemetry.update();
+                robot.driving.horizontal(-power);
+                opMode.sleep(10);
+            }
+            else if (robot.getRightDistance() > distance) {
+                telemetry.addData("right: ", robot.getRightDistance());
+                telemetry.update();
+                robot.driving.horizontal(power);
+                opMode.sleep(10);
+            }
         }
         robot.driving.stop();
     }
 
-    public void moveUnderRightDistance(double distance, double power) {
-        while (robot.getRightDistance() > distance) {
-            telemetry.addData("right", robot.getRightDistance());
-            telemetry.update();
-            robot.driving.horizontal(power);
-            opMode.sleep(10);
+    public void moveToBackDistance(double distance, double tolerance, double power) {
+
+        while (Math.abs(robot.getFrontDistance() - distance) > tolerance) {
+            if (robot.getFrontDistance() < distance) {
+                telemetry.addData("front: ", robot.getFrontDistance());
+                telemetry.update();
+                robot.driving.horizontal(power);
+                opMode.sleep(10);
+            }
+            else if (robot.getFrontDistance() > distance) {
+                telemetry.addData("front: ", robot.getFrontDistance());
+                telemetry.update();
+                robot.driving.horizontal(-power);
+                opMode.sleep(10);
+            }
         }
         robot.driving.stop();
     }
-
-
-/*    public void checkDistanceMovement() {
-        while (!robot.objectFound()) {
-            opMode.telemetry.addData("front", robot.frontDistanceValue());
-            opMode.telemetry.addData("right", robot.rightDistanceValue());
-            opMode.telemetry.addData("left", robot.leftDistanceValue());
-            opMode.telemetry.update();
-            robot.driving.vertical(-0.5);
-        }
-        robot.driving.stop();
-
-
-    }*/
 
     /**
      * gives you all the field positions

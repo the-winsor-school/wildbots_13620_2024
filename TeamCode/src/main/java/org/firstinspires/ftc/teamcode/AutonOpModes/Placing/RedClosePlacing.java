@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.AutonOpModes.Placing;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -7,8 +7,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.Arm.Claw;
 import org.firstinspires.ftc.teamcode.Arm.FullArm;
 import org.firstinspires.ftc.teamcode.Arm.MotorState;
-import org.firstinspires.ftc.teamcode.Arm.WristJoint;
-import org.firstinspires.ftc.teamcode.auton.AllAutonMovements;
+import org.firstinspires.ftc.teamcode.AutonLibrary.AllAutonMovements;
+import org.firstinspires.ftc.teamcode.Robot;
 
 @Autonomous(name = "Red Close Placing", group = "place")
 public class RedClosePlacing extends LinearOpMode {
