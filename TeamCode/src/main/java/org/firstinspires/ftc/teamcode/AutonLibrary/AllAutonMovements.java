@@ -59,6 +59,13 @@ public class AllAutonMovements {
 
     }
 
+    public void clawPlacePixel() {
+        opMode.sleep(500);
+        robot.arm.claw.moveClaw(Claw.ClawPos.OPEN);
+        opMode.sleep(1000);
+        robot.arm.claw.moveClaw(Claw.ClawPos.STOP);
+    }
+
     public void customPlacePixel(double turn, int sleep) {
         robot.driving.turn(turn);
         opMode.sleep(sleep);
