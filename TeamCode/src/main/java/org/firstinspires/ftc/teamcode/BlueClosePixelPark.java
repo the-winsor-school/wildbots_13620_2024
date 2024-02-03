@@ -2,10 +2,12 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.auton.AllAutonMovements;
 
+@Disabled
 @Autonomous(name = "Blue Close Pixel Park", group = "pixel and park")
 public class BlueClosePixelPark extends LinearOpMode {
 

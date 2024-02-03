@@ -95,7 +95,7 @@ public class Robot {
 
         airplaneLauncher = map.tryGet(CRServo.class, "airplane");
 
-        //just because o the orienttion o the motor
+        //orientation of motors
         elbowMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         wristMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
