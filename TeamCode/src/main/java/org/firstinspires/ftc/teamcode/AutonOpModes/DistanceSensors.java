@@ -10,8 +10,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import org.firstinspires.ftc.teamcode.AutonLibrary.*;
 import org.firstinspires.ftc.teamcode.Robot;
 
-@Disabled
-@Autonomous(name="test distance sensors")
+@Autonomous(name="test distance sensors", group = "test")
 public class DistanceSensors extends LinearOpMode {
     Robot robot;
     AllAutonMovements auton;

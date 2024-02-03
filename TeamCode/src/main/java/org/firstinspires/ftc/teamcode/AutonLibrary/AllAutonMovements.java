@@ -42,7 +42,7 @@ public class AllAutonMovements {
         }
         else if (pixel == PixelLocation.LEFT) {
             robot.driving.turn(0.5);
-            opMode.sleep(2000);
+            opMode.sleep(2500);
             robot.driving.stop();
             opMode.sleep(500);
             robot.arm.claw.moveClaw(Claw.ClawPos.OPEN);
@@ -50,7 +50,7 @@ public class AllAutonMovements {
         }
         else if (pixel == PixelLocation.RIGHT) {
             robot.driving.turn(-0.5);
-            opMode.sleep(2000);
+            opMode.sleep(2500);
             robot.driving.stop();
             opMode.sleep(500);
             robot.arm.claw.moveClaw(Claw.ClawPos.OPEN);
