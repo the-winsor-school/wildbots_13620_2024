@@ -18,6 +18,9 @@ public class BlueClosePlacing extends LinearOpMode {
         autonMovements = new AllAutonMovements(this, robot);
         ElapsedTime timer = new ElapsedTime();
 
+        robot.stopAirPlaneLauncher();
+
+
         robot.arm.claw.moveClaw(Claw.ClawPos.CLOSE);
 
         waitForStart();
@@ -39,6 +42,8 @@ public class BlueClosePlacing extends LinearOpMode {
             }
 
             while (!robot.checkTape()) {
+                robot.arm.wrist.moveTowardsTargetPosition();
+                robot.arm.elbow.moveTowardsTargetPosition();
                 robot.driving.vertical(0.5f);
                 sleep(20);//have to test time
             }

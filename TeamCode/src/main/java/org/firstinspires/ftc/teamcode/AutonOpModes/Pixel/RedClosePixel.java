@@ -2,13 +2,13 @@
 package org.firstinspires.ftc.teamcode.AutonOpModes.Pixel;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.Arm.Claw;
 import org.firstinspires.ftc.teamcode.AutonLibrary.AllAutonMovements;
 import org.firstinspires.ftc.teamcode.Robot;
-
-@Autonomous(name = "Red Close Pixel", group = "pixel")
+@Autonomous(name = "Pixel", group = "pixel")
 public class RedClosePixel extends LinearOpMode {
 
     Robot robot;
@@ -22,18 +22,16 @@ public class RedClosePixel extends LinearOpMode {
         waitForStart();
 
         if (opModeIsActive()) {
-            auton.moveToLeftDistance(128, 0.5, 0.5);
-
             telemetry.addData("moving", "forward");
             telemetry.update();
-            robot.driving.vertical(-0.25);
-            sleep(4000);
+            robot.driving.vertical(-0.5);
+            sleep(2000);
 
             while (!robot.seePixel() && opModeIsActive())
             {
                 telemetry.addData("in", "loop");
                 telemetry.update();
-                robot.driving.vertical(-0.25);
+                robot.driving.vertical(-0.5);
             }
             robot.driving.stop();
 

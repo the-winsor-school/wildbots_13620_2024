@@ -2,12 +2,13 @@
 package org.firstinspires.ftc.teamcode.AutonOpModes.Pixel;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.Arm.Claw;
 import org.firstinspires.ftc.teamcode.AutonLibrary.AllAutonMovements;
 import org.firstinspires.ftc.teamcode.Robot;
-
+@Disabled
 @Autonomous(name = "Blue Far Pixel", group = "pixel")
 public class BlueFarPixel extends LinearOpMode {
 

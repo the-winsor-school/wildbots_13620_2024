@@ -20,6 +20,8 @@ public class RedClosePlacing extends LinearOpMode {
 
         ElapsedTime timer = new ElapsedTime();
 
+        robot.stopAirPlaneLauncher();
+
         robot.arm.claw.moveClaw(Claw.ClawPos.CLOSE);
         robot.arm.wrist.setPower(MotorState.REVERSE);
 
@@ -42,6 +44,8 @@ public class RedClosePlacing extends LinearOpMode {
             }
 
             while (!robot.checkTape()) {
+                robot.arm.wrist.moveTowardsTargetPosition();
+                robot.arm.elbow.moveTowardsTargetPosition();
                 robot.driving.vertical(0.5f);
                 sleep(20);//have to test time
             }

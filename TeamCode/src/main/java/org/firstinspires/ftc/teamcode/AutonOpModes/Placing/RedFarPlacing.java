@@ -18,6 +18,8 @@ public class RedFarPlacing extends LinearOpMode {
         autonMovements = new AllAutonMovements(this, robot);
         ElapsedTime timer = new ElapsedTime();
 
+        robot.stopAirPlaneLauncher();
+
         robot.arm.claw.moveClaw(Claw.ClawPos.CLOSE);
 
         waitForStart();
@@ -43,11 +45,9 @@ public class RedFarPlacing extends LinearOpMode {
             robot.driving.horizontal(0.5f);
             sleep(1500);
 
-            while (robot.getRightDistance() > 75) {
-                robot.driving.horizontal(0.50f);
-            }
-
+            //arm
             robot.arm.moveArmToPosition(FullArm.ArmPosition.PLACING);
+
             timer.reset();
             while (timer.milliseconds() < 1000) {
                 robot.arm.wrist.moveTowardsTargetPosition();
@@ -56,6 +56,8 @@ public class RedFarPlacing extends LinearOpMode {
             }
 
             while (!robot.checkTape()) {
+                robot.arm.wrist.moveTowardsTargetPosition();
+                robot.arm.elbow.moveTowardsTargetPosition();
                 robot.driving.vertical(0.5f);
                 sleep(20);//have to test time
             }

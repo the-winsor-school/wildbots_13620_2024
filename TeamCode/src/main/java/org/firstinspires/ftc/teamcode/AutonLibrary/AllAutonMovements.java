@@ -38,23 +38,33 @@ public class AllAutonMovements {
             robot.driving.stop();
             opMode.sleep(500);
             robot.arm.claw.moveClaw(Claw.ClawPos.OPEN);
-            opMode.sleep(1000);
+            opMode.sleep(500);
+            robot.arm.claw.moveClaw(Claw.ClawPos.STOP);
+
         }
         else if (pixel == PixelLocation.LEFT) {
+            robot.driving.horizontal(0.5);
+            opMode.sleep(200);
             robot.driving.turn(0.5);
-            opMode.sleep(2000);
-            robot.driving.stop();
+            opMode.sleep(2300);
+            robot.driving.vertical(0.25);
+            opMode.sleep(100);
             opMode.sleep(500);
             robot.arm.claw.moveClaw(Claw.ClawPos.OPEN);
-            opMode.sleep(1000);
+            opMode.sleep(500);
+            robot.arm.claw.moveClaw(Claw.ClawPos.STOP);
         }
         else if (pixel == PixelLocation.RIGHT) {
+
             robot.driving.turn(-0.5);
-            opMode.sleep(2000);
+            opMode.sleep(2300);
+            robot.driving.vertical(0.25);
+            opMode.sleep(100);
             robot.driving.stop();
             opMode.sleep(500);
             robot.arm.claw.moveClaw(Claw.ClawPos.OPEN);
-            opMode.sleep(1000);
+            opMode.sleep(500);
+            robot.arm.claw.moveClaw(Claw.ClawPos.STOP);
         }
 
     }

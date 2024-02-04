@@ -18,6 +18,8 @@ public class BlueFarPlacing extends LinearOpMode {
         autonMovements = new AllAutonMovements(this, robot);
         ElapsedTime timer = new ElapsedTime();
 
+        robot.stopAirPlaneLauncher();
+
         robot.arm.claw.moveClaw(Claw.ClawPos.CLOSE);
 
         waitForStart();
@@ -38,11 +40,12 @@ public class BlueFarPlacing extends LinearOpMode {
             robot.driving.vertical(0.5f);
             sleep(7000);
 
-            while (robot.getLeftDistance() > 75) {
-                robot.driving.horizontal(-0.50f);
-            }
+            //horizontal
+            robot.driving.horizontal(-0.5);
+            sleep(1500);
 
             robot.arm.moveArmToPosition(FullArm.ArmPosition.PLACING);
+
             timer.reset();
             while (timer.milliseconds() < 1000) {
                 robot.arm.wrist.moveTowardsTargetPosition();
@@ -51,9 +54,12 @@ public class BlueFarPlacing extends LinearOpMode {
             }
 
             while (!robot.checkTape()) {
+                robot.arm.wrist.moveTowardsTargetPosition();
+                robot.arm.elbow.moveTowardsTargetPosition();
                 robot.driving.vertical(0.5f);
                 sleep(20);//have to test time
             }
+
             robot.driving.stop();
 
             robot.arm.claw.moveClaw(Claw.ClawPos.OPEN);
